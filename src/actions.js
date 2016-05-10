@@ -27,3 +27,11 @@ export function config(myID="", st){
     dispatch({ type: "CONNECTION_ERROR", error })
   })
 }
+
+export function folderStatus(folders, st){
+  return dispatch => folders.forEach(({id}) => {
+    st.db.status(id).then(payload => {
+      dispatch({ type: "FOLDER_STATUS", id, payload })
+    })
+  })
+}

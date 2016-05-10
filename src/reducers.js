@@ -46,10 +46,15 @@ function devices(state = [], {type, payload}) {
   }
 }
 
-function folders(state = [], {type, payload}) {
+function folders(state = [], {type, payload, id}) {
   switch (type){
     case 'FOLDERS':
       return payload
+    case 'FOLDER_STATUS':
+      return state.map(folder => ({
+      ...folder,
+      status: id == folder.id ? payload : null
+    }))
     default:
       return state
   }

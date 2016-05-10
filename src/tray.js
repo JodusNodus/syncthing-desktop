@@ -2,7 +2,7 @@ import { app, Tray, Menu } from "electron"
 import path from "path"
 import Syncthing from "node-syncthing"
 import { notify } from "./misc"
-import { myID, config, connections } from "./actions"
+import { myID, config, connections, folderStatus } from "./actions"
 
 const st = new Syncthing({
   hostname: "localhost",
@@ -22,13 +22,15 @@ const actions = {
     app.quit()
   }
 }
-
 function buildTray(tray, {devices, folders, connected}){
   const folderItems = folders.length > 0 ? [
     { label: "Folders", enabled: false  },
-    ...folders.map(({ id }) => ({
-      label: `${id}`
-    }))
+    ...folders.map(({ id, status }) => {
+      const completion = status ? Math.ceil((status.globalBytes / status.inSyncBytes) * 100) : null
+      return {
+        label: `${id} ${status ? "(" + completion + "%)" : ""}`
+      }
+    })
   ] : [
     { label: "No folders found", enabled: false }
   ]
@@ -73,6 +75,9 @@ export default function TrayWrapper(store){
 
     if(!previousState.myID && newState.myID)
       store.dispatch(config(newState.myID, st))
+
+    if(previousState.folders.length !== newState.folders.length)
+      store.dispatch(folderStatus(newState.folders, st))
 
     buildTray(tray, newState)
     previousState = newState
