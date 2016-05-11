@@ -23,7 +23,7 @@ const actions = {
   }
 }
 
-function buildTray(tray, {devices, folders, connected}){
+function buildTray({devices, folders, connected}){
   const folderItems = folders.length > 0 ? [
     { label: "Folders", enabled: false  },
     ...folders.map(({ id, status, path }) => {
@@ -62,8 +62,7 @@ function buildTray(tray, {devices, folders, connected}){
       { label: 'Quit', click: actions.quit }
     ])
   }
-
-  tray.setContextMenu(menu)
+  return menu
 }
 
 let tray = null;
@@ -82,10 +81,12 @@ export default function TrayWrapper(store){
     if(previousState.folders.length !== newState.folders.length)
       store.dispatch(folderStatus(newState.folders, st))
 
-    buildTray(tray, newState)
+    const menu = buildTray(newState)
+    tray.setContextMenu(menu)
     previousState = newState
   })
 
-  buildTray(tray, store.getState())
+  const menu = buildTray(store.getState())
+  tray.setContextMenu(menu)
   store.dispatch(myID(st))
 }
