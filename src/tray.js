@@ -1,7 +1,7 @@
 import { app, Tray, Menu } from "electron"
 import path from "path"
 import Syncthing from "node-syncthing"
-import { notify } from "./misc"
+import { notify, formatBytes } from "./misc"
 import { myID, config, connections, folderStatus } from "./actions"
 
 const st = new Syncthing({
@@ -22,13 +22,13 @@ const actions = {
     app.quit()
   }
 }
+
 function buildTray(tray, {devices, folders, connected}){
   const folderItems = folders.length > 0 ? [
     { label: "Folders", enabled: false  },
     ...folders.map(({ id, status }) => {
-      const completion = status ? Math.ceil((status.globalBytes / status.inSyncBytes) * 100) : null
       return {
-        label: `${id} ${status ? "(" + completion + "%)" : ""}`
+        label: `${id} ${status ? "(" + formatBytes(status.inSyncBytes) + "/" + formatBytes(status.globalBytes) + ")" : ""}`
       }
     })
   ] : [
@@ -38,9 +38,9 @@ function buildTray(tray, {devices, folders, connected}){
   const devicesItems = devices.length > 0 ? [
     { label: "Devices", enabled: false },
     ...devices.map(({ name, online, address }) => ({
-      label: `${name} ${online ? "("+address+")" : ""}`,
+      label: `${name} ${online ? "("+address+")" : "(offline)"}`,
       type: "checkbox",
-      checked: online
+      enabled: online
     }))
   ] : [{ label: "No devices found", enabled: false }]
 
@@ -48,6 +48,7 @@ function buildTray(tray, {devices, folders, connected}){
   if(connected){
     menu = Menu.buildFromTemplate([
       ...folderItems,
+      { type: "separator" },
       ...devicesItems,
       { type: "separator" },
       { label: 'Restart', click: actions.restart },
