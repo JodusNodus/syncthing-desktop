@@ -4,12 +4,14 @@ import Syncthing from "node-syncthing"
 import { notify, formatBytes } from "./misc"
 import { myID, config, connections, folderStatus } from "./actions"
 
-const st = new Syncthing({
+const stConfig = {
   hostname: "localhost",
   port: 8384,
   apiKey: "19A5pMYGNr0SOqzL9xoyJp7JuRbwzZq2",
   eventListener: false
-})
+}
+
+const st = new Syncthing(stConfig)
 
 const actions = {
   restart(){
@@ -53,6 +55,7 @@ function buildTray({devices, folders, connected}){
       { type: "separator" },
       ...devicesItems,
       { type: "separator" },
+      { label: "Dashboard", click: () => shell.openExternal(`${stConfig.https ? "https" : "http"}://${stConfig.hostname}:${stConfig.port}`) },
       { label: 'Restart', click: actions.restart },
       { label: 'Quit', click: actions.quit }
     ])
