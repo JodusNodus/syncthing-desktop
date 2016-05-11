@@ -1,4 +1,4 @@
-import { app, Tray, Menu } from "electron"
+import { app, Tray, Menu, shell } from "electron"
 import path from "path"
 import Syncthing from "node-syncthing"
 import { notify, formatBytes } from "./misc"
@@ -26,9 +26,11 @@ const actions = {
 function buildTray(tray, {devices, folders, connected}){
   const folderItems = folders.length > 0 ? [
     { label: "Folders", enabled: false  },
-    ...folders.map(({ id, status }) => {
+    ...folders.map(({ id, status, path }) => {
       return {
-        label: `${id} ${status ? "(" + formatBytes(status.inSyncBytes) + "/" + formatBytes(status.globalBytes) + ")" : ""}`
+        label: `${id} ${status ? "(" + formatBytes(status.inSyncBytes) + "/" + formatBytes(status.globalBytes) + ")" : ""}`,
+        path, 
+        click: ({path}) => shell.showItemInFolder(path)
       }
     })
   ] : [
