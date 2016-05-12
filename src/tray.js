@@ -80,7 +80,7 @@ function buildTray({devices, folders, connected}){
 
 let tray = null;
 export default function TrayWrapper(store){
-  tray = new Tray(path.join(__dirname, "../tray_white@4x.png"))
+  tray = new Tray(path.join(__dirname, "../trayTemplate@2x.png"))
 
   const menu = buildTray(store.getState())
   //Subscribe to state changes
