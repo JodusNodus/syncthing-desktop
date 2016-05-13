@@ -7,7 +7,7 @@ const dir = path.join(home, "/.config/syncthing-tray.json")
 const template = {
   hostname: "localhost",
   port: 8384,
-  apiKey: ""
+  apiKey: null 
 }
 
 function readConfig(cb){

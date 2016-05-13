@@ -22,8 +22,9 @@ const actions = {
     })
   },
   quit(){
-    st.system.shutdown().then(() => {})
-    app.quit()
+    st.system.shutdown().then(() => {
+      app.quit()
+    })
   },
   dashboard(){
     shell.openExternal(`${stConfig.https ? "https" : "http"}://${stConfig.hostname}:${stConfig.port}`) 
@@ -66,14 +67,19 @@ function buildTray({devices, folders, connected}){
       ...devicesItems(devices),
       { type: "separator" },
       { label: "Dashboard...", click: actions.dashboard },
+      { label: "Preferences", submenu: [
+        { label: `hostname: ${stConfig.hostname}`, enabled: false },
+        { label: `port: ${stConfig.port}`, enabled: false },
+        { label: `api-key: ${stConfig.apiKey}`, enabled: false }
+      ]},
       { type: "separator" },
-      { label: 'Restart Syncthing', click: actions.restart },
-      { label: 'Quit Syncthing', click: actions.quit }
+      { label: 'Restart Syncthing', click: actions.restart, accelerator: "CommandOrControl+R" },
+      { label: 'Quit Syncthing', click: actions.quit, accelerator: "CommandOrControl+Q" }
     ])
   }else{
     menu = Menu.buildFromTemplate([
       { label: "Connection error", enabled: false },
-      { label: 'Quit Syncthing', click: actions.quit }
+      { label: 'Quit Syncthing', click: actions.quit, accelerator: "CommandOrControl+Q" }
     ])
   }
   return menu
@@ -87,6 +93,9 @@ export default function TrayWrapper(store){
   //Subscribe to state changes
   store.subscribe(stateHandler(menu, store, st, tray, buildTray))
 
+  //Notify if no apiKey was found 
+  if(!stConfig.apiKey || stConfig.apiKey.length < 1)
+    notify("No API key was found", "Some actions will not be possible.")
 
   tray.setContextMenu(menu)
 
