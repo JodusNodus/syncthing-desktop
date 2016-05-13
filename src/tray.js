@@ -31,6 +31,9 @@ const actions = {
   },
   dashboard(){
     shell.openExternal(`${stConfig.https ? "https" : "http"}://${stConfig.hostname}:${stConfig.port}`) 
+  },
+  editConfig(){
+    shell.openItem(config.dir())
   }
 }
 
@@ -73,7 +76,8 @@ function buildTray({devices, folders, connected}){
       { label: "Preferences", submenu: [
         { label: `hostname: ${stConfig.hostname}`, enabled: false },
         { label: `port: ${stConfig.port}`, enabled: false },
-        { label: stConfig.apiKey ? `API key: ${stConfig.apiKey}` : "No API key was found", enabled: false }
+        { label: stConfig.apiKey ? `API key: ${stConfig.apiKey}` : "No API key was found", enabled: false },
+        { label: "Edit...", click: actions.editConfig }
       ]},
       { type: "separator" },
       { label: 'Restart Syncthing', click: actions.restart, accelerator: "CommandOrControl+R", visible: hasKey},
@@ -99,7 +103,7 @@ export default function TrayWrapper(store){
   //Notify if no apiKey was found 
   if(!hasKey)
     notify("No API key was found", "Some actions will not be possible.")
-  
+
   tray.setContextMenu(menu)
 
   store.dispatch(myID(st))

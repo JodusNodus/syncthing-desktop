@@ -29,6 +29,9 @@ export default class Config {
       }
     })
   }
+  dir(){
+    return dir
+  }
   get(){
     return this.state
   }
