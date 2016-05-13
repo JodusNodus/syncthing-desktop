@@ -1,9 +1,11 @@
 import { app, Tray, Menu, shell } from "electron"
 import path from "path"
+import process from "process"
 import Syncthing from "node-syncthing"
 import { notify, formatBytes } from "./misc"
 import { myID } from "./actions"
 import { stateHandler, events } from "./events"
+const { name, version } = require("../package.json")
 import Config from "./config.js"
 
 const config = new Config
@@ -66,6 +68,11 @@ const devicesItems = devices => devices.length > 0 ? [
 function buildTray({devices, folders, connected}){
   let menu = null;
 
+  const sharedItems = [
+    { label: name+" "+version },
+    { label: 'Quit Syncthing', click: actions.quit, accelerator: "CommandOrControl+Q" }
+  ]
+
   if(connected){
     menu = Menu.buildFromTemplate([
       ...folderItems(folders),
@@ -81,12 +88,12 @@ function buildTray({devices, folders, connected}){
       ]},
       { type: "separator" },
       { label: 'Restart Syncthing', click: actions.restart, accelerator: "CommandOrControl+R", visible: hasKey},
-      { label: 'Quit', click: actions.quit, accelerator: "CommandOrControl+Q" }
+      ...sharedItems
     ])
   }else{
     menu = Menu.buildFromTemplate([
       { label: "Connection error", enabled: false },
-      { label: 'Quit Syncthing', click: actions.quit, accelerator: "CommandOrControl+Q" }
+      ...sharedItems
     ])
   }
   return menu
@@ -94,7 +101,7 @@ function buildTray({devices, folders, connected}){
 
 let tray = null;
 export default function TrayWrapper(store){
-  tray = new Tray(path.join(__dirname, "../trayTemplate@2x.png"))
+  tray = new Tray(path.join(__dirname, "../trayTemplate@4x.png"))
 
   const menu = buildTray(store.getState())
   //Subscribe to state changes
