@@ -4,11 +4,12 @@ import Syncthing from "node-syncthing"
 import { notify, formatBytes } from "./misc"
 import { myID } from "./actions"
 import { stateHandler, events } from "./events"
+import Config from "./config.js"
+
+const config = new Config
 
 const stConfig = {
-  hostname: "localhost",
-  port: 8384,
-  apiKey: "19A5pMYGNr0SOqzL9xoyJp7JuRbwzZq2",
+  ...config.get(),
   eventListener: true 
 }
 
