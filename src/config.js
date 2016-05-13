@@ -18,25 +18,32 @@ function update(config, cb){
   fs.writeFile(dir, JSON.stringify(config), () => cb ? cb() : null)
 }
 
-export default class Config {
-  constructor() {
-    this.state = { ...template }
-    fs.stat(dir, (err, stats) => {
-      if(!err && stats.isFile()){
-        readConfig(config => this.state = config)
-      }else{
-        fs.writeFile(dir, JSON.stringify(template), () => readConfig(config => this.state = config))
-      }
-    })
+export default function config(cb){
+  let state = null
+  const methods = {
+    dir(){
+      return dir
+    },
+    get(){
+      return state
+    },
+    put(x, y){
+      state[x] = y
+      update(state)
+    }
   }
-  dir(){
-    return dir
-  }
-  get(){
-    return this.state
-  }
-  put(x, y){
-    this.state[x] = y
-    update(this.state)
-  }
+  fs.stat(dir, (err, stats) => {
+    if(!err && stats.isFile()){
+      readConfig(config => {
+        state = config
+        cb(methods)
+      })
+    }else{
+      fs.writeFile(dir, JSON.stringify(template), () => readConfig(config => {
+        state = config
+        cb(methods)
+      }))
+    }
+  })
+
 }

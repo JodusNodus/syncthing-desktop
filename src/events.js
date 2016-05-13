@@ -1,9 +1,9 @@
 import { notify } from "./misc"
-import { myID, config, connections, folderStatus } from "./actions"
+import { config, connections, folderStatus } from "./actions"
 
 //State change subscribsion
 
-export function stateHandler(menu, store, st, tray, buildTray){
+export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig, dir}){
   let previousState = store.getState()
   return () => {
     const newState = store.getState()
@@ -17,7 +17,7 @@ export function stateHandler(menu, store, st, tray, buildTray){
     if(previousState.devices.length !== newState.devices.length)
       store.dispatch(connections(st))
 
-    menu = buildTray(newState)
+    menu = buildMenu({stConfig, hasKey, st, dir, ...newState})
     tray.setContextMenu(menu)
     previousState = newState
   }

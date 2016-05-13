@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
 
 export default rootReducer
 
-function connected(state = true, {type}){
+function connected(state = true, {type, error}){
   switch (type){
     case 'CONNECTION_ERROR':
       return false
