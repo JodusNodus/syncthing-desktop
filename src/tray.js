@@ -22,9 +22,8 @@ const actions = {
     })
   },
   quit(){
-    st.system.shutdown().then(() => {
-      app.quit()
-    })
+    st.system.shutdown().then(() => {})
+    app.quit()
   },
   dashboard(){
     shell.openExternal(`${stConfig.https ? "https" : "http"}://${stConfig.hostname}:${stConfig.port}`) 
@@ -66,7 +65,7 @@ function buildTray({devices, folders, connected}){
       { type: "separator" },
       ...devicesItems(devices),
       { type: "separator" },
-      { label: "Dashboard...", click: actions.dashboard },
+      { label: "Dashboard...", click: actions.dashboard, accelerator: "CommandOrControl+D" },
       { label: "Preferences", submenu: [
         { label: `hostname: ${stConfig.hostname}`, enabled: false },
         { label: `port: ${stConfig.port}`, enabled: false },
