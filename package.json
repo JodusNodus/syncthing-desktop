@@ -1,7 +1,7 @@
 {
   "name": "syncthing-tray",
   "productName": "SyncthingTray",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "My prime app",
   "license": "MIT",
   "repository": "JodusNodus/syncthing-tray",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "electron-debug": "^0.6.0",
-    "node-syncthing": "^3.1.3",
+    "node-syncthing": "^3.1.5",
     "redux": "^3.5.2",
     "redux-promises": "^1.0.0",
     "redux-thunk": "^2.0.1"
