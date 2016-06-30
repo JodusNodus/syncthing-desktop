@@ -34,3 +34,7 @@ node_modules
 
 # Dist files
 dist
+
+release
+
+main

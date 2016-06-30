@@ -4,7 +4,6 @@
 require('babel-polyfill');
 const os = require('os');
 const webpack = require('webpack');
-const electronCfg = require('./webpack.config.electron.js');
 const cfg = require('./webpack.config.production.js');
 const packager = require('electron-packager');
 const del = require('del');
@@ -29,10 +28,6 @@ const DEFAULT_OPTS = {
     '^/release($|/)',
     '^/main.development.js'
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
-  .concat(
-    deps.filter(name => !electronCfg.externals.includes(name))
-      .map(name => `/node_modules/${name}($|/)`)
-  )
 };
 
 const icon = argv.icon || argv.i || 'app';
@@ -71,9 +66,7 @@ function build(cfg) {
 
 function startPack() {
   console.log('start pack...');
-  build(electronCfg)
-    .then(() => build(cfg))
-    .then(() => del('release'))
+  del('release')
     .then(paths => {
       if (shouldBuildAll) {
         // build for all platforms

@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import process from 'process'
-import Tray from './main/tray'
-import configureStore from './main/store'
+import Tray from './tray'
+import configureStore from './store'
 
 global.__base = `${__dirname}/`
 
