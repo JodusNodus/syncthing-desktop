@@ -10,18 +10,19 @@ const rootReducer = combineReducers({
 
 export default rootReducer
 
-function connected(state = true, {type, error}){
-  switch (type){
-  case 'CONNECTION_ERROR':
+function connected(state = true, {type}){
+  if(type == 'CONNECTION_ERROR'){
     return false
-  default:
+  }else if(/.*\_SUCCESS/.test(type)){
+    return true
+  }else{
     return state
   }
 }
 
 function myID(state = false, {type, payload}) {
   switch (type){
-  case 'MYID':
+  case 'MYID_SUCCESS':
     return payload
   default:
     return state
@@ -30,9 +31,9 @@ function myID(state = false, {type, payload}) {
 
 function devices(state = [], {type, payload}) {
   switch (type){
-  case 'DEVICES':
+  case 'DEVICES_SUCCESS':
     return payload
-  case 'CONNECTIONS':
+  case 'CONNECTIONS_SUCCESS':
     return state.map(device => {
       const connection = payload[device.deviceID]
       return {
@@ -48,9 +49,9 @@ function devices(state = [], {type, payload}) {
 
 function folders(state = [], {type, payload, id}) {
   switch (type){
-  case 'FOLDERS':
+  case 'FOLDERS_SUCCESS':
     return payload
-  case 'FOLDER_STATUS':
+  case 'FOLDER_STATUS_SUCCESS':
     return state.map(folder => ({
       ...folder,
       status: id == folder.id ? payload : null,

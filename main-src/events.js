@@ -1,5 +1,6 @@
+import deepEqual from 'deep-equal'
 import { notify } from './misc'
-import { config, connections, folderStatus } from './actions'
+import { config, connections, folderStatus, myID } from './actions'
 
 //State change subscribsion
 
@@ -8,17 +9,23 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
   return () => {
     const newState = store.getState()
 
+    if(!newState.connected){
+      setTimeout(() => store.dispatch(myID(st)), 1000)
+    }
+
     if(previousState.myID !== newState.myID)
       store.dispatch(config(newState.myID, st))
 
-    if(previousState.folders.length !== newState.folders.length)
+    if(!deepEqual(previousState.folders, newState.folders))
       store.dispatch(folderStatus(newState.folders, st))
 
-    if(previousState.devices.length !== newState.devices.length)
+    if(!deepEqual(previousState.devices, newState.devices))
       store.dispatch(connections(st))
 
-    menu = buildMenu({stConfig, hasKey, st, dir, ...newState})
-    tray.setContextMenu(menu)
+    if(!deepEqual(newState, previousState)){
+      menu = buildMenu({stConfig, hasKey, st, dir, ...newState})
+      tray.setContextMenu(menu)
+    }
     previousState = newState
   }
 }
@@ -37,6 +44,10 @@ export function events(st, store){
     notify(`${name} disconnected`, 'Syncing to this device is paused')
     store.dispatch(connections(st))
   })
+  //Listen for errors
+  st.on('error', () => {
+    store.dispatch({ type: 'CONNECTION_ERROR' })
+  })
   //Listen for folder state changes
   st.on('stateChanged', ({ folder, to }) => {
     const state = store.getState()
@@ -53,8 +64,6 @@ export function events(st, store){
       break
     }
   })
-  //Check for devices in an interval
-  setInterval(() => {
-    //store.dispatch(connections(st))
-  }, 1000)
+
+  setInterval(() => store.dispatch(connections(st)), 2000)
 }

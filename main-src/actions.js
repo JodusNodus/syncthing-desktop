@@ -3,7 +3,7 @@ import { notify } from './misc'
 export function myID(st) {
   return dispatch => st.system.status().then(status => {
     dispatch({
-      type: 'MYID',
+      type: 'MYID_SUCCESS',
       payload: status.myID,
     })
   }).catch(error => {
@@ -13,7 +13,7 @@ export function myID(st) {
 
 export function connections(st){
   return dispatch => st.system.connections().then(({connections}) => {
-    dispatch({ type: 'CONNECTIONS', payload: connections})
+    dispatch({ type: 'CONNECTIONS_SUCCESS', payload: connections})
   }).catch(error => {
     dispatch({ type: 'CONNECTION_ERROR', error })
   })
@@ -21,8 +21,8 @@ export function connections(st){
 
 export function config(myID='', st){
   return dispatch => st.system.getConfig().then(({devices, folders}) => {
-    dispatch({ type: 'FOLDERS', payload: folders })
-    dispatch({ type: 'DEVICES', payload: devices.filter(({deviceID}) => deviceID != myID) })
+    dispatch({ type: 'FOLDERS_SUCCESS', payload: folders })
+    dispatch({ type: 'DEVICES_SUCCESS', payload: devices.filter(({deviceID}) => deviceID != myID) })
   }).catch(error => {
     dispatch({ type: 'CONNECTION_ERROR', error })
   })
@@ -31,7 +31,7 @@ export function config(myID='', st){
 export function folderStatus(folders, st){
   return dispatch => folders.forEach(({id}) => {
     st.db.status(id).then(payload => {
-      dispatch({ type: 'FOLDER_STATUS', id, payload })
+      dispatch({ type: 'FOLDER_STATUS_SUCCESS', id, payload })
     })
   })
 }
