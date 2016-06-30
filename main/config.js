@@ -1,13 +1,13 @@
-import fs from "fs"
-import path from "path"
-import os from "os"
+import fs from 'fs'
+import path from 'path'
+import os from 'os'
 
 const home = os.homedir()
-const dir = path.join(home, "/.config/syncthing-tray.json")
+const dir = path.join(home, '/.config/syncthing-tray.json')
 const template = {
-  hostname: "localhost",
+  hostname: 'localhost',
   port: 8384,
-  apiKey: null 
+  apiKey: null, 
 }
 
 function readConfig(cb){
@@ -30,7 +30,7 @@ export default function config(cb){
     put(x, y){
       state[x] = y
       update(state)
-    }
+    },
   }
   fs.stat(dir, (err, stats) => {
     if(!err && stats.isFile()){

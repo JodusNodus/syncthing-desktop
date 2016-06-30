@@ -1,5 +1,5 @@
-import { notify } from "./misc"
-import { config, connections, folderStatus } from "./actions"
+import { notify } from './misc'
+import { config, connections, folderStatus } from './actions'
 
 //State change subscribsion
 
@@ -26,31 +26,31 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
 //Events from Syncthing API
 export function events(st, store){
   //Listen for devices connecting
-  st.on("deviceConnected", ({ id, addr }) => {
+  st.on('deviceConnected', ({ id, addr }) => {
     const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]
     notify(`Connected to ${name}`, `on ${addr}`)
     store.dispatch(connections(st))
   })
   //Listen for devices disconnecting
-  st.on("deviceDisconnected", ({id}) => {
+  st.on('deviceDisconnected', ({id}) => {
     const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]
-    notify(`${name} disconnected`, "Syncing to this device is paused")
+    notify(`${name} disconnected`, 'Syncing to this device is paused')
     store.dispatch(connections(st))
   })
   //Listen for folder state changes
-  st.on("stateChanged", ({ folder, to }) => {
+  st.on('stateChanged', ({ folder, to }) => {
     const state = store.getState()
     switch (to) {
-      case 'syncing':
-        notify(`${folder} is Syncing`)
+    case 'syncing':
+      notify(`${folder} is Syncing`)
       store.dispatch(folderStatus(state.folders, st))
-      break;
-      case 'error':
-        notify(`${folder} has an Error`, 'click to see the error in the dashboard.')
-      break;
-      case 'idle':
-        store.dispatch(folderStatus(state.folders, st))
-      break;
+      break
+    case 'error':
+      notify(`${folder} has an Error`, 'click to see the error in the dashboard.')
+      break
+    case 'idle':
+      store.dispatch(folderStatus(state.folders, st))
+      break
     }
   })
   //Check for devices in an interval
