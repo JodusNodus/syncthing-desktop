@@ -3,6 +3,8 @@ import process from 'process'
 import Tray from './tray'
 import configureStore from './store'
 
+app.dock.hide()
+
 global.__base = `${__dirname}/`
 
 if (process.env.NODE_ENV === 'development') {
