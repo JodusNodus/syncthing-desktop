@@ -1,3 +1,4 @@
+import { powerMonitor } from 'electron'
 import deepEqual from 'deep-equal'
 import { notify } from './misc'
 import { config, connections, folderStatus, myID } from './actions'
@@ -9,7 +10,7 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
   return () => {
     const newState = store.getState()
 
-    if(!newState.connected){
+    if(!newState.connected && newState.power == 'awake'){
       setTimeout(() => store.dispatch(myID(st)), 1000)
     }
 
@@ -65,5 +66,20 @@ export function events(st, store){
     }
   })
 
-  setInterval(() => store.dispatch(connections(st)), 2000)
+  //Check periodicaly for connections
+  setInterval(() => {
+    const state = store.getState()
+    if(state.connected && state.power == 'awake')
+      store.dispatch(connections(st))
+  }, 2000)
+
+  //Dispatch action on suspension changes
+  powerMonitor.on('suspend', () => {
+    store.dispatch({ type: 'SUSPEND' })
+  })
+  //
+  //Dispatch action on resumation changes
+  powerMonitor.on('resume', () => {
+    store.dispatch({ type: 'RESUME' })
+  })
 }
