@@ -69,7 +69,6 @@
     "electron-debug": "^0.6.0",
     "font-awesome": "^4.6.1",
     "is-electron-renderer": "^2.0.0",
-    "node-notifier": "^4.6.0",
     "node-syncthing": "^3.1.5",
     "postcss": "^5.0.19",
     "react": "^15.0.1",

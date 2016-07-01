@@ -1,19 +1,19 @@
 import path from 'path'
-import notifier from 'node-notifier'
-import { Menu } from 'electron'
+import { Menu, BrowserWindow, app } from 'electron'
+
+let notificationWindow
+app.on('ready', function(){
+  notificationWindow = new BrowserWindow({ show: false })
+  notificationWindow.loadURL(`file://${__dirname}/../notifier/index.html`)
+})
 
 export function buildMenu(tray, menu){
   let contextMenu = Menu.buildFromTemplate(menu)
   tray.setContextMenu(contextMenu)
 }
 
-export function notify(title, message){
-  const options = {
-    title,
-    message,
-    icon: path.join(__dirname, '../logo.png'),
-  }
-  notifier.notify(options)
+export function notify(title, body){
+  notificationWindow.webContents.send('notification', {title, body})
 }
 
 export function formatBytes(bytes, decimals=0) {

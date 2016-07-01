@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+  <script type="text/javascript" charset="utf-8">
+'use strict'
+const ipc = require('electron').ipcRenderer
+
+ipc.on('notification', function (e, data){
+  new Notification(data.title, { 
+    body: data.body,
+    silent: true,
+  }) 
+}) 
+  </script>
+  </body>
+</html>
