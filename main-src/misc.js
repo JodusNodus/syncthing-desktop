@@ -1,8 +1,9 @@
 import path from 'path'
+import notifier from 'node-notifier'
 import { Menu, BrowserWindow, app } from 'electron'
 
 let notificationWindow
-app.on('ready', function(){
+app.once('ready', function(){
   notificationWindow = new BrowserWindow({ show: false })
   notificationWindow.loadURL(`file://${__dirname}/../notifier/index.html`)
 })
@@ -12,8 +13,15 @@ export function buildMenu(tray, menu){
   tray.setContextMenu(contextMenu)
 }
 
-export function notify(title, body){
-  notificationWindow.webContents.send('notification', {title, body})
+const sendNotification = (title, body) => notificationWindow.webContents.send('notification', {title, body})
+export function notify(...data){
+  if(notificationWindow != null && !notificationWindow.webContents.isLoading()){
+    sendNotification(...data)
+  }else{
+    notificationWindow.once('ready-to-show', () => {
+      sendNotification(...data)
+    })
+  }
 }
 
 export function formatBytes(bytes, decimals=0) {

@@ -14,6 +14,9 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
       setTimeout(() => store.dispatch(myID(st)), 1000)
     }
 
+    if(!previousState.connected && newState.connected)
+      notify('Connection Established', `Connected to ${stConfig.hostname}:${stConfig.port}`)
+
     if(previousState.myID !== newState.myID)
       store.dispatch(config(newState.myID, st))
 

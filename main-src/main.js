@@ -27,6 +27,4 @@ ipcMain.on('ready', (e, winId) => {
 app.on('ready', () => {
   const store = configureStore()
   new Tray(store)
-
-
 })

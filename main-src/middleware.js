@@ -1,12 +1,19 @@
-import { notify } from './misc'
-import { dialog, ipcMain, ipcRenderer } from 'electron'
-import { connections } from './actions'
+import {notify} from './misc'
+
+let connectionError = function (){
+  notify('Connection Error', 'Could not connect to the Syncthing server.')
+}
 
 export function errorMiddleware(store){
+  let errSend = false
   return next => action => {
-    if(action.type == 'CONNECTION_ERROR' && store.getState().power == 'awake')
-      notify('Connection Error', 'Could not connect to the Syncthing server.')
-
+    const {power} = store.getState()
+    if(action.type == 'CONNECTION_ERROR' && !errSend){
+      connectionError()
+      errSend = true
+    }else if(/.*\_SUCCESS/.test(action.type)){
+      errSend = false
+    }
     next(action)
   }
 }
