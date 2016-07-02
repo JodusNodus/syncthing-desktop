@@ -1,5 +1,4 @@
 import path from 'path'
-import notifier from 'node-notifier'
 import { Menu, BrowserWindow, app } from 'electron'
 
 let notificationWindow
