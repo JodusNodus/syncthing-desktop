@@ -8,7 +8,7 @@ export function errorMiddleware(store){
   let errSend = false
   return next => action => {
     const {power} = store.getState()
-    if(action.type == 'CONNECTION_ERROR' && !errSend){
+    if(action.type == 'CONNECTION_ERROR' && !errSend && power == 'awake'){
       connectionError()
       errSend = true
     }else if(/.*\_SUCCESS/.test(action.type)){
