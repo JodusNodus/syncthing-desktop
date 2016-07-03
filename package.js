@@ -93,7 +93,7 @@ function pack(plat, arch, cb) {
   if (plat === 'darwin' && arch === 'ia32') return;
 
   const iconObj = {
-    icon: DEFAULT_OPTS.icon + (() => {
+    icon: './resources/' + DEFAULT_OPTS.icon + (() => {
       let extension = '.png';
       if (plat === 'darwin') {
         extension = '.icns';
