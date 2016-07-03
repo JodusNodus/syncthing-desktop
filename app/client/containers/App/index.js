@@ -12,7 +12,9 @@ class App extends Component {
     ipcRenderer.send('ready', remote.getCurrentWindow().id)
   }
   render() {
-    const { folders, devices } = this.props
+    const { folders, devices, location } = this.props
+    const onPreferencePage = /\/preferences\/.*/.test(location.pathname)
+
     const sections = {
       folders: folders.map(({id}) => ({
         glyph: 'folder',
@@ -48,7 +50,7 @@ class App extends Component {
           ]),
         ]),
       ]),
-      h(Toolbar, {ptType: 'footer'}, [
+      onPreferencePage && h(Toolbar, {ptType: 'footer'}, [
         h(Actionbar, [
           h(Button, {text: 'cancel'}),
           h(Button, {text: 'save', ptStyle: 'primary', pullRight: true}),
@@ -72,6 +74,7 @@ App.propTypes = {
   children: PropTypes.element.isRequired,
   devices: PropTypes.array.isRequired,
   folders: PropTypes.array.isRequired,
+  location: PropTypes.object.isRequired,
 }
 
 export default connect(
