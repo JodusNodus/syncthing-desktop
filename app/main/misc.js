@@ -4,7 +4,7 @@ import { Menu, BrowserWindow, app } from 'electron'
 let notificationWindow
 app.once('ready', function(){
   notificationWindow = new BrowserWindow({ show: false })
-  notificationWindow.loadURL(`file://${__dirname}/../notifier/index.html`)
+  notificationWindow.loadURL(`file://${__dirname}/../../app/notifier/index.html`)
 })
 
 export function buildMenu(tray, menu){

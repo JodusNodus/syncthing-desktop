@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import process from 'process'
 import Tray from './tray'
 import configureStore from './store'
+import appWindow from './appWindow'
 
 app.dock.hide()
 
@@ -12,6 +13,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.on('window-all-closed', () => {
+  app.dock.hide()
   if (process.platform !== 'darwin') app.quit()
 })
 
@@ -19,12 +21,14 @@ ipcMain.on('ready', (e, winId) => {
   const win = BrowserWindow.fromId(winId)
   win.show()
   win.focus()
-  if (process.env.NODE_ENV === 'development') {
-    win.openDevTools()
-  }
+  app.dock.show()
 })
 
 app.on('ready', () => {
   const store = configureStore()
   new Tray(store)
+
+  //Open window
+  appWindow()
 })
+

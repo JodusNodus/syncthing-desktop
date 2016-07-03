@@ -7,12 +7,10 @@ const config = {
 
   devtool: 'source-map',
 
-  entry: './app/index',
+  entry: './app/client/index.js',
 
   output: {
     ...baseConfig.output,
-
-    publicPath: '../dist/'
   },
 
   module: {

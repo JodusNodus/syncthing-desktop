@@ -1,4 +1,4 @@
-import { powerMonitor } from 'electron'
+import { powerMonitor, ipcMain } from 'electron'
 import deepEqual from 'deep-equal'
 import { notify } from './misc'
 import { config, connections, folderStatus, myID } from './actions'
@@ -14,8 +14,10 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
       setTimeout(() => store.dispatch(myID(st)), 1000)
     }
 
-    if(!previousState.connected && newState.connected)
+    if(!previousState.connected && newState.connected){
+      store.dispatch(config(newState.myID, st))
       notify('Connection Established', `Connected to ${stConfig.hostname}:${stConfig.port}`)
+    }
 
     if(previousState.myID !== newState.myID)
       store.dispatch(config(newState.myID, st))

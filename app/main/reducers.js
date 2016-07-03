@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { notify } from './misc'
 
 const rootReducer = combineReducers({
   connected,
@@ -11,7 +10,7 @@ const rootReducer = combineReducers({
 
 export default rootReducer
 
-function connected(state = true, {type}){
+export function connected(state = true, {type}){
   if(type == 'CONNECTION_ERROR'){
     return false
   }else if(/.*\_SUCCESS/.test(type)){
@@ -21,7 +20,7 @@ function connected(state = true, {type}){
   }
 }
 
-function myID(state = false, {type, payload}) {
+export function myID(state = false, {type, payload}) {
   switch (type){
   case 'MYID_SUCCESS':
     return payload
@@ -30,7 +29,7 @@ function myID(state = false, {type, payload}) {
   }
 }
 
-function devices(state = [], {type, payload}) {
+export function devices(state = [], {type, payload}) {
   switch (type){
   case 'DEVICES_SUCCESS':
     return payload
@@ -48,7 +47,7 @@ function devices(state = [], {type, payload}) {
   }
 }
 
-function folders(state = [], {type, payload, id}) {
+export function folders(state = [], {type, payload, id}) {
   switch (type){
   case 'FOLDERS_SUCCESS':
     return payload
@@ -62,7 +61,7 @@ function folders(state = [], {type, payload, id}) {
   }
 }
 
-function power(state = 'awake', {type}) {
+export function power(state = 'awake', {type}) {
   switch (type){
   case 'SUSPEND':
     return 'suspended'

@@ -4,7 +4,8 @@ import process from 'process'
 import Syncthing from 'node-syncthing'
 import { notify, formatBytes } from './misc'
 import { myID } from './actions'
-const { name, version } = require('../package.json')
+import appWindow from './appWindow'
+const { name, version } = require('../../package.json')
 
 const folder = ({ id, status, path }) => ({
   label: `${id} ${status ? '(' + formatBytes(status.inSyncBytes) + '/' + formatBytes(status.globalBytes) + ') ('+ status.state +')': ''}`,
@@ -50,12 +51,13 @@ export default function buildMenu({stConfig, st, dir, hasKey, devices, folders, 
       ...devicesItems(devices, actions),
       { type: 'separator' },
       { label: 'Dashboard...', click: actions.dashboard, accelerator: 'CommandOrControl+D' },
-      { label: 'Preferences', submenu: [
-        { label: `hostname: ${stConfig.hostname}`, enabled: false },
-        { label: `port: ${stConfig.port}`, enabled: false },
-        { label: stConfig.apiKey ? `API key: ${stConfig.apiKey}` : 'No API key was found', enabled: false },
-        { label: 'Edit...', click: actions.editConfig },
-      ]},
+      { label: 'Preferences...', click: actions.editConfig, accelerator: 'CommandOrControl+,' },
+      //{ label: 'Preferences', submenu: [
+        //{ label: `hostname: ${stConfig.hostname}`, enabled: false },
+        //{ label: `port: ${stConfig.port}`, enabled: false },
+        //{ label: stConfig.apiKey ? `API key: ${stConfig.apiKey}` : 'No API key was found', enabled: false },
+        //{ label: 'Edit...', click: actions.editConfig },
+      //]},
       { type: 'separator' },
       ...sharedItems,
     ])
@@ -84,6 +86,6 @@ const menuActions = ({stConfig, st, hasKey, dir}) => ({
     shell.openExternal(`${stConfig.https ? 'https' : 'http'}://${stConfig.hostname}:${stConfig.port}`) 
   },
   editConfig(){
-    shell.openItem(dir)
+    appWindow()
   },
 })

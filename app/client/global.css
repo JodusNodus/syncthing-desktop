@@ -1,0 +1,7 @@
+* {
+  font-family: 'BlinkMacSystemFont'
+}
+
+.toolbar-header h1.title{
+  -webkit-app-region: drag
+}

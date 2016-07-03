@@ -21,7 +21,7 @@ export default function TrayWrapper(store){
 
     const st = new Syncthing(stConfig)
 
-    tray = new Tray(path.join(__dirname, '../trayTemplate@4x.png'))
+    tray = new Tray(path.join(__dirname, '../../resources/trayTemplate@4x.png'))
 
     const menu = buildMenu({stConfig, hasKey, st, dir: config.dir(), ...store.getState()})
     
