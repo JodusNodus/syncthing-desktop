@@ -43,7 +43,9 @@ class App extends Component {
       h(Content, [
         h(Sidebar, sections),
         h(Pane, [
-          this.props.children,
+          h('div.padded-more', [
+            this.props.children,
+          ])
         ]),
       ]),
       h(Toolbar, {ptType: 'footer'}, [
