@@ -23,22 +23,10 @@ const config = {
     ...baseConfig.module,
     loaders: [
       ...baseConfig.module.loaders,
-
       {
-        test: /\.global\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader?sourceMap'
-        ]
+        test: /\.scss$/,
+        loader: 'style!css?localIdentName=[path][name]--[local]!postcss-loader!sass'
       },
-
-      {
-        test: /^((?!\.global).)*\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-        ]
-      }
     ]
   },
 

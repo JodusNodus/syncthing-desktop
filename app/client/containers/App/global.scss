@@ -1,0 +1,9 @@
+:global(body) {
+  * {
+    font-family: 'BlinkMacSystemFont';
+  }
+
+  .toolbar-header .title {
+    -webkit-app-region: drag;
+  }
+}

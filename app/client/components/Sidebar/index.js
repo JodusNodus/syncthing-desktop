@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import { Link } from 'react-router'
 import h from 'react-hyperscript'
 import { Pane, NavGroup, NavTitle } from 'react-photonkit'
-import NavGroupItem from '../components/NavGroupItem'
+import NavGroupItem from '../../components/NavGroupItem'
 
 const Sidebar = ({ folders, devices, preferences}) => {
   return h(Pane, {ptSize: 'sm', sidebar: true}, [

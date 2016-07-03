@@ -1,9 +1,11 @@
-import { ipcRenderer, remote } from "electron"
+import { ipcRenderer, remote } from 'electron'
 import h from 'react-hyperscript'
 import React, { Component, PropTypes } from 'react'
-import Sidebar from '../components/Sidebar'
+import Sidebar from '../../components/Sidebar'
 import { Window, Toolbar, Actionbar, ButtonGroup, Button, Content, Pane } from 'react-photonkit'
-import { connect } from "react-redux"
+import { connect } from 'react-redux'
+
+import './global.scss'
 
 class App extends Component {
   componentDidMount(){
