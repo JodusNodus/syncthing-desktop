@@ -1,10 +1,10 @@
 {
-  "name": "syncthing-tray",
-  "productName": "Syncthing Tray",
+  "name": "syncthing-gui",
+  "productName": "Syncthing",
   "version": "0.2.0",
-  "description": "My prime app",
+  "description": "A Syncthing GUI for macOs",
   "license": "MIT",
-  "repository": "JodusNodus/syncthing-tray",
+  "repository": "JodusNodus/syncthing-gui",
   "main": "./dist/main/index.js",
   "author": {
     "name": "jodusnodus",
