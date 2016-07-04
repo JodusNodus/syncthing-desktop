@@ -75,6 +75,7 @@ App.propTypes = {
   devices: PropTypes.array.isRequired,
   folders: PropTypes.array.isRequired,
   location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 }
 
 export default connect(
