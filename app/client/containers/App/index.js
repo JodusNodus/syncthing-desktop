@@ -12,7 +12,7 @@ class App extends Component {
     ipcRenderer.send('ready', remote.getCurrentWindow().id)
   }
   render() {
-    const { folders, devices, location } = this.props
+    const { folders, devices, location, history } = this.props
     const onPreferencePage = /\/preferences\/.*/.test(location.pathname)
 
     const sections = {
@@ -36,8 +36,8 @@ class App extends Component {
       h(Toolbar, {title: 'Syncthing'}, [
         h(Actionbar, [
           h(ButtonGroup, [
-            h(Button, {glyph: 'left-open-big'}),
-            h(Button, {glyph: 'right-open-big'}),
+            h(Button, {glyph: 'left-open-big', onClick: () => history.goBack()}),
+            h(Button, {glyph: 'right-open-big', onClick: () => history.goForward()}),
           ]),
           h(Button, {glyph: 'home', text: 'home'}),
         ]),
