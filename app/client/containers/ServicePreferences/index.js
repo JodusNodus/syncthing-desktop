@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import h from 'react-hyperscript'
+import { reduxForm } from 'redux-form'
 import {
   Input,
   TextArea,
@@ -10,25 +11,57 @@ import {
   Button,
 } from 'react-photonkit'
 
-export default class ServicePreferences extends Component {
+class ServicePreferences extends Component {
   render(){
-    //return h('div', [
-      //h('h1', 'Preferences Page')
-    //])
-    return h('form', [
-      h(Input, {label: 'Device Name'}),
-      h(Input, {label: 'Sync Protocol Listen Addresses'}),
-      h(Input, {label: 'Incoming Rate Limit (KiB/s)', type: 'number'}),
-      h(Input, {label: 'Outgoing Rate Limit (KiB/s)', type: 'number'}),
+    const {
+      fields: {
+        deviceName,
+        globalAnnounceEnabled,
+        localAnnounceEnabled,
+        relaysEnabled,
+        globalAnnounceServers,
+        listenAddresses,
+        maxRecvKbps,
+        maxSendKbps,
+        natEnabled,
+      },
+      handleSubmit,
+    } = this.props
 
-      h(CheckBox, {label: 'Enable NAT traversal'}),
-      h(CheckBox, {label: 'Global Discovery'}),
-      h(CheckBox, {label: 'Local Discovery'}),
-      h(CheckBox, {label: 'Enable Relaying'}),
+    return h('form', {handleSubmit}, [
+      h(Input, {label: 'Device Name', ...deviceName}),
+      h(Input, {label: 'Sync Protocol Listen Addresses', ...listenAddresses}),
+      h(Input, {label: 'Incoming Rate Limit (KiB/s)', type: 'number', ...maxRecvKbps}),
+      h(Input, {label: 'Outgoing Rate Limit (KiB/s)', type: 'number', ...maxSendKbps}),
 
-      h(Input, {label: 'Global Discovery Servers'}),
+      h(CheckBox, {label: 'Enable NAT traversal', ...natEnabled}),
+      h(CheckBox, {label: 'Global Discovery', ...globalAnnounceEnabled}),
+      h(CheckBox, {label: 'Local Discovery', ...localAnnounceEnabled}),
+      h(CheckBox, {label: 'Enable Relaying', ...relaysEnabled}),
 
-      h(CheckBox, {label: 'Anonymous Usage Reporting'}),
+      h(Input, {label: 'Global Discovery Servers', ...globalAnnounceServers}),
     ])
   }
 }
+
+ServicePreferences.propTypes = {
+  fields: PropTypes.object.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+}
+
+export default reduxForm({
+  form: 'preferences',
+  fields: [
+    'deviceName',
+    'globalAnnounceEnabled',
+    'localAnnounceEnabled',
+    'relaysEnabled',
+    'globalAnnounceServers',
+    'listenAddresses',
+    'maxRecvKbps',
+    'maxSendKbps',
+    'natEnabled',
+  ],
+}, state => ({ // mapStateToProps
+  initialValues: state.preferences
+}))(ServicePreferences)

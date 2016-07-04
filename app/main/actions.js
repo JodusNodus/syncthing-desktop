@@ -20,9 +20,10 @@ export function connections(st){
 }
 
 export function config(myID='', st){
-  return dispatch => st.system.getConfig().then(({devices, folders}) => {
+  return dispatch => st.system.getConfig().then(({devices, folders, options}) => {
     dispatch({ type: 'FOLDERS_SUCCESS', payload: folders })
     dispatch({ type: 'DEVICES_SUCCESS', payload: devices.filter(({deviceID}) => deviceID != myID) })
+    dispatch({ type: 'PREFERENCES_SUCCESS', payload: options })
   }).catch(error => {
     dispatch({ type: 'CONNECTION_ERROR', error })
   })

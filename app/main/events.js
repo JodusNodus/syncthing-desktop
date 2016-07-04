@@ -87,4 +87,8 @@ export function events(st, store){
   powerMonitor.on('resume', () => {
     store.dispatch({ type: 'RESUME' })
   })
+
+  ipcMain.on('ready', () => {
+    store.dispatch(config(store.getState().myID, st))
+  })
 }

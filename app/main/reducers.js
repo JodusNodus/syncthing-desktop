@@ -6,9 +6,19 @@ const rootReducer = combineReducers({
   devices,
   folders,
   power,
+  preferences,
 })
 
 export default rootReducer
+
+export function preferences(state = {}, {type, payload}) {
+  switch (type) {
+    case 'PREFERENCES_SUCCESS':
+      return payload
+    default:
+      return state 
+  }
+}
 
 export function connected(state = true, {type}){
   if(type == 'CONNECTION_ERROR'){
