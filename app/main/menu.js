@@ -7,8 +7,8 @@ import { myID } from './actions'
 import appWindow from './appWindow'
 const { name, version } = require('../../package.json')
 
-const folder = ({ id, status, path }) => ({
-  label: `${id} ${status ? '(' + formatBytes(status.inSyncBytes) + '/' + formatBytes(status.globalBytes) + ') ('+ status.state +')': ''}`,
+const folder = ({ label, id, status, path }) => ({
+  label: `${label || id} ${status ? '(' + formatBytes(status.inSyncBytes) + '/' + formatBytes(status.globalBytes) + ') ('+ status.state +')': ''}`,
   id,
   path, 
   click: ({path}) => shell.showItemInFolder(path),
