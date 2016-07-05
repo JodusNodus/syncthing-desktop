@@ -1,7 +1,7 @@
 import { powerMonitor, ipcMain } from 'electron'
 import deepEqual from 'deep-equal'
 import { notify } from './misc'
-import { config, connections, folderStatus, myID, folderBrowse } from './actions'
+import { config, connections, folderStatus, myID, folderBrowse, deviceStats } from './actions'
 
 //State change subscribsion
 
@@ -26,8 +26,10 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
       store.dispatch(folderStatus(newState.folders, st))
     }
 
-    if(!deepEqual(previousState.devices, newState.devices))
+    if(previousState.devices.length !== newState.devices.length){
       store.dispatch(connections(st))
+      store.dispatch(deviceStats(st))
+    }
 
     if(!deepEqual(newState, previousState)){
       menu = buildMenu({stConfig, hasKey, st, dir, ...newState})

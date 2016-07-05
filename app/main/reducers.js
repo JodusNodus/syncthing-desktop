@@ -41,19 +41,28 @@ export function myID(state = false, {type, payload}) {
 
 export function devices(state = [], {type, payload}) {
   switch (type){
-  case 'DEVICES_SUCCESS':
-    return payload
-  case 'CONNECTIONS_SUCCESS':
-    return state.map(device => {
+    case 'DEVICES_SUCCESS':
+      return payload
+    case 'CONNECTIONS_SUCCESS':
+      return state.map(device => {
       const connection = payload[device.deviceID]
       return {
         ...device,
         online: connection && connection.connected,
         address: connection ? connection.address : false,
+        paused: connection && connection.paused,
       }
     })
-  default:
-    return state
+    case 'DEVICE_STATS_SUCCESS':
+      return state.map(device => {
+      const stats = payload[device.deviceID]
+      return {
+        ...device,
+        ...stats,
+      }
+    })
+    default:
+      return state
   }
 }
 

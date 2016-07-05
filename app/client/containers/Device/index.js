@@ -2,18 +2,13 @@ import React, { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { clipboard } from 'electron'
+import moment from 'moment'
 
 import Switch from '../../components/Switch'
 import SharedFolders from '../../components/SharedFolders'
 import { styles } from './styles.scss'
 
 class Device extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      on: true,
-    }
-  }
   render(){
     const { devices, params, folders } = this.props
     const device = devices.filter(x => x.deviceID == params.id)[0]
@@ -25,11 +20,12 @@ class Device extends Component {
     return device ? h('div.padded-more', {className: styles}, [ 
       h('header.page-header', [
         h('h2', device.name),
-        h(Switch, {on: this.state.on, onClick: () => this.setState({ on: !this.state.on })})
+        h(Switch, {on: !device.paused}),
       ]),
       h('hr'),
       h(DeviceID, device),
       h(Status, device),
+      !device.online && device.lastSeen && h(LastSeen, device),
       h(SharedFolders, {folders: sharedFolders}),
     ]) : h('div', [
       h('h1', 'Device not available'),
@@ -64,5 +60,11 @@ const Status = ({online, address}) => h('div.section-item', [
     h('span.icon.icon-record', {className: online ? 'online': 'offline'}),
     online ? `Connected at ${address}` : 'Not connected',
   ]),
+  h('div.right'),
+])
+
+const LastSeen = ({lastSeen}) => h('div.section-item', [
+  h('p.left', 'Last Seen:'),
+  h('p.center', moment(lastSeen).fromNow()),
   h('div.right'),
 ])
