@@ -33,6 +33,19 @@ export function folderStatus(folders, st){
   return dispatch => folders.forEach(({id}) => {
     st.db.status(id).then(payload => {
       dispatch({ type: 'FOLDER_STATUS_SUCCESS', id, payload })
+    }).catch(error => {
+      dispatch({ type: 'CONNECTION_ERROR', error })
     })
+
   })
+}
+
+export function folderBrowse(id, st){
+  return dispatch => {
+    st.db.browse(id, 0).then(payload => {
+      dispatch({ type: 'BROWSE_FOLDER_SUCCESS', id, payload })
+    }).catch(error => {
+      dispatch({ type: 'CONNECTION_ERROR', error })
+    })
+  }
 }

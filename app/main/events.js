@@ -1,7 +1,7 @@
 import { powerMonitor, ipcMain } from 'electron'
 import deepEqual from 'deep-equal'
 import { notify } from './misc'
-import { config, connections, folderStatus, myID } from './actions'
+import { config, connections, folderStatus, myID, folderBrowse } from './actions'
 
 //State change subscribsion
 
@@ -90,5 +90,8 @@ export function events(st, store){
 
   ipcMain.on('ready', () => {
     store.dispatch(config(store.getState().myID, st))
+    store.getState().folders.forEach(({id}) => {
+      store.dispatch(folderBrowse(id, st))
+    })
   })
 }

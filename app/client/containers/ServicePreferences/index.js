@@ -28,7 +28,7 @@ class ServicePreferences extends Component {
       handleSubmit,
     } = this.props
 
-    return h('form', {handleSubmit}, [
+    return h('form.padded-more', {handleSubmit}, [
       h(Input, {label: 'Device Name', ...deviceName}),
       h(Input, {label: 'Sync Protocol Listen Addresses', ...listenAddresses}),
       h(Input, {label: 'Incoming Rate Limit (KiB/s)', type: 'number', ...maxRecvKbps}),
