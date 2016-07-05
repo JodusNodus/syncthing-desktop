@@ -1,13 +1,75 @@
 :global(body) {
-  * {
-    font-family: 'BlinkMacSystemFont';
-  }
-
   .toolbar-header .title {
     -webkit-app-region: drag;
   }
 
   .sidebar {
     padding-top: 30px;
+  }
+
+  .main-pane {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-header {
+    h1 {
+      margin-top: 0;
+      font-weight: lighter;
+    }
+  }
+
+  .section-item {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+
+    & > .left, & > .center, & > .right {
+      flex-basis: 0;
+    }
+    .left {
+      flex-grow: 1;
+      margin: 0;
+      padding-right: 10px;
+      text-align: right;
+    }
+
+    .center {
+      flex-grow: 2;
+      margin: 0;
+    }
+
+    .right {
+      flex-grow: 1;
+      padding-left: 10px;
+    }
+  }
+
+  table {
+    border: 1px solid #ddd;
+    & > tbody > tr.active {
+      background-color: #116cd6;
+      color: #fff;
+    }
+  }
+
+
+  .icon.icon-record {
+    margin-right: 7px;
+    &.online {
+      color: #34c84a;
+    }   
+    &.offline {
+      color: #fc605b;
+    }  
+  }
+
+  a {
+    text-decoration: none;
+    color: #0192ff;
+    transition: color 0.2s;
+    &:hover {
+      color: #014480;
+    }
   }
 }

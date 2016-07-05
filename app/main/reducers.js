@@ -64,7 +64,7 @@ export function folders(state = [], {type, payload, id}) {
   case 'FOLDER_STATUS_SUCCESS':
     return state.map(folder => ({
       ...folder,
-      status: id == folder.id ? payload : null,
+      status: id == folder.id ? payload : folder.status,
     }))
   default:
     return state

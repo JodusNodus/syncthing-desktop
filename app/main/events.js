@@ -22,8 +22,9 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
     if(previousState.myID !== newState.myID)
       store.dispatch(config(newState.myID, st))
 
-    if(!deepEqual(previousState.folders, newState.folders))
+    if(previousState.folders.length !== newState.folders.length){
       store.dispatch(folderStatus(newState.folders, st))
+    }
 
     if(!deepEqual(previousState.devices, newState.devices))
       store.dispatch(connections(st))
@@ -59,7 +60,7 @@ export function events(st, store){
     const state = store.getState()
     switch (to) {
     case 'syncing':
-      notify(`${folder} is Syncing`)
+      notify('Syncthing', `${folder} is Syncing`)
       store.dispatch(folderStatus(state.folders, st))
       break
     case 'error':
@@ -90,8 +91,5 @@ export function events(st, store){
 
   ipcMain.on('ready', () => {
     store.dispatch(config(store.getState().myID, st))
-    store.getState().folders.forEach(({id}) => {
-      store.dispatch(folderBrowse(id, st))
-    })
   })
 }

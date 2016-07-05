@@ -2,18 +2,23 @@ import React, { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 
-import FolderExplorer from '../../components/FolderExplorer'
-
 class Folder extends Component {
   render(){
     const { folders, params, files } = this.props
     const folder = folders.filter(x => x.id == params.id)[0]
 
-    return folder ? h('div', [ 
-      files[folder.id] && h(FolderExplorer, {files: files[folder.id]}),
-    ]) : h('div', [
-      h('h1', 'Folder not available'),
-    ])
+    if(folder){
+      return h('div.padded-more', [
+        h('header.page-header', [
+          h('h1', folder.label || folder.id),
+        ]),
+        h('hr'),
+      ])
+    }else{
+      return h('div', [
+        h('h1', 'Folder not available'),
+      ])
+    }
   }
 }
 
