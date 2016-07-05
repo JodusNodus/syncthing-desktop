@@ -46,3 +46,11 @@ export function deviceStats(st){
     dispatch({ type: 'CONNECTION_ERROR', error })
   })
 }
+
+export function systemStatus(st){
+  return dispatch => st.system.status().then(payload => {
+    dispatch({ type: 'SYSTEM_STATUS_SUCCESS', payload })
+  }).catch(error => {
+    dispatch({ type: 'CONNECTION_ERROR', error })
+  })
+}

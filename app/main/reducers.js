@@ -7,6 +7,7 @@ const rootReducer = combineReducers({
   folders,
   power,
   preferences,
+  systemStatus,
 })
 
 export default rootReducer
@@ -91,4 +92,11 @@ export function power(state = 'awake', {type}) {
   }
 }
 
-
+export function systemStatus(state = {}, {type, payload}) {
+  switch (type) {
+    case 'SYSTEM_STATUS_SUCCESS':
+      return payload;
+    default:
+      return state 
+  }
+}

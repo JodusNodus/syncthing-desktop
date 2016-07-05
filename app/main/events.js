@@ -1,7 +1,7 @@
 import { powerMonitor, ipcMain } from 'electron'
 import deepEqual from 'deep-equal'
 import { notify } from './misc'
-import { config, connections, folderStatus, myID, folderBrowse, deviceStats } from './actions'
+import { config, connections, folderStatus, myID, folderBrowse, deviceStats, systemStatus } from './actions'
 
 //State change subscribsion
 
@@ -79,6 +79,7 @@ export function events(st, store){
     const state = store.getState()
     if(state.connected && state.power == 'awake')
       store.dispatch(connections(st))
+      store.dispatch(systemStatus(st))
   }, 2000)
 
   //Dispatch action on suspension changes

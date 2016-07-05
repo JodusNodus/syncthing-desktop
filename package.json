@@ -68,6 +68,7 @@
     "font-awesome": "^4.6.1",
     "is-electron-renderer": "^2.0.0",
     "lodash": "^4.13.1",
+    "moment": "^2.14.1",
     "node-syncthing": "^3.1.6",
     "postcss": "^5.0.19",
     "react": "^0.14.1",
