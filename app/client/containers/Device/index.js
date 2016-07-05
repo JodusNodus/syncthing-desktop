@@ -3,10 +3,17 @@ import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { clipboard } from 'electron'
 
+import Switch from '../../components/Switch'
 import SharedFolders from '../../components/SharedFolders'
 import { styles } from './styles.scss'
 
 class Device extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      on: true,
+    }
+  }
   render(){
     const { devices, params, folders } = this.props
     const device = devices.filter(x => x.deviceID == params.id)[0]
@@ -17,7 +24,8 @@ class Device extends Component {
 
     return device ? h('div.padded-more', {className: styles}, [ 
       h('header.page-header', [
-        h('h1', device.name),
+        h('h2', device.name),
+        h(Switch, {on: this.state.on, onClick: () => this.setState({ on: !this.state.on })})
       ]),
       h('hr'),
       h(DeviceID, device),

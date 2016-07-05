@@ -1,0 +1,54 @@
+:local(.styles){
+  $onColor: #47dc6b;
+  $offColor: #fe4a65;
+  $borderRadius: 3px;
+  $height: 2em;
+  $width: $height * 2.5;
+  @mixin switch-transition() {
+    transition: all 0.2s;   
+  }
+  
+  height: $height;
+  width: $width;
+  border-radius: $borderRadius;
+  @include switch-transition();
+
+  &.on {
+    background-color: $onColor;
+    .handle {
+      border: 1px solid $onColor;
+      transform: translate(100%);
+    }
+  }
+
+  &.off {
+    background-color: $offColor;
+    .handle {
+      border: 1px solid $offColor;
+    }
+  }
+  
+  .text {
+    text-align: center;
+    color: #fff;
+    width: 50%;
+    height: 100%;
+    line-height: 1.9;
+    &.on {
+      float: left;
+    }
+    &.off {
+      float: right;
+    }
+  }
+
+  .handle {
+    @include switch-transition();
+    position: absolute;
+    z-index: 100;
+    width: $width / 2;
+    height: $height;
+    background-color: #fff;
+    border-radius: $borderRadius;
+  }
+}
