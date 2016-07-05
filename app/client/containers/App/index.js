@@ -16,9 +16,9 @@ class App extends Component {
     const onPreferencePage = /\/preferences\/.*/.test(location.pathname)
 
     const sections = {
-      folders: folders.map(({id}) => ({
+      folders: folders.map(({id, label}) => ({
         glyph: 'folder',
-        text: id,
+        text: label || id,
         key: id,
       })),
       devices: devices.map(({name, deviceID, online}) => ({
@@ -35,7 +35,7 @@ class App extends Component {
     return h(Window, [
       h(Content, [
         h(Sidebar, sections),
-        h(Pane, [
+        h(Pane, {className: 'main-pane'}, [
           this.props.children,
         ]),
       ]),

@@ -1,0 +1,10 @@
+:local(.styles){
+  .device-id .center{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .shared-folders table{
+    margin-bottom: 10px;
+  }
+}
