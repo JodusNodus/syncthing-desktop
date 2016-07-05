@@ -3,10 +3,10 @@ import h from 'react-hyperscript'
 
 import { styles } from './styles.scss'
 
-const Switch = ({ on, onClick }) => h('div', {className: `${on ? 'on' : 'off'} ${styles}`, onClick}, [
-  h('div.text.on', 'ON'),
+const Switch = ({ on, onClick, onChild='ON', offChild='OFF' }) => h('div', {className: `${on ? 'on' : 'off'} ${styles}`, onClick}, [
+  h('div.text.on', [ onChild ]),
   h('div.handle'),
-  h('div.text.off', 'OFF'),
+  h('div.text.off', [ offChild ]),
 ])
 
 Switch.propTypes = {
