@@ -33,15 +33,6 @@ class App extends Component {
       ],
     }
     return h(Window, [
-      h(Toolbar, {title: 'Syncthing'}, [
-        h(Actionbar, [
-          h(ButtonGroup, [
-            h(Button, {glyph: 'left-open-big', onClick: () => history.goBack()}),
-            h(Button, {glyph: 'right-open-big', onClick: () => history.goForward()}),
-          ]),
-          h(Button, {glyph: 'home', text: 'home'}),
-        ]),
-      ]),
       h(Content, [
         h(Sidebar, sections),
         h(Pane, [
