@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { Table, ButtonGroup, Button } from 'react-photonkit'
+import Size from '../Size'
 
 export default class SharedFolders extends Component {
   constructor(props) {
@@ -28,7 +29,9 @@ export default class SharedFolders extends Component {
             onClick: () => this.setState({ activeItem: id }),
           }, [
             h('td', label || id),
-            h('td', status ? status.globalBytes : 0),
+            h('td', [
+              h(Size, {value: status ? status.globalBytes : 0}),
+            ]),
           ]))),
         ]),
         h(ButtonGroup, [
