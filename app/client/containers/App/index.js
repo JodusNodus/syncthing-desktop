@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import './global.scss'
+import Disconnected from '../../components/Disconnected'
 
 class App extends Component {
   componentDidMount(){
@@ -16,7 +17,7 @@ class App extends Component {
     return !_.isEqual(nextProps, this.props)
   }
   render() {
-    const { folders, devices, location, history } = this.props
+    const { folders, devices, location, history, connected } = this.props
     const onPreferencePage = /\/preferences\/.*/.test(location.pathname)
 
     const sections = {
@@ -36,20 +37,29 @@ class App extends Component {
         { text: 'Client', glyph: 'cog', key: 'client' },
       ],
     }
-    return h(Window, [
-      h(Content, [
-        h(Sidebar, sections),
-        h(Pane, {className: 'main-pane'}, [
-          this.props.children,
+
+    if(!connected){
+      return h(Window, [
+        h(Content, [
+          h(Disconnected),
         ]),
-      ]),
-      onPreferencePage && h(Toolbar, {ptType: 'footer'}, [
-        h(Actionbar, [
-          h(Button, {text: 'cancel'}),
-          h(Button, {text: 'save', ptStyle: 'primary', pullRight: true}),
+      ])
+    }{
+      return h(Window, [
+        h(Content, [
+          h(Sidebar, sections),
+          h(Pane, {className: 'main-pane'}, [
+            this.props.children,
+          ]),
         ]),
-      ]),
-    ])
+        onPreferencePage && h(Toolbar, {ptType: 'footer'}, [
+          h(Actionbar, [
+            h(Button, {text: 'cancel'}),
+            h(Button, {text: 'save', ptStyle: 'primary', pullRight: true}),
+          ]),
+        ]),
+      ])
+    }
     //return (
       //{
         //(() => {
@@ -75,5 +85,6 @@ export default connect(
   state => ({
     devices: state.devices,
     folders: state.folders,
+    connected: state.connected,
   })
 )(App)
