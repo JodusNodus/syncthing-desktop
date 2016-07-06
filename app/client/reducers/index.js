@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { routerReducer as routing } from 'react-router-redux'
-import { connected, myID, devices, folders, power, preferences, systemStatus } from '../../main/reducers.js'
+import { connected, myID, devices, folders, power, preferences, systemStatus, guiPreferences } from '../../main/reducers.js'
 import { reducer as form } from 'redux-form'
 
 const rootReducer = combineReducers({
@@ -13,6 +13,7 @@ const rootReducer = combineReducers({
   preferences,
   form,
   systemStatus,
+  guiPreferences,
 })
 
 export default rootReducer

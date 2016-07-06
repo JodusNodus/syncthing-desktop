@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { shell } from 'electron'
-import Chart from 'chart.js'
 
 import Size from '../../components/Size'
 
@@ -18,8 +17,7 @@ class Folder extends Component {
         ]),
         h('hr'),
         h(Path, {path: folder.path, home: status.tilde}),
-        h(GlobalState, folder.status),
-        h(InSyncState, folder.status),
+        h(State, folder.status),
       ])
     }else{
       return h('div', [
@@ -50,24 +48,65 @@ const Path = ({path, home}) => h('div.section-item', [
   }, 'Open'),
 ])
 
-const GlobalState = ({globalFiles, globalBytes}) => h('div.section-item', [
-  h('p.left', 'Global State:'),
-  h('p.center', [
-    `${globalFiles} files`,
-    ' (',
-    h(Size, {value: globalBytes}),
-    ')',
+const State = ({globalFiles, globalBytes, inSyncBytes, inSyncFiles, needBytes}) =>
+h('div.section-item', [
+  h('p.left', 'State:'),
+  h('div.center', [
+    h('p', [
+      'Global ',
+      `${globalFiles} files`,
+      ' (',
+      h(Size, {value: globalBytes}),
+      ')',
+    ]),
+    h('p', [
+      'Local ',
+      `${inSyncFiles} files`,
+      ' (',
+      h(Size, {value: inSyncBytes}),
+      ')',
+    ]),
   ]),
-  h('p.right'),
+  h('p.right', [
+    h(InSyncChart, {inSyncBytes, needBytes, globalBytes}),
+  ]),
 ])
 
-const InSyncState = ({inSyncFiles, inSyncBytes}) => h('div.section-item', [
-  h('p.left', 'Synchronized State:'),
-  h('p.center', [
-    `${inSyncFiles} files`,
-    ' (',
-    h(Size, {value: inSyncBytes}),
-    ')',
-  ]),
-  h('p.right'),
-])
+import Chart from '../../components/Chart'
+
+const InSyncChart = ({inSyncBytes, needBytes, globalBytes}) => {
+  const renderTooltip = ({index}, {datasets: [ { data } ]}) => {
+    return Math.round(data[index] > 0 ? (globalBytes / data[index]) * 100 : 0) + '%'
+  }
+
+  return h(Chart, {
+    type: 'pie',
+    data: {
+      labels: [
+        "Complete",
+        "Missing",
+      ],
+      datasets: [
+        {
+          data: [inSyncBytes, needBytes],
+          backgroundColor: [
+            "#48dc6c",
+            "#fe4a65",
+          ],
+        }]
+    },
+    options: {
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        callbacks: {
+          label: renderTooltip,
+        },
+      },
+    },
+    height: 10,
+    width: 10,
+  })
+}
+

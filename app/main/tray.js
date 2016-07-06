@@ -20,6 +20,7 @@ export default function TrayWrapper(store){
     const hasKey = stConfig.apiKey != null && stConfig.apiKey.length > 0
 
     const st = new Syncthing(stConfig)
+    global.st = st
 
     tray = new Tray(path.join(__dirname, '../../resources/trayTemplate@4x.png'))
 

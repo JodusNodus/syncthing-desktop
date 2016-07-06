@@ -61,6 +61,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "dependencies": {
+    "chart.js": "^2.1.6",
     "css-modules-require-hook": "^4.0.0",
     "deep-equal": "^1.0.1",
     "electron-debug": "^0.6.0",
