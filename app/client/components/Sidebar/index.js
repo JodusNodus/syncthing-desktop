@@ -7,7 +7,7 @@ import NavGroupItem from '../../components/NavGroupItem'
 const Sidebar = ({ folders, devices, preferences}) => {
   return h(Pane, {ptSize: 'sm', sidebar: true}, [
     h(NavGroup, [
-      h(NavGroupItem, {glyph: 'layout', text: 'Overview', link: '/'}),
+      h(NavGroupItem, {glyph: 'layout', text: 'Overview', link: '/overview'}),
 
       h(NavTitle, 'Folders'),
       ...folders.map(({key, text, glyph}) => h(NavGroupItem, {glyph, text, link: `/folder/${key}`})),
