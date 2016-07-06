@@ -3,29 +3,40 @@ import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { clipboard } from 'electron'
 import moment from 'moment'
+import { bindActionCreators } from "redux"
 
 import Switch from '../../components/Switch'
 import SharedFolders from '../../components/SharedFolders'
 import { styles } from './styles.scss'
 
+import * as deviceActionCreators from '../../actions/device'
+
 class Device extends Component {
+  handleSwitch(){
+    const { resume, pause } = this.props
+    if(this.device.paused){
+      resume(this.device.deviceID)
+    }else{
+      pause(this.device.deviceID)
+    }
+  }
   render(){
     const { devices, params, folders } = this.props
-    const device = devices.filter(x => x.deviceID == params.id)[0]
+    this.device = devices.filter(x => x.deviceID == params.id)[0]
 
     const sharedFolders = folders.filter(folder => {
-      return 0 < folder.devices.filter(x => x.deviceID == device.deviceID).length
+      return 0 < folder.devices.filter(x => x.deviceID == this.device.deviceID).length
     })
 
-    return device ? h('div.padded-more', {className: styles}, [ 
+    return this.device ? h('div.padded-more', {className: styles}, [ 
       h('header.page-header', [
-        h('h2', device.name),
-        h(Switch, {on: !device.paused}),
+        h('h2', this.device.name),
+        h(Switch, {on: !this.device.paused, onClick: this.handleSwitch.bind(this)}),
       ]),
       h('hr'),
-      h(DeviceID, device),
-      h(Status, device),
-      !device.online && device.lastSeen && h(LastSeen, device),
+      h(DeviceID, this.device),
+      h(Status, this.device),
+      !this.device.online && this.device.lastSeen && h(LastSeen, this.device),
       h(SharedFolders, {folders: sharedFolders}),
     ]) : h('div', [
       h('h1', 'Device not available'),
@@ -37,13 +48,16 @@ Device.propTypes = {
   params: PropTypes.object.isRequired,
   devices: PropTypes.array.isRequired,
   folders: PropTypes.array.isRequired,
+  resume: PropTypes.func.isRequired,
+  pause: PropTypes.func.isRequired,
 }
 
 export default connect(
   state => ({
     devices: state.devices,
     folders: state.folders,
-  })
+  }),
+  dispatch => bindActionCreators(deviceActionCreators, dispatch)
 )(Device)
 
 const DeviceID = ({deviceID}) => h('div.section-item.device-id', [

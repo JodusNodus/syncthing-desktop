@@ -7,6 +7,8 @@ const rootReducer = combineReducers({
   folders,
   systemStatus,
   power,
+  preferences,
+  guiPreferences,
 })
 
 export default rootReducer
@@ -39,7 +41,7 @@ export function myID(state = false, {type, payload}) {
   }
 }
 
-export function devices(state = [], {type, payload}) {
+export function devices(state = [], {type, payload, id}) {
   switch (type){
     case 'DEVICES_SUCCESS':
       return payload
@@ -59,6 +61,20 @@ export function devices(state = [], {type, payload}) {
       return {
         ...device,
         ...stats,
+      }
+    })
+    case 'DEVICE_PAUSE_SUCCESS':
+      return state.map(device => {
+      return {
+        ...device,
+        paused: device.deviceID == id ? true : device.paused,
+      }
+    })
+    case 'DEVICE_RESUME_SUCCESS':
+      return state.map(device => {
+      return {
+        ...device,
+        paused: device.deviceID == id ? false : device.paused,
       }
     })
     default:
@@ -94,6 +110,15 @@ export function power(state = 'awake', {type}) {
 export function systemStatus(state = {}, {type, payload}) {
   switch (type) {
     case 'SYSTEM_STATUS_SUCCESS':
+      return payload;
+    default:
+      return state 
+  }
+}
+
+export function guiPreferences(state = {}, {type, payload}) {
+  switch (type) {
+    case 'PREFERENCES_GUI_SUCCESS':
       return payload;
     default:
       return state 

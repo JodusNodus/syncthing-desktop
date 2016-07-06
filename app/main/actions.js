@@ -18,9 +18,10 @@ export function connections(st){
 }
 
 export function config(myID='', st){
-  return dispatch => st.system.getConfig().then(({devices, folders, options}) => {
+  return dispatch => st.system.getConfig().then(({devices, folders, options, gui}) => {
     dispatch({ type: 'FOLDERS_SUCCESS', payload: folders })
     dispatch({ type: 'DEVICES_SUCCESS', payload: devices.filter(({deviceID}) => deviceID != myID) })
+    dispatch({ type: 'PREFERENCES_GUI_SUCCESS', payload: gui })
     dispatch({ type: 'PREFERENCES_SUCCESS', payload: options })
   }).catch(error => {
     dispatch({ type: 'CONNECTION_ERROR', error })
@@ -48,22 +49,6 @@ export function deviceStats(st){
 export function systemStatus(st){
   return dispatch => st.system.status().then(payload => {
     dispatch({ type: 'SYSTEM_STATUS_SUCCESS', payload })
-  }).catch(error => {
-    dispatch({ type: 'CONNECTION_ERROR', error })
-  })
-}
-
-export function pauseDevice(device, st){
-  return dispatch => st.system.pause(device).then(payload => {
-    dispatch({ type: 'DEVICE_PAUSE_SUCCESS', payload })
-  }).catch(error => {
-    dispatch({ type: 'CONNECTION_ERROR', error })
-  })
-}
-
-export function resumeDevice(device, st){
-  return dispatch => st.system.resume(device).then(payload => {
-    dispatch({ type: 'DEVICE_RESUME_SUCCESS', payload })
   }).catch(error => {
     dispatch({ type: 'CONNECTION_ERROR', error })
   })
