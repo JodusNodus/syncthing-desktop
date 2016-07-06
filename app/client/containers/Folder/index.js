@@ -4,20 +4,27 @@ import { connect } from 'react-redux'
 import { shell } from 'electron'
 
 import Size from '../../components/Size'
+import SharedDevices from '../../components/SharedDevices'
 
 class Folder extends Component {
   render(){
-    const { folders, params, status } = this.props
+    const { folders, params, status, devices } = this.props
     const folder = folders.filter(x => x.id == params.id)[0]
+
+    const sharedDevices = folder.devices.map(({deviceID}) => {
+      return devices.filter(device => device.deviceID == deviceID)[0]
+    }).filter(x => x)
 
     if(folder){
       return h('div.padded-more', [
         h('header.page-header', [
           h('h2', folder.label || folder.id),
+          h('h3', folder.status.state),
         ]),
         h('hr'),
         h(Path, {path: folder.path, home: status.tilde}),
         h(State, folder.status),
+        h(SharedDevices, {devices: sharedDevices}),
       ])
     }else{
       return h('div', [
@@ -31,12 +38,14 @@ Folder.propTypes = {
   params: PropTypes.object.isRequired,
   folders: PropTypes.array.isRequired,
   status: PropTypes.object.isRequired,
+  devices: PropTypes.array.isRequired,
 }
 
 export default connect(
   state => ({
     folders: state.folders,
     status: state.systemStatus,
+    devices: state.devices,
   })
 )(Folder)
 
