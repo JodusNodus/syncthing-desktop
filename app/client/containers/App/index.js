@@ -4,12 +4,16 @@ import React, { Component, PropTypes } from 'react'
 import Sidebar from '../../components/Sidebar'
 import { Window, Toolbar, Actionbar, ButtonGroup, Button, Content, Pane } from 'react-photonkit'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 
 import './global.scss'
 
 class App extends Component {
   componentDidMount(){
     ipcRenderer.send('ready', remote.getCurrentWindow().id)
+  }
+  shouldComponentUpdate(nextProps){
+    return !_.isEqual(nextProps, this.props)
   }
   render() {
     const { folders, devices, location, history } = this.props
