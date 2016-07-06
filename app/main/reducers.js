@@ -5,9 +5,8 @@ const rootReducer = combineReducers({
   myID,
   devices,
   folders,
-  power,
-  preferences,
   systemStatus,
+  power,
 })
 
 export default rootReducer

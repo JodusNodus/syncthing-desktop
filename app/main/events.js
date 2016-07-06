@@ -1,7 +1,7 @@
 import { powerMonitor, ipcMain } from 'electron'
-import deepEqual from 'deep-equal'
 import { notify } from './misc'
 import { config, connections, folderStatus, myID, folderBrowse, deviceStats, systemStatus } from './actions'
+import _ from 'lodash'
 
 //State change subscribsion
 
@@ -31,7 +31,7 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
       store.dispatch(deviceStats(st))
     }
 
-    if(!deepEqual(newState, previousState)){
+    if(!_.isEqual(newState, previousState)){
       menu = buildMenu({stConfig, hasKey, st, dir, ...newState})
       tray.setContextMenu(menu)
     }
@@ -92,7 +92,9 @@ export function events(st, store){
     store.dispatch({ type: 'RESUME' })
   })
 
-  ipcMain.on('ready', () => {
-    store.dispatch(config(store.getState().myID, st))
+  ipcMain.on('renderer-reload', (event, action) => {
+    delete require.cache[require.resolve('../reducers')]
+    store.replaceReducer(require('../reducers'))
+    event.returnValue = true
   })
 }

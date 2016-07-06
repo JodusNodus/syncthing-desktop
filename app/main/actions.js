@@ -1,5 +1,3 @@
-import { notify } from './misc'
-
 export function myID(st) {
   return dispatch => st.system.status().then(status => {
     dispatch({
@@ -50,6 +48,22 @@ export function deviceStats(st){
 export function systemStatus(st){
   return dispatch => st.system.status().then(payload => {
     dispatch({ type: 'SYSTEM_STATUS_SUCCESS', payload })
+  }).catch(error => {
+    dispatch({ type: 'CONNECTION_ERROR', error })
+  })
+}
+
+export function pauseDevice(device, st){
+  return dispatch => st.system.pause(device).then(payload => {
+    dispatch({ type: 'DEVICE_PAUSE_SUCCESS', payload })
+  }).catch(error => {
+    dispatch({ type: 'CONNECTION_ERROR', error })
+  })
+}
+
+export function resumeDevice(device, st){
+  return dispatch => st.system.resume(device).then(payload => {
+    dispatch({ type: 'DEVICE_RESUME_SUCCESS', payload })
   }).catch(error => {
     dispatch({ type: 'CONNECTION_ERROR', error })
   })

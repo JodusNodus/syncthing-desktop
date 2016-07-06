@@ -6,7 +6,8 @@ import { hashHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
 import rootReducer from '../reducers'
 import DevTools from '../containers/DevTools'
-import electronMiddleware from 'electron-redux-actions'
+import { electronEnhancer } from 'redux-electron-store'
+import { ipcRenderer } from 'electron'
 
 const logger = createLogger({
   level: 'info',
@@ -16,7 +17,8 @@ const logger = createLogger({
 const router = routerMiddleware(hashHistory)
 
 const enhancer = compose(
-  applyMiddleware(thunk, router, electronMiddleware, logger),
+  applyMiddleware(thunk, router, logger),
+  electronEnhancer(true),
   DevTools.instrument(),
   persistState(
     window.location.href.match(
@@ -29,9 +31,10 @@ export default function configureStore(initialState) {
   const store = createStore(rootReducer, initialState, enhancer)
 
   if (module.hot) {
-    module.hot.accept('../reducers', () =>
+    module.hot.accept('../reducers', () => {
+      ipcRenderer.sendSync('renderer-reload')
       store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
-    )
+    })
   }
 
   return store

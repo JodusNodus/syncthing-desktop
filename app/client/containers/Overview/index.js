@@ -5,13 +5,15 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { clipboard } from 'electron'
 
+import { styles } from './styles.scss'
+
 class Overview extends Component {
   render(){
     const { status } = this.props
-    console.log(moment.duration(status.uptime, "minutes").hours())
-    return h('div.padded-more', [
+
+    return h('div.padded-more', {className: styles}, [
       h('header.page-header', [
-        h('h2', 'Overview Page'),
+        h('h2', 'Overview'),
       ]),
       h('hr'),
       h(DeviceID, status),
@@ -21,7 +23,7 @@ class Overview extends Component {
 }
 
 Overview.propTypes = {
-  myID: PropTypes.string.isRequired,
+  status: PropTypes.object.isRequired,
 }
 
 export default connect(
@@ -39,5 +41,8 @@ const CpuUsage = ({cpuPercent}) => h('div.section-item.cpu-usage', [
 const DeviceID = ({myID}) => h('div.section-item.my-id', [
   h('p.left', 'My ID:'),
   h('p.center', myID),
-  h('a.right', {onClick: () => clipboard.writeText(myID)}, 'Copy'),
+  h('div.right', [
+    h('a', {onClick: () => clipboard.writeText(myID)}, 'Copy'),
+    h('a', {onClick: () => clipboard.writeText(myID)}, 'QR Code'),   
+  ])
 ])
