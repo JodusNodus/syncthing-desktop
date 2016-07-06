@@ -31,7 +31,13 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
       store.dispatch(deviceStats(st))
     }
 
-    if(!_.isEqual(newState, previousState)){
+    if(!_.isEqual({
+      ...newState,
+      systemStatus: null,
+    }, {
+      ...previousState,
+      systemStatus: null,
+    })){
       menu = buildMenu({stConfig, hasKey, st, dir, ...newState})
       tray.setContextMenu(menu)
     }
@@ -93,8 +99,8 @@ export function events(st, store){
   })
 
   ipcMain.on('renderer-reload', (event, action) => {
-    delete require.cache[require.resolve('../reducers')]
-    store.replaceReducer(require('../reducers'))
+    delete require.cache[require.resolve('./reducers')]
+    store.replaceReducer(require('./reducers'))
     event.returnValue = true
   })
 }
