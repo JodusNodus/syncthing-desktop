@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { Table, ButtonGroup, Button } from 'react-photonkit'
+
 import Size from '../Size'
 
 export default class SharedDevices extends Component {

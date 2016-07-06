@@ -44,6 +44,10 @@
       p {
         margin: 0;
       }
+
+      .btn-group {
+        margin-top: 10px;
+      }
     }
 
     .right {
@@ -83,5 +87,16 @@
 
   .text-muted {
     color: #7c7c7c;
+  }
+
+
+  .btn {
+    background: #fff;
+    padding: 0 13px;
+    line-height: 19px;
+  }
+
+  .btn-group .btn {
+    padding: 2px 8px;
   }
 }

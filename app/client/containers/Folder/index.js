@@ -5,6 +5,7 @@ import { shell } from 'electron'
 
 import Size from '../../components/Size'
 import SharedDevices from '../../components/SharedDevices'
+import { styles } from './styles.scss'
 
 class Folder extends Component {
   render(){
@@ -16,7 +17,7 @@ class Folder extends Component {
     }).filter(x => x)
 
     if(folder){
-      return h('div.padded-more', [
+      return h('div.padded-more', {className: styles}, [
         h('header.page-header', [
           h('h2', folder.label || folder.id),
           h(HeaderStateIcon, {state: folder.status.state}),
