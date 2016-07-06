@@ -19,7 +19,7 @@ class Folder extends Component {
       return h('div.padded-more', [
         h('header.page-header', [
           h('h2', folder.label || folder.id),
-          h('h3', folder.status.state),
+          h(HeaderStateIcon, {state: folder.status.state}),
         ]),
         h('hr'),
         h(Path, {path: folder.path, home: status.tilde}),
@@ -48,6 +48,8 @@ export default connect(
     devices: state.devices,
   })
 )(Folder)
+
+const HeaderStateIcon = ({state}) => h('h3.text-muted', state)
 
 const Path = ({path, home}) => h('div.section-item', [
   h('p.left', 'Path:'),

@@ -4,7 +4,7 @@
   }
 
   .sidebar {
-    padding-top: 30px;
+    padding-top: 35px;
   }
 
   .main-pane {
@@ -79,5 +79,9 @@
     &:hover {
       color: #014480;
     }
+  }
+
+  .text-muted {
+    color: #7c7c7c;
   }
 }
