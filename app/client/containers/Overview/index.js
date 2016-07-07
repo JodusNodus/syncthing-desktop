@@ -6,6 +6,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { clipboard } from 'electron'
 
+import Size from '../../components/Size'
 import { styles } from './styles.scss'
 
 class Overview extends Component {
@@ -19,6 +20,7 @@ class Overview extends Component {
       h('hr'),
       h(DeviceID, status),
       h(CpuUsage, status),
+      h(RamUsage, status),
       h(Uptime, status),
       h(Version, version),
     ])
@@ -40,6 +42,14 @@ export default connect(
 const CpuUsage = ({cpuPercent}) => h('div.section-item.cpu-usage', [
   h('p.left', 'CPU Usage:'),
   h('p.center', `${Math.round(cpuPercent * 10) / 10} %`),
+  h('a.right'),
+])
+
+const RamUsage = ({sys}) => h('div.section-item.ram-usage', [
+  h('p.left', 'RAM Usage:'),
+  h('p.center', [
+    h(Size, {value: sys}),
+  ]),
   h('a.right'),
 ])
 
