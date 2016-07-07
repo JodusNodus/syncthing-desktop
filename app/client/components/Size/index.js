@@ -11,7 +11,7 @@ export default Size
 
 function formatBytes(bytes, decimals=0) {
   if(bytes == 0) return '0 Byte'
-  let k = 1000 // or 1024 for binary
+  let k = 1024
   let dm = decimals + 1 || 3
   let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
   let i = Math.floor(Math.log(bytes) / Math.log(k))
