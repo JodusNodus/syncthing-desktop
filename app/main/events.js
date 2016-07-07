@@ -22,7 +22,7 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
     if(previousState.myID !== newState.myID)
       store.dispatch(config(newState.myID, st))
 
-    if(previousState.folders.length !== newState.folders.length){
+    if(newState.folders[0].status){
       store.dispatch(folderStatus(newState.folders, st))
     }
 
