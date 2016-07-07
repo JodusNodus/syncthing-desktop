@@ -100,9 +100,12 @@
 
 
   .btn {
-    background: #fff;
     padding: 0 13px;
     line-height: 19px;
+
+    &.btn-default {
+      background: #fff;
+    }
   }
 
   .btn-group .btn {
