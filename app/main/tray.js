@@ -2,7 +2,7 @@ import { app, Tray, shell } from 'electron'
 import path from 'path'
 import Syncthing from 'node-syncthing'
 import { notify, formatBytes } from './misc'
-import { myID } from './actions'
+import { myID, version } from './actions'
 import { stateHandler, events } from './events'
 import config from './config'
 import buildMenu from './menu'
@@ -36,6 +36,7 @@ export default function TrayWrapper(store){
     tray.setContextMenu(menu)
 
     store.dispatch(myID(st))
+    store.dispatch(version(st))
 
     //Listen
     events(st, store)

@@ -9,6 +9,7 @@ const rootReducer = combineReducers({
   power,
   preferences,
   guiPreferences,
+  version,
 })
 
 export default rootReducer
@@ -122,6 +123,15 @@ export function systemStatus(state = {}, {type, payload}) {
 export function guiPreferences(state = {}, {type, payload}) {
   switch (type) {
     case 'PREFERENCES_GUI_SUCCESS':
+      return payload;
+    default:
+      return state 
+  }
+}
+
+export function version(state = null, {type, payload}) {
+  switch (type) {
+    case 'VERSION_SUCCESS':
       return payload;
     default:
       return state 

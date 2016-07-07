@@ -53,3 +53,11 @@ export function systemStatus(st){
     dispatch({ type: 'CONNECTION_ERROR', error })
   })
 }
+
+export function version(st){
+  return dispatch => st.system.version().then(payload => {
+    dispatch({ type: 'VERSION_SUCCESS', payload })
+  }).catch(error => {
+    dispatch({ type: 'CONNECTION_ERROR', error })
+  })
+}
