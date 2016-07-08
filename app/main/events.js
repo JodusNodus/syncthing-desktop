@@ -1,6 +1,6 @@
 import { powerMonitor, ipcMain } from 'electron'
 import { notify } from './misc'
-import { config, connections, folderStatus, myID, folderBrowse, deviceStats, systemStatus } from './actions'
+import { config, connections, folderStatus, myID, folderBrowse, deviceStats } from './actions'
 import _ from 'lodash'
 
 //State change subscribsion
@@ -22,7 +22,7 @@ export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig
     if(previousState.myID !== newState.myID)
       store.dispatch(config(newState.myID, st))
 
-    if(!newState.folders[0].status){
+    if(newState.folders && newState.folders.length > 0 && !newState.folders[0].status){
       store.dispatch(folderStatus(newState.folders, st))
     }
 
@@ -85,7 +85,7 @@ export function events(st, store){
     const state = store.getState()
     if(state.connected && state.power == 'awake'){
       store.dispatch(connections(st))
-      store.dispatch(systemStatus(st))
+      store.dispatch(myID(st))
     }
   }, 2000)
 

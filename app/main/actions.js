@@ -1,11 +1,14 @@
 export function myID(st) {
-  return dispatch => st.system.status().then(status => {
-    dispatch({
-      type: 'MYID_SUCCESS',
-      payload: status.myID,
-    })
-  }).catch(error => {
-    dispatch({ type: 'CONNECTION_ERROR', error })
+  return dispatch => st.system.status((error, payload) => {
+    if(error){
+      dispatch({ type: 'CONNECTION_ERROR', error })
+    }else{
+      dispatch({
+        type: 'MYID_SUCCESS',
+        payload: payload.myID,
+      })
+      dispatch({ type: 'SYSTEM_STATUS_SUCCESS', payload })
+    }
   })
 }
 
@@ -46,18 +49,12 @@ export function deviceStats(st){
   })
 }
 
-export function systemStatus(st){
-  return dispatch => st.system.status().then(payload => {
-    dispatch({ type: 'SYSTEM_STATUS_SUCCESS', payload })
-  }).catch(error => {
-    dispatch({ type: 'CONNECTION_ERROR', error })
-  })
-}
-
 export function version(st){
-  return dispatch => st.system.version().then(payload => {
-    dispatch({ type: 'VERSION_SUCCESS', payload })
-  }).catch(error => {
-    dispatch({ type: 'CONNECTION_ERROR', error })
+  return dispatch => st.system.version((error, payload) => {
+    if(error){
+      dispatch({ type: 'CONNECTION_ERROR', error })
+    }else{
+      dispatch({ type: 'VERSION_SUCCESS', payload })
+    }
   })
 }
