@@ -5,14 +5,14 @@ import { clipboard } from 'electron'
 import moment from 'moment'
 import { bindActionCreators } from "redux"
 
-import Switch from '../../components/Switch'
+import Toggle from '../../components/Toggle'
 import SharedFolders from '../../components/SharedFolders'
 import { styles } from './styles.scss'
 
 import * as deviceActionCreators from '../../actions/device'
 
 class Device extends Component {
-  handleSwitch(){
+  handleToggle(){
     const { resume, pause } = this.props
     if(this.device.paused){
       resume(this.device.deviceID)
@@ -31,7 +31,7 @@ class Device extends Component {
     return this.device ? h('div.padded-more', {className: styles}, [ 
       h('header.page-header', [
         h('h2', this.device.name),
-        h(Switch, {on: !this.device.paused, onClick: this.handleSwitch.bind(this)}),
+        h(Toggle, {state: !this.device.paused, onToggle: this.handleToggle.bind(this)}),
       ]),
       h('hr'),
       h(DeviceID, this.device),
@@ -77,7 +77,7 @@ const Status = ({online, address}) => h('div.section-item', [
   h('div.right'),
 ])
 
-const LastSeen = ({lastSeen}) => h('div.section-item', [
+const LastSeen = ({lastSeen}) => h('div.section-item.last-seen', [
   h('p.left', 'Last Seen:'),
   h('p.center', moment(lastSeen).fromNow()),
   h('div.right'),
