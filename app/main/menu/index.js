@@ -12,6 +12,7 @@ export default function buildMenu({
     devices,
     folders,
     connected,
+    config,
   }, 
 }){
   let menu = null
@@ -23,7 +24,7 @@ export default function buildMenu({
     { label: 'Quit Syncthing', click: actions.quit, accelerator: 'CommandOrControl+Q' },
   ]
 
-  if(connected){
+  if(connected && config.isSuccess){
     menu = Menu.buildFromTemplate([
       ...folderItems(folders),
       { type: 'separator' },
@@ -35,7 +36,7 @@ export default function buildMenu({
     ])
   }else{
     menu = Menu.buildFromTemplate([
-      { label: 'Connection error', enabled: false },
+      { label: config.isFailed ? 'No config available' : 'Connection error', enabled: false },
       ...sharedItems,
     ])
   }
