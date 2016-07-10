@@ -19,10 +19,10 @@ class Overview extends Component {
       ]),
       h('hr'),
       h(DeviceID, status),
-      h(CpuUsage, status),
-      h(RamUsage, status),
-      h(Uptime, status),
-      h(Version, version),
+      status && h(CpuUsage, status),
+      status && h(RamUsage, status),
+      status && h(Uptime, status),
+      version && h(Version, version),
     ])
   }
 }
