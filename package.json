@@ -1,10 +1,10 @@
 {
-  "name": "syncthing-gui",
-  "productName": "Syncthing",
+  "name": "syncthing-desktop",
+  "productName": "Syncthing Desktop",
   "version": "0.2.0",
   "description": "A Syncthing GUI for macOs",
   "license": "MIT",
-  "repository": "JodusNodus/syncthing-gui",
+  "repository": "JodusNodus/syncthing-desktop",
   "main": "./dist/main/index.js",
   "author": {
     "name": "jodusnodus",
