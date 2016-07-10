@@ -71,7 +71,7 @@ const InSync = ({globalBytes, inSyncBytes}) => {
         h(Size, {value: inSyncBytes}),
         `${percent}%`,
         h(Size, {value: globalBytes}),
-      ])
+      ]),
     ]),
     h('p.right'),
   ])

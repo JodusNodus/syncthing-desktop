@@ -1,25 +1,65 @@
 import { ipcRenderer, remote } from 'electron'
 import h from 'react-hyperscript'
-import React, { Component, PropTypes } from 'react'
+import { Component, PropTypes, cloneElement } from 'react'
 import Sidebar from '../../components/Sidebar'
-import { Window, Toolbar, Actionbar, ButtonGroup, Button, Content, Pane } from 'react-photonkit'
+import { Window, Toolbar, Actionbar, Button, Content, Pane } from 'react-photonkit'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { bindActionCreators } from 'redux'
 
+import * as configActionCreators from '../../../main/actions/config'
 import './global.scss'
 
 class App extends Component {
+  constructor(props){
+    super(props)
+    this.redirect = this.redirect.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSubmitButton = this.handleSubmitButton.bind(this)
+  }
   componentDidMount(){
+    //Let main proccess know that the window is ready
     ipcRenderer.send('ready', remote.getCurrentWindow().id)
-    if(!this.props.connected) this.props.history.push('/disconnected')
+
+    this.redirect()
   }
   shouldComponentUpdate(nextProps){
     return !_.isEqual(nextProps, this.props)
   }
+  componentWillUpdate(nextProps){
+    this.redirect(nextProps)
+  }
+  handleSubmitButton(){
+    this.refs.child.submit()
+  }
+  handleSubmit(form){
+    const { location, set } = this.props
+    if(location.pathname == '/preferences/client'){
+      set(form)
+    }
+  }
+  redirect(nextProps={config: {isSuccess: false}}){
+    const { history, config, connected, location } = this.props
+
+    //Redirect when config was saved
+    if(config.isFailed && nextProps.config.isSuccess && location.pathname == '/preferences/client'){
+      history.push('/')
+    }
+    
+    
+    //Redirect if config was not found
+    if(config.isFailed && location.pathname !== '/preferences/client'){
+      history.push('/preferences/client')
+    }else if(!connected && location.pathname !== '/disconnected'){
+      history.push('/disconnected')
+    }
+  }
   render() {
-    const { folders, devices, location, connected } = this.props
+    const { folders, devices, location, connected, config, children } = this.props
+
     const onPreferencePage = /\/preferences\/.*/.test(location.pathname)
 
+    //An object defining all sections and items in the sidebar
     const sections = {
       folders: folders.map(({id, label}) => ({
         glyph: 'folder',
@@ -40,15 +80,19 @@ class App extends Component {
 
     return h(Window, [
       h(Content, [
-        connected && h(Sidebar, sections),
+        connected && config.isSuccess && h(Sidebar, sections),
         h(Pane, {className: 'main-pane'}, [
-          this.props.children,
+          cloneElement(children, {ref: 'child', onSubmit: this.handleSubmit}),
         ]),
       ]),
       onPreferencePage && h(Toolbar, {ptType: 'footer'}, [
         h(Actionbar, [
-          h(Button, {text: 'cancel'}),
-          h(Button, {text: 'save', ptStyle: 'primary', pullRight: true}),
+          h(Button, {
+            text: 'save',
+            ptStyle: 'primary',
+            pullRight: true,
+            onClick: this.handleSubmitButton,
+          }),
         ]),
       ]),
     ])
@@ -72,6 +116,8 @@ App.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   connected: PropTypes.bool.isRequired,
+  config: PropTypes.object.isRequired,
+  set: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -79,5 +125,7 @@ export default connect(
     devices: state.devices,
     folders: state.folders,
     connected: state.connected,
-  })
+    config: state.config,
+  }),
+  dispatch => bindActionCreators(configActionCreators, dispatch)
 )(App)

@@ -8,7 +8,7 @@ import { get as getConfig } from './actions/config'
 import stateHandler from './state-change'
 import { mainEvents } from './events'
 
-//app.dock.hide()
+app.dock.hide()
 
 global.__base = `${__dirname}/`
 

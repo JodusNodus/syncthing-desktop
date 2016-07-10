@@ -3,7 +3,7 @@ import storage from 'electron-json-storage'
 export function get() {
   return dispatch =>
   storage.get('config', (error, config) => {
-    if(!error){
+    if(!error && config.apiKey){
       dispatch({
         type: 'CONFIG_GET_SUCCESS',
         payload: config,
