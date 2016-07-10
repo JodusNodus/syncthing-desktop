@@ -31,24 +31,6 @@ export function config(myID='', st){
   })
 }
 
-export function folderStatus(folders, st){
-  return dispatch => folders.forEach(({id}) => {
-    st.db.status(id).then(payload => {
-      dispatch({ type: 'FOLDER_STATUS_SUCCESS', id, payload })
-    }).catch(error => {
-      dispatch({ type: 'CONNECTION_ERROR', error })
-    })
-  })
-}
-
-export function deviceStats(st){
-  return dispatch => st.stats.devices().then(payload => {
-    dispatch({ type: 'DEVICE_STATS_SUCCESS', payload })
-  }).catch(error => {
-    dispatch({ type: 'CONNECTION_ERROR', error })
-  })
-}
-
 export function version(st){
   return dispatch => st.system.version((error, payload) => {
     if(error){

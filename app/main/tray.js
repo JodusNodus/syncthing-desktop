@@ -1,9 +1,9 @@
-import { app, Tray, shell } from 'electron'
+import { Tray } from 'electron'
 import path from 'path'
 import Syncthing from 'node-syncthing'
-import { notify, formatBytes } from './misc'
-import { myID, version } from './actions'
-import { stateHandler, events } from './events'
+import { myID, version } from './actions/system'
+import stateHandler from './state-change'
+import events from './events'
 import config from './config'
 import buildMenu from './menu'
 
@@ -17,21 +17,15 @@ export default function TrayWrapper(store){
       eventListener: true, 
     }
 
-    const hasKey = stConfig.apiKey != null && stConfig.apiKey.length > 0
-
     const st = new Syncthing(stConfig)
     global.st = st
 
     tray = new Tray(path.join(__dirname, '../../resources/trayTemplate@4x.png'))
 
-    const menu = buildMenu({stConfig, hasKey, st, dir: config.dir(), ...store.getState()})
+    const menu = buildMenu({stConfig, st, state: store.getState()})
     
     //Subscribe to state changes
-    store.subscribe(stateHandler({menu, store, st, tray, buildMenu, dir: config.dir(), hasKey, stConfig}))
-
-    //Notify if no apiKey was found 
-    if(!hasKey)
-      notify('No API key was found', 'Some actions will not be possible.')
+    store.subscribe(stateHandler({menu, store, st, tray, stConfig}))
 
     tray.setContextMenu(menu)
 

@@ -1,52 +1,21 @@
-import { powerMonitor, ipcMain } from 'electron'
-import { notify } from './misc'
-import { config, connections, folderStatus, myID, folderBrowse, deviceStats } from './actions'
-import _ from 'lodash'
+import { app, BrowserWindow, powerMonitor, ipcMain } from 'electron'
+import notify from './utils/notify'
+import { connections, myID } from './actions/system'
+import { folderStatus } from './actions/db'
 
-//State change subscribsion
+export default function events(st, store){
+  ipcMain.on('ready', (e, winId) => {
+    const win = BrowserWindow.fromId(winId)
+    win.show()
+    win.focus()
+    app.dock.show()
+  })
 
-export function stateHandler({menu, store, st, tray, buildMenu, hasKey, stConfig, dir}){
-  let previousState = store.getState()
-  return () => {
-    const newState = store.getState()
+  app.on('window-all-closed', () => {
+    app.dock.hide()
+    if (process.platform !== 'darwin') app.quit()
+  })
 
-    if(!newState.connected && newState.power == 'awake'){
-      setTimeout(() => store.dispatch(myID(st)), 1000)
-    }
-
-    if(!previousState.connected && newState.connected){
-      store.dispatch(config(newState.myID, st))
-      notify('Connection Established', `Connected to ${stConfig.hostname}:${stConfig.port}`)
-    }
-
-    if(previousState.myID !== newState.myID)
-      store.dispatch(config(newState.myID, st))
-
-    if(newState.folders && newState.folders.length > 0 && !newState.folders[0].status){
-      store.dispatch(folderStatus(newState.folders, st))
-    }
-
-    if(previousState.devices.length !== newState.devices.length){
-      store.dispatch(connections(st))
-      store.dispatch(deviceStats(st))
-    }
-
-    if(!_.isEqual({
-      ...newState,
-      systemStatus: null,
-    }, {
-      ...previousState,
-      systemStatus: null,
-    })){
-      menu = buildMenu({stConfig, hasKey, st, dir, ...newState})
-      tray.setContextMenu(menu)
-    }
-    previousState = newState
-  }
-}
-
-//Events from Syncthing API
-export function events(st, store){
   //Listen for devices connecting
   st.on('deviceConnected', ({ id, addr }) => {
     const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]

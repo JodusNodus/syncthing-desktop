@@ -1,15 +1,11 @@
-import {notify} from './misc'
+import notify from '../utils/notify'
 
-let connectionError = function (){
-  notify('Connection Error', 'Could not connect to the Syncthing server.')
-}
-
-export function errorMiddleware(store){
+export default function error(store){
   let errSend = false
   return next => action => {
-    const {power} = store.getState()
+    const { power } = store.getState()
     if(action.type == 'CONNECTION_ERROR' && !errSend && power == 'awake'){
-      connectionError()
+      notify('Connection Error', 'Could not connect to the Syncthing server.')
       errSend = true
     }else if(/.*\_SUCCESS/.test(action.type)){
       errSend = false

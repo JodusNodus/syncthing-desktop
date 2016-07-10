@@ -5,5 +5,5 @@ export default function appWindow(){
     show: false,
     titleBarStyle: 'hidden-inset',
   })
-  win.loadURL(`file://${__dirname}/../../app/client/app.html`)
+  win.loadURL(`file://${__dirname}/../../../app/client/app.html`)
 }

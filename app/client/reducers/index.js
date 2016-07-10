@@ -1,20 +1,12 @@
 import { combineReducers } from 'redux'
 import { routerReducer as routing } from 'react-router-redux'
-import { connected, myID, devices, folders, power, preferences, systemStatus, guiPreferences, version } from '../../main/reducers.js'
+import { reducers } from '../../main/reducers/index'
 import { reducer as form } from 'redux-form'
 
 const rootReducer = combineReducers({
+  ...reducers,
   routing,
-  connected,
-  myID,
-  devices,
-  folders,
-  power,
-  preferences,
   form,
-  systemStatus,
-  guiPreferences,
-  version,
 })
 
 export default rootReducer
