@@ -40,12 +40,17 @@ ClientPreferences.propTypes = {
   fields: PropTypes.object.isRequired,
 }
 
-export default reduxForm({
-  form: 'setup',
-  fields: [
-    'hostname',
-    'port',
-    'apiKey',
-    'https',
-  ],
-})(ClientPreferences)
+export default reduxForm(
+  {
+    form: 'setup',
+    fields: [
+      'hostname',
+      'port',
+      'apiKey',
+      'https',
+    ],
+  },
+  state => ({ // mapStateToProps
+    initialValues: state.config.config
+  })
+)(ClientPreferences)
