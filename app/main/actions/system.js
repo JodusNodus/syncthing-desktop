@@ -1,5 +1,5 @@
-export function myID(st) {
-  return dispatch => st.system.status((error, payload) => {
+export function myID() {
+  return dispatch => global.st.system.status((error, payload) => {
     if(error){
       dispatch({ type: 'CONNECTION_ERROR', error })
     }else{
@@ -12,16 +12,16 @@ export function myID(st) {
   })
 }
 
-export function connections(st){
-  return dispatch => st.system.connections().then(({connections}) => {
+export function connections(){
+  return dispatch => global.st.system.connections().then(({connections}) => {
     dispatch({ type: 'CONNECTIONS_SUCCESS', payload: connections})
   }).catch(error => {
     dispatch({ type: 'CONNECTION_ERROR', error })
   })
 }
 
-export function config(myID='', st){
-  return dispatch => st.system.getConfig().then(({devices, folders, options, gui}) => {
+export function config(myID){
+  return dispatch => global.st.system.getConfig().then(({devices, folders, options, gui}) => {
     dispatch({ type: 'FOLDERS_SUCCESS', payload: folders })
     dispatch({ type: 'DEVICES_SUCCESS', payload: devices.filter(({deviceID}) => deviceID != myID) })
     dispatch({ type: 'PREFERENCES_GUI_SUCCESS', payload: gui })
@@ -31,8 +31,8 @@ export function config(myID='', st){
   })
 }
 
-export function version(st){
-  return dispatch => st.system.version((error, payload) => {
+export function version(){
+  return dispatch => global.st.system.version((error, payload) => {
     if(error){
       dispatch({ type: 'CONNECTION_ERROR', error })
     }else{

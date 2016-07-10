@@ -3,7 +3,8 @@ import notify from './utils/notify'
 import { connections, myID } from './actions/system'
 import { folderStatus } from './actions/db'
 
-export default function events(st, store){
+export function mainEvents(store) {
+
   ipcMain.on('ready', (e, winId) => {
     const win = BrowserWindow.fromId(winId)
     win.show()
@@ -13,38 +14,62 @@ export default function events(st, store){
 
   app.on('window-all-closed', () => {
     app.dock.hide()
-    if (process.platform !== 'darwin') app.quit()
+    if (process.platform !== 'darwin')
+      app.quit()
+  })
+  
+  //Dispatch action on suspension changes
+  powerMonitor.on('suspend', () => {
+    store.dispatch({ type: 'SUSPEND' })
   })
 
+  //Dispatch action on resumation changes
+  powerMonitor.on('resume', () => {
+    store.dispatch({ type: 'RESUME' })
+  })
+
+  if (process.env.NODE_ENV === 'development') {
+
+    //Listen for hot reloads
+    ipcMain.on('renderer-reload', event => {
+      delete require.cache[require.resolve('./reducers/index')]
+      store.replaceReducer(require('./reducers/index'))
+      event.returnValue = true
+    })
+  }
+
+}
+export function stEvents(store){
+
   //Listen for devices connecting
-  st.on('deviceConnected', ({ id, addr }) => {
+  global.st.on('deviceConnected', ({ id, addr }) => {
     const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]
     notify(`Connected to ${name}`, `on ${addr}`)
-    store.dispatch(connections(st))
+    store.dispatch(connections())
   })
   //Listen for devices disconnecting
-  st.on('deviceDisconnected', ({id}) => {
+  global.st.on('deviceDisconnected', ({id}) => {
     const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]
     notify(`${name} disconnected`, 'Syncing to this device is paused')
-    store.dispatch(connections(st))
+    store.dispatch(connections())
   })
   //Listen for errors
-  st.on('error', () => {
+  global.st.on('error', () => {
     store.dispatch({ type: 'CONNECTION_ERROR' })
   })
   //Listen for folder state changes
-  st.on('stateChanged', ({ folder, to }) => {
+  global.st.on('stateChanged', ({ folder, to }) => {
     const state = store.getState()
     switch (to) {
     case 'syncing':
       notify('Syncthing', `${folder} is Syncing`)
-      store.dispatch(folderStatus(state.folders, st))
+      store.dispatch(folderStatus(state.folders))
       break
     case 'error':
       notify(`${folder} has an Error`, 'click to see the error in the dashboard.')
       break
     case 'idle':
-      store.dispatch(folderStatus(state.folders, st))
+      store.dispatch(folderStatus(state.folders))
       break
     }
   })
@@ -53,24 +78,9 @@ export default function events(st, store){
   setInterval(() => {
     const state = store.getState()
     if(state.connected && state.power == 'awake'){
-      store.dispatch(connections(st))
-      store.dispatch(myID(st))
+      store.dispatch(connections())
+      store.dispatch(myID())
     }
   }, 2000)
 
-  //Dispatch action on suspension changes
-  powerMonitor.on('suspend', () => {
-    store.dispatch({ type: 'SUSPEND' })
-  })
-  //
-  //Dispatch action on resumation changes
-  powerMonitor.on('resume', () => {
-    store.dispatch({ type: 'RESUME' })
-  })
-
-  ipcMain.on('renderer-reload', (event, action) => {
-    delete require.cache[require.resolve('./reducers')]
-    store.replaceReducer(require('./reducers'))
-    event.returnValue = true
-  })
 }

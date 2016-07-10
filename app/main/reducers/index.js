@@ -9,6 +9,7 @@ import power from './power'
 import preferences from './preferences'
 import guiPreferences from './gui-preferences'
 import version from './version'
+import config from './config'
 
 export const reducers = {
   connected,
@@ -20,6 +21,7 @@ export const reducers = {
   preferences,
   guiPreferences,
   version,
+  config,
 }
 
 const rootReducer = combineReducers(reducers)

@@ -4,8 +4,11 @@ import Tray from './tray'
 import configureStore from './store'
 import appWindow from './utils/app-window'
 import { notificationWindow } from './utils/notify'
+import { get as getConfig } from './actions/config'
+import stateHandler from './state-change'
+import { mainEvents } from './events'
 
-app.dock.hide()
+//app.dock.hide()
 
 global.__base = `${__dirname}/`
 
@@ -14,13 +17,26 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.on('ready', () => {
+  //Configure and assign the redux store
   const store = configureStore()
-  new Tray(store)
+  
+  //Initialize tray menu
+  const tray = new Tray(store)
 
-  //Open notification window
+  //Subscribe to state changes
+  store.subscribe(stateHandler({store, tray}))
+
+  //Listen for events
+  mainEvents(store)
+
+  //Open hidden notification window
   notificationWindow()
 
-  //Open window
+  //Retrieve the config from local storage
+  store.dispatch(getConfig())
+
+  //Open app window
   appWindow()
+
 })
 

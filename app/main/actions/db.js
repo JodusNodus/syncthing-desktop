@@ -1,6 +1,6 @@
-export function folderStatus(folders, st){
+export function folderStatus(folders){
   return dispatch => folders.forEach(({id}) => {
-    st.db.status(id).then(payload => {
+    global.st.db.status(id).then(payload => {
       dispatch({ type: 'FOLDER_STATUS_SUCCESS', id, payload })
     }).catch(error => {
       dispatch({ type: 'CONNECTION_ERROR', error })

@@ -1,5 +1,4 @@
 import { Menu } from 'electron'
-import notify from '../utils/notify'
 
 import menuActions from './actions'
 import deviceItems from './devices'
@@ -8,7 +7,6 @@ import folderItems from './folders'
 import { name, version } from '../../../package.json'
 
 export default function buildMenu({
-  stConfig,
   st,
   state: {
     devices,
@@ -17,7 +15,7 @@ export default function buildMenu({
   }, 
 }){
   let menu = null
-  const actions = menuActions({st, stConfig})
+  const actions = menuActions(st)
 
   const sharedItems = [
     { label: `${name} ${version}`, enabled: false },
@@ -31,7 +29,6 @@ export default function buildMenu({
       { type: 'separator' },
       ...deviceItems(devices),
       { type: 'separator' },
-      { label: 'Dashboard...', click: actions.dashboard, accelerator: 'CommandOrControl+D' },
       { label: 'Preferences...', click: actions.editConfig, accelerator: 'CommandOrControl+,' },
       { type: 'separator' },
       ...sharedItems,
