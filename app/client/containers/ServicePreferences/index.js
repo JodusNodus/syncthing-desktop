@@ -6,6 +6,44 @@ import {
   CheckBox,
 } from 'react-photonkit'
 
+function validate({
+  deviceName='',
+  globalAnnounceServers=[],
+  listenAddresses=[],
+  maxRecvKbps='',
+  maxSendKbps='',
+}) {
+  const errors = {}
+
+  //Device Name
+  if(deviceName.length < 1){
+    errors.deviceName = 'Too short'
+  }
+
+  //Global Discovery Servers
+  if(globalAnnounceServers.length < 1){
+    errors.globalAnnounceServers = 'Too short'
+  }
+
+  //Listen Addresses
+  if(listenAddresses.length < 1){
+    errors.listenAddresses = 'Too short'
+  }
+
+  //Incoming Rate Limit
+  if(isNaN(parseInt(maxRecvKbps))){
+    errors.maxRecvKbps = 'Must be a number'
+  }
+
+  //Outgoing Rate Limit
+  if(isNaN(parseInt(maxSendKbps))){
+    errors.maxSendKbps = 'Must be a number'
+  }
+  
+  console.log(errors)
+  return errors
+}
+
 class ServicePreferences extends Component {
   render(){
     const {
@@ -43,7 +81,7 @@ ServicePreferences.propTypes = {
 }
 
 export default reduxForm({
-  form: 'preferences',
+  form: 'servicePreferences',
   fields: [
     'deviceName',
     'globalAnnounceEnabled',
@@ -55,6 +93,7 @@ export default reduxForm({
     'maxSendKbps',
     'natEnabled',
   ],
+  validate,
 }, state => ({ // mapStateToProps
   initialValues: state.preferences,
 }))(ServicePreferences)
