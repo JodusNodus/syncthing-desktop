@@ -11,7 +11,10 @@ export default function qrCodeModal(state=initialState, {type, payload}) {
       qrCode: payload,
     }
     case 'QR_CODE_MODAL_HIDE':
-      return initialState
+      return {
+      ...state,
+      show: false,
+    }
     default:
       return state
   }
