@@ -1,24 +1,27 @@
 import React, { Component, PropTypes } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import _ from 'lodash'
 import moment from 'moment'
 import { clipboard } from 'electron'
+
+import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
 
 import Size from '../../components/Size'
 import { styles } from './styles.scss'
 
 class Overview extends Component {
   render(){
-    const { status, version } = this.props
+    const { status, version, showQrCodeModal } = this.props
 
     return h('div.padded-more', {className: styles}, [
       h('header.page-header', [
         h('h2', 'Overview'),
       ]),
       h('hr'),
-      h(DeviceID, status),
+      h(DeviceID, {onQrCode: showQrCodeModal, ...status}),
       status && h(CpuUsage, status),
       status && h(RamUsage, status),
       status && h(Uptime, status),
@@ -30,13 +33,15 @@ class Overview extends Component {
 Overview.propTypes = {
   status: PropTypes.object.isRequired,
   version: PropTypes.object.isRequired,
+  showQrCodeModal: PropTypes.func.isRequired,
 }
 
 export default connect(
   state => ({
     status: state.systemStatus,
     version: state.version,
-  })
+  }),
+  dispatch => bindActionCreators(qrCodeModalActionCreators, dispatch)
 )(Overview)
 
 const CpuUsage = ({cpuPercent}) => h('div.section-item.cpu-usage', [
@@ -53,12 +58,12 @@ const RamUsage = ({sys}) => h('div.section-item.ram-usage', [
   h('a.right'),
 ])
 
-const DeviceID = ({myID}) => h('div.section-item.my-id', [
+const DeviceID = ({myID, onQrCode}) => h('div.section-item.my-id', [
   h('p.left', 'My ID:'),
   h('p.center', myID),
   h('div.right', [
     h('a', {onClick: () => clipboard.writeText(myID)}, 'Copy'),
-    h('a', {onClick: () => clipboard.writeText(myID)}, 'QR Code'),   
+    h('a', {onClick: () => onQrCode(myID)}, 'QR Code'),   
   ]),
 ])
 

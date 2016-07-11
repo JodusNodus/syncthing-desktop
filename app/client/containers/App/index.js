@@ -6,9 +6,12 @@ import { Window, Toolbar, Actionbar, Button, Content, Pane } from 'react-photonk
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { bindActionCreators } from 'redux'
+import QRCode from 'qrcode.react'
+import Modal from '../../components/Modal'
 
 import * as systemActionCreators from '../../../main/actions/system'
 import * as configActionCreators from '../../../main/actions/config'
+import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
 import './global.scss'
 
 class App extends Component {
@@ -58,7 +61,7 @@ class App extends Component {
     }
   }
   render() {
-    const { folders, devices, location, connected, config, children } = this.props
+    const { folders, devices, location, connected, config, children, qrCodeModal, hideQrCodeModal } = this.props
 
     const onPreferencePage = /\/preferences\/.*/.test(location.pathname)
 
@@ -84,7 +87,18 @@ class App extends Component {
     return h(Window, [
       h(Content, [
         connected && config.isSuccess && h(Sidebar, sections),
+
+        //Show popover modal for displaying qr codes
+        h(Modal, {
+          cancelButton: false,
+          onDone: hideQrCodeModal,
+          visible: qrCodeModal.show,
+        }, [
+          h(QRCode, {size: 250, value: qrCodeModal.qrCode}),
+        ]),
+
         h(Pane, {className: 'main-pane'}, [
+          //Clone element with new ref and onSubmit props for submitting forms from parent
           cloneElement(children, {ref: 'child', onSubmit: this.handleSubmit}),
         ]),
       ]),
@@ -122,6 +136,8 @@ App.propTypes = {
   config: PropTypes.object.isRequired,
   setClientConfig: PropTypes.func.isRequired,
   setServiceConfig: PropTypes.func.isRequired,
+  qrCodeModal: PropTypes.object.isRequired,
+  hideQrCodeModal: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -130,9 +146,11 @@ export default connect(
     folders: state.folders,
     connected: state.connected,
     config: state.config,
+    qrCodeModal: state.qrCodeModal,
   }),
   dispatch => bindActionCreators({
     ...configActionCreators,
     ...systemActionCreators,
+    ...qrCodeModalActionCreators,
   }, dispatch)
 )(App)

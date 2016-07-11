@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react'
+import { PropTypes } from 'react'
 import h from 'react-hyperscript'
-import { Button, Pane } from 'react-photonkit'
+import { Button } from 'react-photonkit'
 
 import { styles } from './styles.scss'
 
@@ -20,7 +20,7 @@ h('div.modal-container', {className: `${styles} ${visible && 'visible'}`}, [
 
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
-  onCancel: PropTypes.func.isRequired,
+  onCancel: PropTypes.func,
   onDone: PropTypes.func.isRequired,
   visible: PropTypes.bool.isRequired,
   cancelButton: PropTypes.bool,
