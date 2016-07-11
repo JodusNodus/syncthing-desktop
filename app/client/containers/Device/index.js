@@ -9,15 +9,15 @@ import Toggle from '../../components/Toggle'
 import SharedFolders from '../../components/SharedFolders'
 import { styles } from './styles.scss'
 
-import * as deviceActionCreators from '../../actions/device'
+import * as systemActionCreators from '../../../main/actions/system'
 
 class Device extends Component {
   handleToggle(){
-    const { resume, pause } = this.props
+    const { resumeDevice, pauseDevice } = this.props
     if(this.device.paused){
-      resume(this.device.deviceID)
+      resumeDevice(this.device.deviceID)
     }else{
-      pause(this.device.deviceID)
+      pauseDevice(this.device.deviceID)
     }
   }
   render(){
@@ -48,8 +48,8 @@ Device.propTypes = {
   params: PropTypes.object.isRequired,
   devices: PropTypes.array.isRequired,
   folders: PropTypes.array.isRequired,
-  resume: PropTypes.func.isRequired,
-  pause: PropTypes.func.isRequired,
+  resumeDevice: PropTypes.func.isRequired,
+  pauseDevice: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -57,7 +57,7 @@ export default connect(
     devices: state.devices,
     folders: state.folders,
   }),
-  dispatch => bindActionCreators(deviceActionCreators, dispatch)
+  dispatch => bindActionCreators(systemActionCreators, dispatch)
 )(Device)
 
 const DeviceID = ({deviceID}) => h('div.section-item.device-id', [

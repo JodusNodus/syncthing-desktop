@@ -1,7 +1,7 @@
 import notify from './utils/notify'
-import { getServiceConfig, connections, myID, version } from './actions/system'
-import { folderStatus } from './actions/db'
-import { deviceStats } from './actions/stats'
+import { getServiceConfig, getConnections, getMyID, getVersion } from './actions/system'
+import { getFolderStatus } from './actions/db'
+import { getDeviceStats } from './actions/stats'
 import buildMenu from './menu/index'
 import _ from 'lodash'
 import Syncthing from 'node-syncthing'
@@ -24,11 +24,11 @@ export default function stateHandler({store, tray}){
       stEvents(store)
      
       
-      store.dispatch(myID())
+      store.dispatch(getMyID())
     }
 
     if(!newState.connected && newState.power == 'awake'){
-      setTimeout(() => store.dispatch(myID()), 1000)
+      setTimeout(() => store.dispatch(getMyID()), 1000)
     }
 
     if(!previousState.connected && newState.connected){
@@ -38,18 +38,18 @@ export default function stateHandler({store, tray}){
 
     if(previousState.myID !== newState.myID){
       store.dispatch(getServiceConfig(newState.myID))
-      store.dispatch(version())
+      store.dispatch(getVersion())
     }
 
     //Check if present folders have a status
     if(newState.folders && newState.folders.length > 0 && !newState.folders[0].status){
-      store.dispatch(folderStatus(newState.folders))
+      store.dispatch(getFolderStatus(newState.folders))
     }
 
     //Check if devices were added or removed
     if(previousState.devices.length !== newState.devices.length){
-      store.dispatch(connections())
-      store.dispatch(deviceStats())
+      store.dispatch(getConnections())
+      store.dispatch(getDeviceStats())
     }
 
     const StateIsDifferent = !_.isEqual({

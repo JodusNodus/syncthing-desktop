@@ -1,8 +1,8 @@
 export default function devices(state = [], {type, payload, id}) {
   switch (type){
-    case 'DEVICES_SUCCESS':
+    case 'DEVICES_GET_SUCCESS':
       return payload
-    case 'CONNECTIONS_SUCCESS':
+    case 'CONNECTIONS_GET_SUCCESS':
       return state.map(device => {
       const connection = payload[device.deviceID]
       return {
@@ -12,7 +12,7 @@ export default function devices(state = [], {type, payload, id}) {
         paused: connection && connection.paused,
       }
     })
-    case 'DEVICE_STATS_SUCCESS':
+    case 'DEVICE_STATS_GET_SUCCESS':
       return state.map(device => {
       const stats = payload[device.deviceID]
       return {

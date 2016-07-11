@@ -1,7 +1,7 @@
 import { app, BrowserWindow, powerMonitor, ipcMain } from 'electron'
 import notify from './utils/notify'
-import { connections, myID } from './actions/system'
-import { folderStatus } from './actions/db'
+import { getConnections, getMyID } from './actions/system'
+import { getFolderStatus } from './actions/db'
 
 export function mainEvents(store) {
 
@@ -45,13 +45,13 @@ export function stEvents(store){
   global.st.on('deviceConnected', ({ id, addr }) => {
     const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]
     notify(`Connected to ${name}`, `on ${addr}`)
-    store.dispatch(connections())
+    store.dispatch(getConnections())
   })
   //Listen for devices disconnecting
   global.st.on('deviceDisconnected', ({id}) => {
     const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]
     notify(`${name} disconnected`, 'Syncing to this device is paused')
-    store.dispatch(connections())
+    store.dispatch(getConnections())
   })
   //Listen for errors
   global.st.on('error', () => {
@@ -63,13 +63,13 @@ export function stEvents(store){
     switch (to) {
     case 'syncing':
       notify('Syncthing', `${folder} is Syncing`)
-      store.dispatch(folderStatus(state.folders))
+      store.dispatch(getFolderStatus(state.folders))
       break
     case 'error':
       notify(`${folder} has an Error`, 'click to see the error in the dashboard.')
       break
     case 'idle':
-      store.dispatch(folderStatus(state.folders))
+      store.dispatch(getFolderStatus(state.folders))
       break
     }
   })
@@ -78,8 +78,8 @@ export function stEvents(store){
   setInterval(() => {
     const state = store.getState()
     if(state.connected && state.power == 'awake'){
-      store.dispatch(connections())
-      store.dispatch(myID())
+      store.dispatch(getConnections())
+      store.dispatch(getMyID())
     }
   }, 2000)
 

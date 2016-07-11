@@ -1,20 +1,20 @@
-export function myID() {
+export function getMyID() {
   return dispatch => global.st.system.status((error, payload) => {
     if(error){
       dispatch({ type: 'CONNECTION_ERROR', error })
     }else{
       dispatch({
-        type: 'MYID_SUCCESS',
+        type: 'MYID_GET_SUCCESS',
         payload: payload.myID,
       })
-      dispatch({ type: 'SYSTEM_STATUS_SUCCESS', payload })
+      dispatch({ type: 'SYSTEM_STATUS_GET_SUCCESS', payload })
     }
   })
 }
 
-export function connections(){
+export function getConnections(){
   return dispatch => global.st.system.connections().then(({connections}) => {
-    dispatch({ type: 'CONNECTIONS_SUCCESS', payload: connections})
+    dispatch({ type: 'CONNECTIONS_GET_SUCCESS', payload: connections})
   }).catch(error => {
     dispatch({ type: 'CONNECTION_ERROR', error })
   })
@@ -22,21 +22,21 @@ export function connections(){
 
 export function getServiceConfig(myID){
   return dispatch => global.st.system.getConfig().then(({devices, folders, options, gui}) => {
-    dispatch({ type: 'FOLDERS_SUCCESS', payload: folders })
-    dispatch({ type: 'DEVICES_SUCCESS', payload: devices.filter(({deviceID}) => deviceID != myID) })
-    dispatch({ type: 'PREFERENCES_GUI_SUCCESS', payload: gui })
-    dispatch({ type: 'PREFERENCES_SUCCESS', payload: options })
+    dispatch({ type: 'FOLDERS_GET_SUCCESS', payload: folders })
+    dispatch({ type: 'DEVICES_GET_SUCCESS', payload: devices.filter(({deviceID}) => deviceID != myID) })
+    dispatch({ type: 'GUI_PREFERENCES_GET_SUCCESS', payload: gui })
+    dispatch({ type: 'PREFERENCES_GET_SUCCESS', payload: options })
   }).catch(error => {
     dispatch({ type: 'CONNECTION_ERROR', error })
   })
 }
 
-export function version(){
+export function getVersion(){
   return dispatch => global.st.system.version((error, payload) => {
     if(error){
       dispatch({ type: 'CONNECTION_ERROR', error })
     }else{
-      dispatch({ type: 'VERSION_SUCCESS', payload })
+      dispatch({ type: 'VERSION_GET_SUCCESS', payload })
     }
   })
 }
@@ -69,4 +69,20 @@ export function setServiceConfig(key, value) {
     })
 
   }
+}
+
+export function pauseDevice(device){
+  return dispatch => global.st.system.pause(device).then(payload => {
+    dispatch({ type: 'DEVICE_PAUSE_SUCCESS', payload, id: device })
+  }).catch(error => {
+    dispatch({ type: 'CONNECTION_ERROR', error })
+  })
+}
+
+export function resumeDevice(device){
+  return dispatch => global.st.system.resume(device).then(payload => {
+    dispatch({ type: 'DEVICE_RESUME_SUCCESS', payload, id: device })
+  }).catch(error => {
+    dispatch({ type: 'CONNECTION_ERROR', error })
+  })
 }
