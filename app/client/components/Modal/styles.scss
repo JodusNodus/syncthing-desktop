@@ -1,0 +1,57 @@
+:local(.styles) {
+  .overlay {
+    display: none;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+  }
+
+  .modal {
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    position: fixed;
+    transition: all 0.4s;
+    transform: translateY(-120%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: #888 0 0 12px;
+
+    .content {
+      margin-bottom: 15px;
+    }
+
+    .options {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+
+      .btn:first-child {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  &.visible {
+    .overlay {
+      display: block;
+    }
+
+    .modal {
+      transform: translateY(0%)
+    }
+  }
+}
