@@ -1,6 +1,6 @@
 const initialState = {
   show: false,
-  qrCode: "",
+  qrCode: '', //needs to be string for qr-code component to not throw error
 }
 
 export default function qrCodeModal(state=initialState, {type, payload}) {
