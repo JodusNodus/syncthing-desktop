@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { bindActionCreators } from 'redux'
 
+import * as systemActionCreators from '../../../main/actions/system'
 import * as configActionCreators from '../../../main/actions/config'
 import './global.scss'
 
@@ -33,9 +34,11 @@ class App extends Component {
     this.refs.child.submit()
   }
   handleSubmit(form){
-    const { location, set } = this.props
+    const { location, setClientConfig, setServiceConfig} = this.props
     if(location.pathname == '/preferences/client'){
-      set(form)
+      setClientConfig(form)
+    }else if(location.pathname == '/preferences/service'){
+      setServiceConfig('options', form)
     }
   }
   redirect(nextProps={config: {isSuccess: false}}){
@@ -117,7 +120,8 @@ App.propTypes = {
   history: PropTypes.object.isRequired,
   connected: PropTypes.bool.isRequired,
   config: PropTypes.object.isRequired,
-  set: PropTypes.func.isRequired,
+  setClientConfig: PropTypes.func.isRequired,
+  setServiceConfig: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -127,5 +131,8 @@ export default connect(
     connected: state.connected,
     config: state.config,
   }),
-  dispatch => bindActionCreators(configActionCreators, dispatch)
+  dispatch => bindActionCreators({
+    ...configActionCreators,
+    ...systemActionCreators,
+  }, dispatch)
 )(App)

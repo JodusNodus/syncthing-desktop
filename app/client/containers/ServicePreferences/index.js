@@ -1,14 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import { Component, PropTypes } from 'react'
 import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
 import {
   Input,
-  TextArea,
   CheckBox,
-  Options,
-  RadioGroup,
-  Radio,
-  Button,
 } from 'react-photonkit'
 
 class ServicePreferences extends Component {
@@ -25,10 +20,9 @@ class ServicePreferences extends Component {
         maxSendKbps,
         natEnabled,
       },
-      handleSubmit,
     } = this.props
 
-    return h('form.padded-more', {handleSubmit}, [
+    return h('form.padded-more', [
       h(Input, {label: 'Device Name', ...deviceName}),
       h(Input, {label: 'Sync Protocol Listen Addresses', ...listenAddresses}),
       h(Input, {label: 'Incoming Rate Limit (KiB/s)', type: 'number', ...maxRecvKbps}),
@@ -46,7 +40,6 @@ class ServicePreferences extends Component {
 
 ServicePreferences.propTypes = {
   fields: PropTypes.object.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
 }
 
 export default reduxForm({
@@ -63,5 +56,5 @@ export default reduxForm({
     'natEnabled',
   ],
 }, state => ({ // mapStateToProps
-  initialValues: state.preferences
+  initialValues: state.preferences,
 }))(ServicePreferences)

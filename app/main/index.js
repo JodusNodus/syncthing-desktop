@@ -4,7 +4,7 @@ import Tray from './tray'
 import configureStore from './store'
 import appWindow from './utils/app-window'
 import { notificationWindow } from './utils/notify'
-import { get as getConfig } from './actions/config'
+import { getClientConfig } from './actions/config'
 import stateHandler from './state-change'
 import { mainEvents } from './events'
 
@@ -33,7 +33,7 @@ app.on('ready', () => {
   notificationWindow()
 
   //Retrieve the config from local storage
-  store.dispatch(getConfig())
+  store.dispatch(getClientConfig())
 
   //Open app window
   appWindow()
