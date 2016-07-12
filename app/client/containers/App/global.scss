@@ -16,9 +16,16 @@
     -webkit-app-region: drag;
   }
 
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
   .main-pane {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
   }
 
   .page-header {

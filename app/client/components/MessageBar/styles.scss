@@ -1,0 +1,37 @@
+:local(.styles) {
+  $height: 28px;
+  
+  color: #fff;
+  height: $height;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: (-$height);
+  transition: margin-top 0.4s;
+
+  &.visible {
+    margin-top: 0;
+  }
+
+  //Styles
+  &.msg-default {
+    background: #9fa0a4;
+  }
+
+  &.msg-primary {
+    background: #0192ff;
+  }
+
+  &.msg-positive {
+    background: #48dc6c;
+  }
+
+  &.msg-negative {
+    background: #fe4a65;
+  }
+
+  &.msg-warning {
+    background: #fed201;
+  }
+}
