@@ -16,16 +16,18 @@
     -webkit-app-region: drag;
   }
 
-  .main-container {
+  .window-content > .pane{
     display: flex;
     flex-direction: column;
     flex: 1;
+    overflow: hidden;
   }
 
   .main-pane {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    overflow: auto;
   }
 
   .page-header {

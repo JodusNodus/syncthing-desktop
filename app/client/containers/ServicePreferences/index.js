@@ -3,6 +3,21 @@ import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
 import { CheckBox } from 'react-photonkit'
 import Input from '../../components/Input'
+import * as messageBarActionCreators from '../../actions/message-bar'
+import { bindActionCreators } from 'redux'
+import _ from 'lodash'
+
+const fields = [
+  'deviceName',
+  'globalAnnounceEnabled',
+  'localAnnounceEnabled',
+  'relaysEnabled',
+  'globalAnnounceServers',
+  'listenAddresses',
+  'maxRecvKbps',
+  'maxSendKbps',
+  'natEnabled',
+]
 
 function validate({
   deviceName='',
@@ -38,11 +53,34 @@ function validate({
     errors.maxSendKbps = 'Must be a number'
   }
   
-  console.log(errors)
   return errors
 }
 
 class ServicePreferences extends Component {
+  componentDidUpdate(){
+    const { fields, showMessageBar, hideMessageBar } = this.props
+    
+    //Check for errors in fields
+    const errors = _.toArray(fields).filter(({error}) => error)
+
+    if(errors.length > 0){
+      const firstError = errors[0].error
+      const hasBeenTouched = errors[0].touched
+
+      //Show error in message bar if it has been touched
+      if(hasBeenTouched){
+        showMessageBar({
+          msg: firstError,
+          ptStyle: 'negative',
+        })
+      }
+
+    }else{
+
+      //No errors have to be shown hide the bar.
+      hideMessageBar()
+    }
+  }
   render(){
     const {
       fields: {
@@ -76,22 +114,18 @@ class ServicePreferences extends Component {
 
 ServicePreferences.propTypes = {
   fields: PropTypes.object.isRequired,
+  showMessageBar: PropTypes.func.isRequired,
+  hideMessageBar: PropTypes.func.isRequired,
 }
 
-export default reduxForm({
-  form: 'servicePreferences',
-  fields: [
-    'deviceName',
-    'globalAnnounceEnabled',
-    'localAnnounceEnabled',
-    'relaysEnabled',
-    'globalAnnounceServers',
-    'listenAddresses',
-    'maxRecvKbps',
-    'maxSendKbps',
-    'natEnabled',
-  ],
-  validate,
-}, state => ({ // mapStateToProps
-  initialValues: state.preferences,
-}))(ServicePreferences)
+export default reduxForm(
+  {
+    form: 'servicePreferences',
+    fields,
+    validate,
+  },
+  state => ({ // mapStateToProps
+    initialValues: state.preferences,
+  }),
+  dispatch => bindActionCreators(messageBarActionCreators, dispatch)
+)(ServicePreferences)

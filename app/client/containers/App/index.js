@@ -8,6 +8,7 @@ import _ from 'lodash'
 import { bindActionCreators } from 'redux'
 import QRCode from 'qrcode.react'
 import Modal from '../../components/Modal'
+import MessageBar from '../../components/MessageBar'
 
 import * as systemActionCreators from '../../../main/actions/system'
 import * as configActionCreators from '../../../main/actions/config'
@@ -46,22 +47,28 @@ class App extends Component {
   }
   redirect(nextProps={config: {isSuccess: false}}){
     const { history, config, connected, location } = this.props
-
     //Redirect when config was saved
     if(config.isFailed && nextProps.config.isSuccess && location.pathname == '/preferences/client'){
       history.push('/')
     }
     
-    
     //Redirect if config was not found
     if(config.isFailed && location.pathname !== '/preferences/client'){
       history.push('/preferences/client')
-    }else if(!connected && location.pathname !== '/disconnected'){
+    }
+
+    //Redirect to disconnected page when connection is lost
+    if(!connected && location.pathname !== '/disconnected'){
       history.push('/disconnected')
     }
+
+    //TODO: Redirect back to previous page when connected
+    //if(connected && location.pathname == '/disconnected'){
+      //history.goBack()
+    //}
   }
   render() {
-    const { folders, devices, location, connected, config, children, qrCodeModal, hideQrCodeModal } = this.props
+    const { folders, devices, location, connected, config, children, qrCodeModal, hideQrCodeModal, messageBar } = this.props
 
     const onPreferencePage = /\/preferences\/.*/.test(location.pathname)
 
@@ -97,10 +104,20 @@ class App extends Component {
           h(QRCode, {size: 250, value: qrCodeModal.qrCode}),
         ]),
 
-        h(Pane, {className: 'main-pane'}, [
-          //Clone element with new ref and onSubmit props for submitting forms from parent
-          cloneElement(children, {ref: 'child', onSubmit: this.handleSubmit}),
+        h(Pane, [
+          h(MessageBar, {
+            text: messageBar.msg,
+            ptStyle: messageBar.ptStyle,
+            visible: messageBar.show,
+          }),
+
+          h('div.main-pane', [
+
+            //Clone element with new ref and onSubmit props for submitting forms from parent
+            cloneElement(children, {ref: 'child', onSubmit: this.handleSubmit}),
+          ]),
         ]),
+
       ]),
       onPreferencePage && h(Toolbar, {ptType: 'footer'}, [
         h(Actionbar, [
@@ -138,6 +155,7 @@ App.propTypes = {
   setServiceConfig: PropTypes.func.isRequired,
   qrCodeModal: PropTypes.object.isRequired,
   hideQrCodeModal: PropTypes.func.isRequired,
+  messageBar: PropTypes.object.isRequired,
 }
 
 export default connect(
@@ -147,6 +165,8 @@ export default connect(
     connected: state.connected,
     config: state.config,
     qrCodeModal: state.qrCodeModal,
+    form: state.form,
+    messageBar: state.messageBar,
   }),
   dispatch => bindActionCreators({
     ...configActionCreators,
