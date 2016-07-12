@@ -1,0 +1,9 @@
+:local(.styles) {
+
+  &.error {
+    $errorColor: #fb636f;
+    .form-control{
+      border-color: $errorColor;
+    }
+  }
+}

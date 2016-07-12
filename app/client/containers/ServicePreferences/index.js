@@ -1,10 +1,8 @@
 import { Component, PropTypes } from 'react'
 import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
-import {
-  Input,
-  CheckBox,
-} from 'react-photonkit'
+import { CheckBox } from 'react-photonkit'
+import Input from '../../components/Input'
 
 function validate({
   deviceName='',
