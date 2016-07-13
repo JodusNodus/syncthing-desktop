@@ -6,9 +6,11 @@ import { Window, Toolbar, Actionbar, Button, Content, Pane } from 'react-photonk
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { bindActionCreators } from 'redux'
+import { push } from 'react-router-redux'
 import QRCode from 'qrcode.react'
 import Modal from '../../components/Modal'
 import MessageBar from '../../components/MessageBar'
+import Disconnected from '../../components/Disconnected'
 
 import * as systemActionCreators from '../../../main/actions/system'
 import * as configActionCreators from '../../../main/actions/config'
@@ -46,26 +48,16 @@ class App extends Component {
     }
   }
   redirect(nextProps={config: {isSuccess: false}}){
-    const { history, config, connected, location } = this.props
+    const { config, connected, location } = this.props
     //Redirect when config was saved
     if(config.isFailed && nextProps.config.isSuccess && location.pathname == '/preferences/client'){
-      history.push('/')
+      push('/')
     }
     
     //Redirect if config was not found
     if(config.isFailed && location.pathname !== '/preferences/client'){
-      history.push('/preferences/client')
+      push('/preferences/client')
     }
-
-    //Redirect to disconnected page when connection is lost
-    if(!connected && location.pathname !== '/disconnected'){
-      history.push('/disconnected')
-    }
-
-    //TODO: Redirect back to previous page when connected
-    //if(connected && location.pathname == '/disconnected'){
-      //history.goBack()
-    //}
   }
   render() {
     const { folders, devices, location, connected, config, children, qrCodeModal, hideQrCodeModal, messageBar } = this.props
@@ -111,10 +103,12 @@ class App extends Component {
             visible: messageBar.show,
           }),
 
-          h('div.main-pane', [
+          h('div.main-pane', connected ? [
 
             //Clone element with new ref and onSubmit props for submitting forms from parent
             cloneElement(children, {ref: 'child', onSubmit: this.handleSubmit}),
+          ] : [
+            h(Disconnected),
           ]),
         ]),
 

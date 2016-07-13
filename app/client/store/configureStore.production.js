@@ -4,11 +4,12 @@ import { hashHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
 import rootReducer from '../reducers'
 import { electronEnhancer } from 'redux-electron-store'
+import routingMiddleware from '../middleware/routing'
 
 const router = routerMiddleware(hashHistory)
 
 const enhancer = compose(
-  applyMiddleware(thunk, router),
+  applyMiddleware(thunk, router, routingMiddleware),
   electronEnhancer(true)
 )
 

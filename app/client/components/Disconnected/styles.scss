@@ -1,11 +1,10 @@
 :local(.styles){
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
   justify-content: center;
   align-items: center;
   -webkit-app-region: drag;
+  flex: 1;
 
   h1 {
     margin: 0;
