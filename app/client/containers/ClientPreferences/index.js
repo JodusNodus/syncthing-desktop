@@ -80,17 +80,14 @@ class ClientPreferences extends Component {
       h(Input, {label: 'Port', placeholder: 'e.g. 8384', ...port}),
       h(Input, {label: 'API Key', placeholder: 'e.g. abc123', ...apiKey}),
       h(CheckBox, {label: 'Https', ...https}),
-
-      //h('div.form-group', [
-      //h('label', 'Password'),
-      //h('input.form-control', {label: 'Password', type: 'password', ...password}),
-      //]),
     ])
   }
 }
 
 ClientPreferences.propTypes = {
   fields: PropTypes.object.isRequired,
+  showMessageBar: PropTypes.func.isRequired,
+  hideMessageBar: PropTypes.func.isRequired,
 }
 
 export default reduxForm(
