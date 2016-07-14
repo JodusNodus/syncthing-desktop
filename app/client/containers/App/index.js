@@ -37,18 +37,52 @@ class App extends Component {
     this.redirect(nextProps)
   }
   handleSubmitButton(){
-    this.refs.child.submit()
+    if(this.refs.child.submit){
+      this.refs.child.submit()
+    }else{
+      this.refs.child.getWrappedInstance().refs.form.submit()
+    }
   }
   handleSubmit(form){
-    const { location, setClientConfig, setServiceConfig} = this.props
+    const { location, setClientConfig, setServiceConfig, folders, devices, params } = this.props
+
     if(location.pathname == '/preferences/client'){
       setClientConfig(form)
     }else if(location.pathname == '/preferences/service'){
       setServiceConfig('options', form)
+    }else if(location.pathname == `/folder/${params.id}/edit`){
+
+      const updatedFolders = folders.map(folder => {
+        if(folder.id == params.id){
+          return {
+            ...folder,
+            ...form,
+          }
+        }
+        return folder
+      })
+
+      setServiceConfig('folders', updatedFolders)
+
+    }else if(location.pathname == `/device/${params.id}/edit`){
+
+      const updatedDevices = devices.map(device => {
+        if(device.deviceID == params.id){
+          return {
+            ...device,
+            ...form,
+          }
+        }
+        return device
+      })
+
+      setServiceConfig('devices', updatedDevices)
+
     }
   }
   redirect(nextProps={config: {isSuccess: false}}){
-    const { config, connected, location } = this.props
+    const { config, location } = this.props
+ 
     //Redirect when config was saved
     if(config.isFailed && nextProps.config.isSuccess && location.pathname == '/preferences/client'){
       push('/')
@@ -62,7 +96,7 @@ class App extends Component {
   render() {
     const { folders, devices, location, connected, config, children, qrCodeModal, hideQrCodeModal, messageBar } = this.props
 
-    const onPreferencePage = /\/preferences\/.*/.test(location.pathname)
+    const onPreferencePage = location.pathname.indexOf('/preferences/') >= 0 || location.pathname.indexOf('/edit') >= 0
 
     //An object defining all sections and items in the sidebar
     const sections = {
@@ -150,6 +184,7 @@ App.propTypes = {
   qrCodeModal: PropTypes.object.isRequired,
   hideQrCodeModal: PropTypes.func.isRequired,
   messageBar: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
 }
 
 export default connect(

@@ -13,7 +13,7 @@ export default function appWindow(){
       show: false,
       titleBarStyle: 'hidden-inset',
       minHeight: 400,
-      minWidth: 600,
+      minWidth: 800,
       height: 550,
       width: 800,
     })

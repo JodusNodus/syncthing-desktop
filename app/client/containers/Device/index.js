@@ -19,7 +19,7 @@ class Device extends Component {
     }
   }
   render(){
-    const { devices, params, children } = this.props
+    const { devices, params, children, onSubmit } = this.props
     this.device = devices.filter(x => x.deviceID == params.id)[0]
 
     if(this.device) {
@@ -32,7 +32,7 @@ class Device extends Component {
           {text: 'Overview', link: `/device/${params.id}/overview`},
           {text: 'Edit', link: `/device/${params.id}/edit`},
         ]}, [
-          cloneElement(children, {initialValues: this.device}),
+          cloneElement(children, {ref: 'form', initialValues: this.device, onSubmit}),
         ]),
       ])
     }else {
@@ -55,5 +55,7 @@ export default connect(
   state => ({
     devices: state.devices,
   }),
-  dispatch => bindActionCreators(systemActionCreators, dispatch)
+  dispatch => bindActionCreators(systemActionCreators, dispatch),
+  undefined,
+  {withRef: true},
 )(Device)
