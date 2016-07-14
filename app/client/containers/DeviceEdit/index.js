@@ -22,12 +22,12 @@ function validate({
 
   //Name
   if(name.length < 1){
-    errors.name = 'Name is too short'
+    errors.name = 'Name should have at least one character.'
   }
 
   //Addresses
   if(addresses.length < 1){
-    errors.addresses = 'Atleast one address is required'
+    errors.addresses = 'addresses should have at least one address.'
   }
 
   return errors

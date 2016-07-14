@@ -20,21 +20,21 @@ function validate({ hostname='', port='', apiKey='' }) {
 
   //Hostname
   if(hostname.length < 1){
-    errors.hostname = 'Too short'
+    errors.hostname = 'Hostname should have at least one character.'
   }
 
   //Port
   if(isNaN(parseInt(port))){
-    errors.port = 'Must be a number'
+    errors.port = 'Port should be a number.'
   }else if(parseInt(port) < 1){
-    errors.port = 'Too small'
+    errors.port = 'Port should be larger than 1.'
   }else if(parseInt(port) > 65535){ //Port number is an unsigned 16-bit integer > 65535
-    errors.port = 'Too large'
+    errors.port = 'Port should be smaller than 65535.'
   }
 
   //ApiKey
   if(apiKey.length < 1){
-    errors.apiKey = 'ApiKey is too short'
+    errors.apiKey = 'ApiKey should have at least one character.'
   }
 
   return errors

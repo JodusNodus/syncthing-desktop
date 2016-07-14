@@ -24,14 +24,14 @@ function validate({
 
   //Label
   if(label.length < 1) {
-    errors.label = 'Label should use atleast one character'
+    errors.label = 'Label should have at least one character.'
   }
 
   //Rescan Interval
   if(isNaN(parseInt(rescanIntervalS))){
-    errors.rescanIntervalS = 'Rescan Interval must be a number'
+    errors.rescanIntervalS = 'Rescan Interval should be a number.'
   }else if(parseInt(rescanIntervalS) < 1){
-    errors.rescanIntervalS = 'Rescan Interval must be higher than 0'
+    errors.rescanIntervalS = 'Rescan Interval should be larger than 0.'
   }
 
   return errors
