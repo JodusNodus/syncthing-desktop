@@ -27,8 +27,6 @@ class DeviceOverview extends Component {
 DeviceOverview.propTypes = {
   folders: PropTypes.array.isRequired,
   initialValues: PropTypes.object.isRequired,
-  showMessageBar: PropTypes.func.isRequired,
-  hideMessageBar: PropTypes.func.isRequired,
 }
 
 export default connect(

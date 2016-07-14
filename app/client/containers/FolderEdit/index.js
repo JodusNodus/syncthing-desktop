@@ -97,6 +97,8 @@ class FolderEdit extends Component {
 FolderEdit.propTypes = {
   fields: PropTypes.object.isRequired,
   initialValues: PropTypes.object.isRequired,
+  showMessageBar: PropTypes.func.isRequired,
+  hideMessageBar: PropTypes.func.isRequired,
 }
 
 export default reduxForm(
