@@ -6,6 +6,7 @@ import Input from '../../components/Input'
 import * as messageBarActionCreators from '../../actions/message-bar'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
+import validationErrorMessage from '../../utils/validation-error-message'
 
 const fields = [
   'deviceName',
@@ -58,28 +59,7 @@ function validate({
 
 class ServicePreferences extends Component {
   componentDidUpdate(){
-    const { fields, showMessageBar, hideMessageBar } = this.props
-    
-    //Check for errors in fields
-    const errors = _.toArray(fields).filter(({error}) => error)
-
-    if(errors.length > 0){
-      const firstError = errors[0].error
-      const hasBeenTouched = errors[0].touched
-
-      //Show error in message bar if it has been touched
-      if(hasBeenTouched){
-        showMessageBar({
-          msg: firstError,
-          ptStyle: 'negative',
-        })
-      }
-
-    }else{
-
-      //No errors have to be shown hide the bar.
-      hideMessageBar()
-    }
+    validationErrorMessage(this.props)
   }
   render(){
     const {
