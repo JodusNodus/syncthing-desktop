@@ -10,8 +10,8 @@ import Progress from 'react-progressbar'
 
 class FolderOverview extends Component {
   render(){
-    const { folders, params, status, devices } = this.props
-    const folder = folders.filter(x => x.id == params.id)[0]
+    const { devices, initialValues, status } = this.props
+    const folder = initialValues
 
     const sharedDevices = folder.devices.map(({deviceID}) => {
       return devices.filter(device => device.deviceID == deviceID)[0]
@@ -27,14 +27,13 @@ class FolderOverview extends Component {
 
 FolderOverview.propTypes = {
   params: PropTypes.object.isRequired,
-  folders: PropTypes.array.isRequired,
   status: PropTypes.object.isRequired,
   devices: PropTypes.array.isRequired,
+  initialValues: PropTypes.object.isRequired,
 }
 
 export default connect(
   state => ({
-    folders: state.folders,
     status: state.systemStatus,
     devices: state.devices,
   })

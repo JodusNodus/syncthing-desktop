@@ -1,4 +1,4 @@
-import { PropTypes, Component } from 'react'
+import { PropTypes, Component, cloneElement } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 
@@ -20,7 +20,7 @@ class Folder extends Component {
           {text: 'Overview', link: `/folder/${params.id}/overview`},
           {text: 'Edit', link: `/folder/${params.id}/edit`},
         ]}, [
-          children,
+          cloneElement(children, {initialValues: folder}),
         ]),
       ])
     }else{
