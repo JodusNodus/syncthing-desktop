@@ -1,7 +1,7 @@
 {
   "name": "syncthing-desktop",
   "productName": "Syncthing Desktop",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A Syncthing GUI for macOs",
   "license": "MIT",
   "repository": "JodusNodus/syncthing-desktop",
