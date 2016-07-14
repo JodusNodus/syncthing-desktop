@@ -61,7 +61,7 @@ class FolderEdit extends Component {
 
     return h('form', {className: styles}, [
       h(Input, {label: 'Label', ...label}),
-      h(Input, {label: 'Rescan Interval (s)', type: 'number', ...rescanIntervalS}),
+      h(Input, {label: 'Rescan Interval (in seconds)', type: 'number', ...rescanIntervalS}),
       h(CheckBox, {label: 'Ignore Permissions', ...ignorePerms}),
       h('div.form-group', [
         h('label', 'Order'),

@@ -8,7 +8,7 @@ import rootReducer from '../reducers'
 import DevTools from '../containers/DevTools'
 import { electronEnhancer } from 'redux-electron-store'
 import { ipcRenderer } from 'electron'
-import routingMiddleware from '../middleware/routing'
+import messageBarMiddleware from '../middleware/message-bar'
 
 const logger = createLogger({
   level: 'info',
@@ -18,7 +18,7 @@ const logger = createLogger({
 const router = routerMiddleware(hashHistory)
 
 const enhancer = compose(
-  applyMiddleware(thunk, router, routingMiddleware, logger),
+  applyMiddleware(thunk, router, messageBarMiddleware, logger),
   electronEnhancer(true),
   DevTools.instrument(),
   persistState(
