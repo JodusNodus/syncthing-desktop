@@ -97,6 +97,9 @@
 
   a {
     text-decoration: none;
+  }
+
+  a:not(.btn):not(.nav-group-item) {
     color: $blue;
     transition: color 0.2s;
     &:hover {

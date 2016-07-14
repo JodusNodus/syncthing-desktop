@@ -7,12 +7,18 @@ import Device from './containers/Device'
 import Folder from './containers/Folder'
 import Overview from './containers/Overview'
 import ClientPreferences from './containers/ClientPreferences'
+import FolderOverview from './containers/FolderOverview'
+import FolderEdit from './containers/FolderEdit'
 
 export default h(Route, {path: '/', component: App}, [
   h(IndexRedirect, {to: 'overview'}),
   h(Route, {path: 'overview', component: Overview}),
   h(Route, {path: 'device/:id', component: Device}),
-  h(Route, {path: 'folder/:id', component: Folder}),
+  h(Route, {path: 'folder/:id', component: Folder}, [
+    h(IndexRedirect, {to: 'overview'}),
+    h(Route, {path: 'overview', component: FolderOverview}),
+    h(Route, {path: 'edit', component: FolderEdit}),
+  ]),
   h(Route, {path: 'preferences/service', component: ServicePreferences}),
   h(Route, {path: 'preferences/client', component: ClientPreferences}),
 ])

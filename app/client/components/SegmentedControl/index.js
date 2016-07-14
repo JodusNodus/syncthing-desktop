@@ -8,7 +8,7 @@ import { styles } from './styles.scss'
 const SegmentedControl = ({children, buttons}) => h('div.segmented-container', {className: styles}, [
   h('div.segmented-controls', [
     h(ButtonGroup, buttons.map(({link, text}) => {
-      return h(Link, {to: link, className: 'btn btn-default', activeClassName: 'btn-primary'}, text)
+      return h(Link, {to: link, className: `btn ${window.location.hash.indexOf(link) >= 0 ? 'btn-primary' : 'btn-default'}`}, text)
     })),
     h('hr'),
   ]),
