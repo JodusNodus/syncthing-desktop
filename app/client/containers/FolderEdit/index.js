@@ -51,7 +51,7 @@ class FolderEdit extends Component {
         h('select.form-control', {...order}, orderOptions.map(
           ({value, text}) => h('option', {value}, text)
         )),
-      ])
+      ]),
     ])
   }
 }
