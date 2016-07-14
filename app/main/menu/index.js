@@ -30,7 +30,7 @@ export default function buildMenu({
       { type: 'separator' },
       ...deviceItems(devices),
       { type: 'separator' },
-      { label: 'Preferences...', click: actions.editConfig, accelerator: 'CommandOrControl+,' },
+      { label: 'Open...', click: actions.editConfig, accelerator: 'CommandOrControl+,' },
       { type: 'separator' },
       ...sharedItems,
     ])
