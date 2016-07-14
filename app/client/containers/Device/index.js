@@ -22,20 +22,24 @@ class Device extends Component {
     const { devices, params, children } = this.props
     this.device = devices.filter(x => x.deviceID == params.id)[0]
 
-    return this.device ? h('div.padded-more', {className: styles}, [ 
-      h('header.page-header', [
-        h('h2', this.device.name),
-        h(Toggle, {state: !this.device.paused, onToggle: this.handleToggle.bind(this)}),
-      ]),
-      h(SegmentedControl, {buttons: [
-        {text: 'Overview', link: `/device/${params.id}/overview`},
-        {text: 'Edit', link: `/device/${params.id}/edit`},
-      ]}, [
-        cloneElement(children, {initialValues: this.device}),
-      ]),
-    ]) : h('div', [
-      h('h1', 'Device not available'),
-    ])
+    if(this.device) {
+      return h('div.padded-more', {className: styles}, [ 
+        h('header.page-header', [
+          h('h2', this.device.name),
+          h(Toggle, {state: !this.device.paused, onToggle: this.handleToggle.bind(this)}),
+        ]),
+        h(SegmentedControl, {buttons: [
+          {text: 'Overview', link: `/device/${params.id}/overview`},
+          {text: 'Edit', link: `/device/${params.id}/edit`},
+        ]}, [
+          cloneElement(children, {initialValues: this.device}),
+        ]),
+      ])
+    }else {
+      return h('div', [
+        h('h1', 'Device not available'),
+      ])
+    }
   }
 }
 

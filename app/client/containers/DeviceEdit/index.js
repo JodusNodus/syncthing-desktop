@@ -3,6 +3,9 @@ import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
 import Input from '../../components/Input'
 import { CheckBox } from 'react-photonkit'
+import * as messageBarActionCreators from '../../actions/message-bar'
+import { bindActionCreators } from 'redux'
+import _ from 'lodash'
 
 const fields = [
   'name',
@@ -12,16 +15,49 @@ const fields = [
 ]
 
 function validate({
-  name,
-  addresses,
-  compression,
-  introducer,
+  name='',
+  addresses=[],
 }) {
   const errors = {}
+
+  //Name
+  if(name.length < 1){
+    errors.name = 'Name is too short'
+  }
+
+  //Addresses
+  if(addresses.length < 1){
+    errors.addresses = 'Atleast one address is required'
+  }
+
   return errors
 }
 
 class DeviceEdit extends Component {
+  componentDidUpdate(){
+    const { fields, showMessageBar, hideMessageBar } = this.props
+    
+    //Check for errors in fields
+    const errors = _.toArray(fields).filter(({error}) => error)
+
+    if(errors.length > 0){
+      const firstError = errors[0].error
+      const hasBeenTouched = errors[0].touched
+
+      //Show error in message bar if it has been touched
+      if(hasBeenTouched){
+        showMessageBar({
+          msg: firstError,
+          ptStyle: 'negative',
+        })
+      }
+
+    }else{
+
+      //No errors have to be shown hide the bar.
+      hideMessageBar()
+    }
+  }
   render(){
     const {
       fields: {
@@ -53,8 +89,10 @@ class DeviceEdit extends Component {
 }
 
 DeviceEdit.propTypes = {
-  fields: PropTypes.array.isRequired,
+  fields: PropTypes.object.isRequired,
   initialValues: PropTypes.object.isRequired,
+  showMessageBar: PropTypes.func.isRequired,
+  hideMessageBar: PropTypes.func.isRequired,
 }
 
 export default reduxForm(
@@ -63,4 +101,6 @@ export default reduxForm(
     fields,
     validate,
   },
+  () => {},
+  dispatch => bindActionCreators(messageBarActionCreators, dispatch)
 )(DeviceEdit)

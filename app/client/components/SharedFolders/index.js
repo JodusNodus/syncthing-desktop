@@ -34,10 +34,10 @@ export default class SharedFolders extends Component {
             ]),
           ]))),
         ]),
-        h(ButtonGroup, [
-          h(Button, {ptStyle: 'default', glyph: 'plus'}),
-          h(Button, {ptStyle: 'default', glyph: 'minus'}),    
-        ]),
+        //h(ButtonGroup, [
+          //h(Button, {ptStyle: 'default', glyph: 'plus'}),
+          //h(Button, {ptStyle: 'default', glyph: 'minus'}),    
+        //]),
       ]),
       h('div.right'),
     ])

@@ -33,10 +33,10 @@ export default class SharedDevices extends Component {
             h('td', `${0}%`),
           ]))),
         ]),
-        h(ButtonGroup, [
-          h(Button, {ptStyle: 'default', glyph: 'plus'}),
-          h(Button, {ptStyle: 'default', glyph: 'minus'}),    
-        ]),
+        //h(ButtonGroup, [
+          //h(Button, {ptStyle: 'default', glyph: 'plus'}),
+          //h(Button, {ptStyle: 'default', glyph: 'minus'}),    
+        //]),
       ]),
       h('div.right'),
     ])
