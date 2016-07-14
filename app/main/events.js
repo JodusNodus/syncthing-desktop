@@ -1,6 +1,6 @@
 import { app, BrowserWindow, powerMonitor, ipcMain } from 'electron'
 import notify from './utils/notify'
-import { getConnections, getMyID } from './actions/system'
+import { getConnections, getMyID, getServiceConfig } from './actions/system'
 import { getFolderStatus } from './actions/db'
 
 export function mainEvents(store) {
@@ -72,6 +72,12 @@ export function stEvents(store){
       store.dispatch(getFolderStatus(state.folders))
       break
     }
+  })
+
+  //Listen for syncthing config changes
+  global.st.on('configSaved', () => {
+    const myID = store.getState().myID
+    store.dispatch(getServiceConfig(myID))
   })
 
   //Check periodicaly for connections
