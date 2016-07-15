@@ -46,13 +46,13 @@ class App extends Component {
     }
   }
   handleSubmit(form){
-    const { location, setClientConfig, setServiceConfig, folders, devices, params } = this.props
+    const { location: { pathname }, setClientConfig, setServiceConfig, folders, devices, params } = this.props
 
-    if(location.pathname == '/preferences/client'){
+    if(pathname == '/preferences/client'){
       setClientConfig(form)
-    }else if(location.pathname == '/preferences/service'){
+    }else if(pathname == '/preferences/service'){
       setServiceConfig('options', form)
-    }else if(location.pathname == `/folder/${params.id}/edit`){
+    }else if(pathname == `/folder/${params.id}/edit`){
 
       const updatedFolders = folders.map(folder => {
         if(folder.id == params.id){
@@ -66,7 +66,7 @@ class App extends Component {
 
       setServiceConfig('folders', updatedFolders)
 
-    }else if(location.pathname == `/device/${params.id}/edit`){
+    }else if(pathname == `/device/${params.id}/edit`){
 
       const updatedDevices = devices.map(device => {
         if(device.deviceID == params.id){
@@ -80,6 +80,14 @@ class App extends Component {
 
       setServiceConfig('devices', updatedDevices)
 
+    }else if(pathname == '/device-add'){
+      const updatedDevices = [
+        ...devices,
+        form,
+      ]
+      //console.log(updatedDevices)
+
+      setServiceConfig('devices', updatedDevices)
     }
   }
   redirect(nextProps={config: {isSuccess: false}}){
@@ -100,7 +108,7 @@ class App extends Component {
       folders,
       devices,
       location: {
-        pathname
+        pathname,
       },
       connected,
       config,

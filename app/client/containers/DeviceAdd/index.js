@@ -18,7 +18,7 @@ const fields = [
 
 const initialValues = {
   name: '',
-  addresses: ['default'],
+  addresses: ['dynamic'],
   compression: 'metadata',
   introducer: false,
 }
