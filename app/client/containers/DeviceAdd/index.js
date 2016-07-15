@@ -30,10 +30,16 @@ function validate({
 }) {
   const errors = {}
 
+  const deviceIDFormat = /([A-Z0-9]{7}\-?){8}/
+
   //Device ID
   if(deviceID.length < 1){
     errors.deviceID = 'Device ID should have at least one character.'
+  }else if(!deviceIDFormat.test(deviceID)){
+    //Test if deviceID is correctly formatted
+    errors.deviceID = 'Device ID should conform to the official format.'
   }
+
 
   //Name
   if(name.length < 1){
@@ -50,7 +56,7 @@ function validate({
 
 class DeviceAdd extends Component {
   componentWillUpdate(newProps){
-    validationErrorMessage(this.props)
+    validationErrorMessage(newProps)
 
     if(!this.props.qrCodeScanModal.qrCode && newProps.qrCodeScanModal.qrCode){
       this.props.fields.deviceID.onChange(newProps.qrCodeScanModal.qrCode)
