@@ -11,10 +11,12 @@ import QRCode from 'qrcode.react'
 import Modal from '../../components/Modal'
 import MessageBar from '../../components/MessageBar'
 import Disconnected from '../../components/Disconnected'
+import QrReader from 'react-qr-reader'
 
 import * as systemActionCreators from '../../../main/actions/system'
 import * as configActionCreators from '../../../main/actions/config'
 import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
+import * as qrCodeScanModalActionCreators from '../../actions/qr-code-scan-modal'
 import './global.scss'
 
 class App extends Component {
@@ -94,9 +96,26 @@ class App extends Component {
     }
   }
   render() {
-    const { folders, devices, location, connected, config, children, qrCodeModal, hideQrCodeModal, messageBar } = this.props
+    const {
+      folders,
+      devices,
+      location: {
+        pathname
+      },
+      connected,
+      config,
+      children,
+      qrCodeModal,
+      hideQrCodeModal,
+      messageBar,
+      qrCodeScanModal,
+      hideQrCodeScanModal,
+      scanQrCode,
+    } = this.props
 
-    const onPreferencePage = location.pathname.indexOf('/preferences/') >= 0 || location.pathname.indexOf('/edit') >= 0
+    const partOf = x => y => x.indexOf(y) >= 0
+
+    const onPreferencePage = partOf(pathname)('/preferences') || partOf(pathname)('/edit') || partOf(pathname)('/device-add')
 
     //An object defining all sections and items in the sidebar
     const sections = {
@@ -121,13 +140,25 @@ class App extends Component {
       h(Content, [
         connected && config.isSuccess && h(Sidebar, sections),
 
-        //Show popover modal for displaying qr codes
+        //Modal for displaying qr codes
         h(Modal, {
           cancelButton: false,
           onDone: hideQrCodeModal,
           visible: qrCodeModal.show,
         }, [
           h(QRCode, {size: 250, value: qrCodeModal.qrCode}),
+        ]),
+
+        //Modal for scanning qr codes
+        h(Modal, {
+          cancelButton: false,
+          onDone: hideQrCodeScanModal,
+          visible: qrCodeScanModal.show,
+        }, [
+          qrCodeScanModal.show && h(QrReader, {handleScan: myID => {
+            scanQrCode(myID)
+            hideQrCodeScanModal()
+          }}),
         ]),
 
         h(Pane, [
@@ -185,6 +216,9 @@ App.propTypes = {
   hideQrCodeModal: PropTypes.func.isRequired,
   messageBar: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
+  qrCodeScanModal: PropTypes.object.isRequired,
+  hideQrCodeScanModal: PropTypes.func.isRequired,
+  scanQrCode: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -196,10 +230,12 @@ export default connect(
     qrCodeModal: state.qrCodeModal,
     form: state.form,
     messageBar: state.messageBar,
+    qrCodeScanModal: state.qrCodeScanModal,
   }),
   dispatch => bindActionCreators({
     ...configActionCreators,
     ...systemActionCreators,
     ...qrCodeModalActionCreators,
+    ...qrCodeScanModalActionCreators,
   }, dispatch)
 )(App)

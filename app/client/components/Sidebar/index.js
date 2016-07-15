@@ -12,7 +12,10 @@ const Sidebar = ({ folders, devices, preferences}) => {
       h(NavTitle, 'Folders'),
       ...folders.map(({key, text, glyph}) => h(NavGroupItem, {glyph, text, link: `/folder/${key}`})),
 
-      h(NavTitle, 'Devices'),
+      h(NavTitle, [
+        'Devices',
+        h(Link, {className: 'icon icon-plus pull-right', to: '/device-add'}),
+      ]),
       ...devices.map(({key, text, glyph}) => h(NavGroupItem, {glyph, text, link: `/device/${key}`})),
 
       h(NavTitle, 'Preferences'),

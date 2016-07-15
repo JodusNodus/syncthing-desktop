@@ -11,6 +11,7 @@ import FolderOverview from './containers/FolderOverview'
 import FolderEdit from './containers/FolderEdit'
 import DeviceOverview from './containers/DeviceOverview'
 import DeviceEdit from './containers/DeviceEdit'
+import DeviceAdd from './containers/DeviceAdd'
 
 export default h(Route, {path: '/', component: App}, [
   h(IndexRedirect, {to: 'overview'}),
@@ -20,6 +21,7 @@ export default h(Route, {path: '/', component: App}, [
     h(Route, {path: 'overview', component: DeviceOverview}),
     h(Route, {path: 'edit', component: DeviceEdit}),
   ]),
+  h(Route, {path: 'device-add', component: DeviceAdd}),
   h(Route, {path: 'folder/:id', component: Folder}, [
     h(IndexRedirect, {to: 'overview'}),
     h(Route, {path: 'overview', component: FolderOverview}),
