@@ -91,6 +91,13 @@ class App extends Component {
       ]
 
       setServiceConfig('devices', updatedDevices)
+    }else if(pathname == '/folder-add'){
+      const updatedFolders = [
+        ...folders,
+        form,
+      ]
+
+      setServiceConfig('folders', updatedFolders)
     }
   }
   handleDelete(){
@@ -151,8 +158,9 @@ class App extends Component {
     } = this.props
 
 
-    const onPreferencePage = partOf(pathname)('/preferences') || partOf(pathname)('/edit') || partOf(pathname)('/device-add')
+    const onPreferencePage = partOf(pathname)('/preferences')
     const onEditPage = pathname == `/device/${id}/edit` || pathname == `/folder/${id}/edit`
+    const onAddPage = pathname == '/folder-add' || pathname == '/device-add'
 
     //An object defining all sections and items in the sidebar
     const sections = {
@@ -208,7 +216,7 @@ class App extends Component {
             visible: messageBar.show,
           }),
 
-          h('div.main-pane', connected ? [
+          h('div.main-pane', (connected || onPreferencePage) ? [
 
             //Clone element with new ref and onSubmit props for submitting forms from parent
             cloneElement(children, {ref: 'child', onSubmit: this.handleSubmit}),
@@ -218,7 +226,7 @@ class App extends Component {
         ]),
 
       ]),
-      onPreferencePage && h(Toolbar, {ptType: 'footer'}, [
+      (onPreferencePage || onEditPage || onAddPage) && h(Toolbar, {ptType: 'footer'}, [
         h(Actionbar, [
           onEditPage && h(Button, {
             text: 'delete',

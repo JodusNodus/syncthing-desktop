@@ -6,21 +6,69 @@ import { CheckBox } from 'react-photonkit'
 import * as messageBarActionCreators from '../../actions/message-bar'
 import { bindActionCreators } from 'redux'
 import validationErrorMessage from '../../utils/validation-error-message'
+import { remote } from 'electron'
+const dialog = remote.dialog
 
 import { styles } from './styles.scss'
 
 const fields = [
+  'id',
   'label',
   'rescanIntervalS',
   'ignorePerms',
   'order',
+  'path',
+  'type',
+  'fileVersioningSelector',
+  'minDiskFreePct',
+  'autoNormalize',
+  'devices',
+  'maxConflicts',
+  'simpleKeep',
+  'staggeredCleanInterval',
+  'staggeredMaxAge',
+  'staggeredVersionsPath',
+  'trashcanClean',
+]
+
+const typeOptions = [
+  {value: 'readwrite', text: 'Normal'},
+  {value: 'write', text: 'Master'},
+]
+
+const orderOptions = [
+  {value: 'random', text: 'Random'},
+  {value: 'alphabetic', text: 'Alphabetic'},
+  {value: 'smallestFirst', text: 'Smallest First'},
+  {value: 'largestFirst', text: 'Largest First'},
+  {value: 'oldestFirst', text: 'Oldest First'},
+]
+
+const versioningOptions = [
+  {value: 'none', text: 'None'},
+  {value: 'trashcan', text: 'Trashcan'},
+  {value: 'simple', text: 'Simple'},
+  {value: 'staggered', text: 'Staggered'},
+  {value: 'external', text: 'External'},
 ]
 
 function validate({
+  id='',
   label='',
+  path='',
   rescanIntervalS='',
+  minDiskFreePct='',
 }) {
   const errors = {}
+  //Path
+  if(path.length < 1){
+    errors.path = 'Path should be a valid directory.'
+  }
+
+  //Folder ID
+  if(id.length < 1){
+    errors.id = 'Folder ID should have at least one character.'
+  }
 
   //Label
   if(label.length < 1) {
@@ -34,6 +82,13 @@ function validate({
     errors.rescanIntervalS = 'Rescan Interval should be larger than 0.'
   }
 
+  //Minimum Disk Free
+  if(isNaN(parseInt(minDiskFreePct))){
+    errors.minDiskFreePct = 'Minimum Disk Free should be a number.'
+  }else if(parseInt(minDiskFreePct) < 1){
+    errors.minDiskFreePct = 'Minimum Disk Free should be larger than 0.'
+  }
+
   return errors
 }
 
@@ -41,34 +96,66 @@ class FolderEdit extends Component {
   componentDidUpdate(){
     validationErrorMessage(this.props)
   }
+  handlePath(){
+    const options = {
+      title: 'Select folder for Syncthing',
+      properties: ['openDirectory'],
+    }
+
+    const handleOpen = paths => {
+      //Use onChange event handler to force change value of the Path input.
+      this.props.fields.path.onChange(paths[0])
+    }
+
+    dialog.showOpenDialog(remote.getCurrentWindow(), options, handleOpen)
+  }
   render(){
     const {
       fields: {
+        id,
         label,
         rescanIntervalS,
         ignorePerms,
         order,
+        path,
+        type,
+        fileVersioningSelector,
+        minDiskFreePct,
       },
     } = this.props
 
-    const orderOptions = [
-      {value: 'random', text: 'Random'},
-      {value: 'alphabetic', text: 'Alphabetic'},
-      {value: 'smallestFirst', text: 'Smallest First'},
-      {value: 'largestFirst', text: 'Largest First'},
-      {value: 'oldestFirst', text: 'Oldest First'},
-    ]
+    const isNewFolder = id.initialValue.length < 1 || label.initialValue.length < 1
 
     return h('form', {className: styles}, [
-      h(Input, {label: 'Label', ...label}),
+      isNewFolder && h(Input, {label: 'Folder ID', placeholder: 'e.g. GXWxf-3zgnU', ...id}),
+      h(Input, {label: 'Label', placeholder: 'e.g. Personal Documents', ...label}),
+      isNewFolder && h(Input, {
+        label: 'Path',
+        placeholder: 'Click to open dialog.',
+        onClick: this.handlePath.bind(this),
+        ...path,
+      }),
+      isNewFolder && h('div.form-group', [
+        h('label', 'Type'),
+        h('select.form-control', {...type}, typeOptions.map(
+          ({value, text}) => h('option', {value}, text)
+        )),
+      ]),
       h(Input, {label: 'Rescan Interval (in seconds)', type: 'number', ...rescanIntervalS}),
       h(CheckBox, {label: 'Ignore Permissions', ...ignorePerms}),
       h('div.form-group', [
-        h('label', 'Order'),
+        h('label', 'File Pull Order'),
         h('select.form-control', {...order}, orderOptions.map(
           ({value, text}) => h('option', {value}, text)
         )),
       ]),
+      h('div.form-group', [
+        h('label', 'File Versioning'),
+        h('select.form-control', {...fileVersioningSelector}, versioningOptions.map(
+          ({value, text}) => h('option', {value}, text)
+        )),
+      ]),
+      h(Input, {label: 'Minimum Disk Free (in percent)', type: 'number', ...minDiskFreePct}),
     ])
   }
 }
