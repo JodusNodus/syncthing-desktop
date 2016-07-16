@@ -1,5 +1,4 @@
-import React from 'react'
-import { Route, IndexRoute, IndexRedirect } from 'react-router'
+import { Route, IndexRedirect } from 'react-router'
 import h from 'react-hyperscript'
 import App from './containers/App'
 import ServicePreferences from './containers/ServicePreferences'
