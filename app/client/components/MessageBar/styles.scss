@@ -10,8 +10,12 @@
   margin-top: (-$height);
   transition: margin-top 0.4s;
 
-  &.visible {
+  &.visible, &.static {
     margin-top: 0;
+  }
+
+  &.static {
+    z-index: 1;
   }
 
   //Styles

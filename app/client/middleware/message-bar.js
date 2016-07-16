@@ -12,6 +12,7 @@ export default function messageBar(store){
       store.dispatch(showMessageBar({
         msg: 'The config was saved succesfully, to take full effect Syncthing needs to restart.',
         ptStyle: 'positive',
+        static: true,
       }))
 
     }

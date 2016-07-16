@@ -2,7 +2,6 @@ import { PropTypes, Component, cloneElement } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { push } from 'react-router-redux'
 
 import Toggle from '../../components/Toggle'
 import SegmentedControl from '../../components/SegmentedControl'

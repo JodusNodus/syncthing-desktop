@@ -199,6 +199,9 @@ class App extends Component {
         ]),
 
         h(Pane, [
+
+          ...messageBar.statics.map(msg => h(MessageBar, {text: msg.msg, staticMsg: true, ...msg})),
+          
           h(MessageBar, {
             text: messageBar.msg,
             ptStyle: messageBar.ptStyle,
