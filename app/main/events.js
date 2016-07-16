@@ -66,7 +66,7 @@ export function stEvents(store){
       store.dispatch(getFolderStatus(state.folders))
       break
     case 'error':
-      notify(`${folder} has an Error`, 'click to see the error in the dashboard.')
+      notify(`${folder} has an Error`, 'click to see the error.')
       break
     case 'idle':
       store.dispatch(getFolderStatus(state.folders))

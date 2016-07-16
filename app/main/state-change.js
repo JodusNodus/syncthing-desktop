@@ -13,7 +13,7 @@ export default function stateHandler({store, tray}){
     const newState = store.getState()
 
     //Check if config was loaded
-    if(!previousState.config.isSuccess && newState.config.isSuccess){
+    if((!previousState.config.isSuccess && newState.config.isSuccess) || !_.isEqual(previousState.config.config, newState.config.config)){
       //Initialize syncthing connection
       global.st = new Syncthing({
         ...newState.config.config,
