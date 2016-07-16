@@ -7,7 +7,7 @@ import SegmentedControl from '../../components/SegmentedControl'
 
 class Folder extends Component {
   render(){
-    const { folders, params, children, onSubmit } = this.props
+    const { folders, params, children, onSubmit, history } = this.props
     const folder = folders.filter(x => x.id == params.id)[0]
 
     if(folder){
@@ -24,9 +24,8 @@ class Folder extends Component {
         ]),
       ])
     }else{
-      return h('div', [
-        h('h1', 'Folder not available'),
-      ])
+      history.push('/')
+      return h('div')
     }
   }
 }
@@ -36,6 +35,7 @@ Folder.propTypes = {
   folders: PropTypes.array.isRequired,
   children: PropTypes.element.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 }
 
 export default connect(

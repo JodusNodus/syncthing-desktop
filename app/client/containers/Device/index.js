@@ -2,6 +2,7 @@ import { PropTypes, Component, cloneElement } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { push } from 'react-router-redux'
 
 import Toggle from '../../components/Toggle'
 import SegmentedControl from '../../components/SegmentedControl'
@@ -19,7 +20,7 @@ class Device extends Component {
     }
   }
   render(){
-    const { devices, params, children, onSubmit } = this.props
+    const { devices, params, children, onSubmit, history } = this.props
     this.device = devices.filter(x => x.deviceID == params.id)[0]
 
     if(this.device) {
@@ -36,9 +37,8 @@ class Device extends Component {
         ]),
       ])
     }else {
-      return h('div', [
-        h('h1', 'Device not available'),
-      ])
+      history.push('/')
+      return h('div')
     }
   }
 }
@@ -49,6 +49,8 @@ Device.propTypes = {
   resumeDevice: PropTypes.func.isRequired,
   pauseDevice: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 }
 
 export default connect(
