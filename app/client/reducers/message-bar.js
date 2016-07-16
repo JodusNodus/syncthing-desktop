@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 const initialState = {
   msg: '',
   ptStyle: 'default',
@@ -11,10 +13,10 @@ export default function messageBar(state=initialState, {type, payload}) {
       if(payload.static){
       return {
         ...state,
-        statics: [
+        statics: _.uniqBy([
           ...state.statics,
           payload,
-        ],
+        ], x => JSON.stringify(x)),
       }
     }else {
       return {
