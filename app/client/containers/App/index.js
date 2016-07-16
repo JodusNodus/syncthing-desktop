@@ -1,4 +1,5 @@
 import { ipcRenderer, remote } from 'electron'
+const dialog = remote.dialog
 import h from 'react-hyperscript'
 import { Component, PropTypes, cloneElement } from 'react'
 import Sidebar from '../../components/Sidebar'
@@ -19,12 +20,15 @@ import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
 import * as qrCodeScanModalActionCreators from '../../actions/qr-code-scan-modal'
 import './global.scss'
 
+const partOf = x => y => x.indexOf(y) >= 0
+
 class App extends Component {
   constructor(props){
     super(props)
     this.redirect = this.redirect.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleSubmitButton = this.handleSubmitButton.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
   componentDidMount(){
     //Let main proccess know that the window is ready
@@ -85,10 +89,32 @@ class App extends Component {
         ...devices,
         form,
       ]
-      //console.log(updatedDevices)
 
       setServiceConfig('devices', updatedDevices)
     }
+  }
+  handleDelete(){
+    const { params: { id }, location: { pathname }, devices, folders, setServiceConfig } = this.props
+
+    const type = pathname == `/device/${id}/edit` ? 'devices' : 'folders' 
+
+    const object = type == 'devices' ? devices : folders
+
+    const item = object.filter(x => x.deviceID == id || x.id == id)[0]
+
+    const buttons = ['Cancel', 'Delete']
+
+    dialog.showMessageBox({
+      browserWindow: remote.getCurrentWindow(),
+      type: 'warning',
+      buttons,
+      message: `Are you sure you want to delete ${item.label || item.name} from ${type}?`,
+    }, i => {
+      if(buttons[i] == 'Delete'){
+        const updatedItems = this.props[type].filter(x => x.deviceID != id && x.id != id)
+        setServiceConfig(type, updatedItems)
+      }
+    })
   }
   redirect(nextProps={config: {isSuccess: false}}){
     const { config, location } = this.props
@@ -119,11 +145,14 @@ class App extends Component {
       qrCodeScanModal,
       hideQrCodeScanModal,
       scanQrCode,
+      params: {
+        id,
+      },
     } = this.props
 
-    const partOf = x => y => x.indexOf(y) >= 0
 
     const onPreferencePage = partOf(pathname)('/preferences') || partOf(pathname)('/edit') || partOf(pathname)('/device-add')
+    const onEditPage = pathname == `/device/${id}/edit` || pathname == `/folder/${id}/edit`
 
     //An object defining all sections and items in the sidebar
     const sections = {
@@ -188,6 +217,11 @@ class App extends Component {
       ]),
       onPreferencePage && h(Toolbar, {ptType: 'footer'}, [
         h(Actionbar, [
+          onEditPage && h(Button, {
+            text: 'delete',
+            ptStyle: 'negative',
+            onClick: this.handleDelete,
+          }),
           h(Button, {
             text: 'save',
             ptStyle: 'primary',
