@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react'
+import { PropTypes } from 'react'
 import { Link } from 'react-router'
 import h from 'react-hyperscript'
 import { Pane, NavGroup, NavTitle } from 'react-photonkit'
@@ -9,12 +9,15 @@ const Sidebar = ({ folders, devices, preferences}) => {
     h(NavGroup, [
       h(NavGroupItem, {glyph: 'layout', text: 'Overview', link: '/overview'}),
 
-      h(NavTitle, 'Folders'),
+      h(NavTitle, [
+        'Folders',
+        h(Link, {className: 'fa fa-plus pull-right', to: '/folder-add'}),
+      ]),
       ...folders.map(({key, text, glyph}) => h(NavGroupItem, {glyph, text, link: `/folder/${key}`})),
 
       h(NavTitle, [
         'Devices',
-        h(Link, {className: 'icon icon-plus pull-right', to: '/device-add'}),
+        h(Link, {className: 'fa fa-plus pull-right', to: '/device-add'}),
       ]),
       ...devices.map(({key, text, glyph}) => h(NavGroupItem, {glyph, text, link: `/device/${key}`})),
 

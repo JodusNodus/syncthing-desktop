@@ -14,6 +14,16 @@
   .sidebar {
     padding-top: 35px;
     -webkit-app-region: drag;
+
+    .nav-group-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+
+      & > a {
+        color: inherit !important;
+      }
+    }
   }
 
   .window-content > .pane{
