@@ -7,6 +7,7 @@ import * as messageBarActionCreators from '../../actions/message-bar'
 import { bindActionCreators } from 'redux'
 import validationErrorMessage from '../../utils/validation-error-message'
 import { remote } from 'electron'
+import _ from 'lodash'
 const dialog = remote.dialog
 
 import { styles } from './styles.scss'
@@ -93,6 +94,10 @@ function validate({
 }
 
 class FolderEdit extends Component {
+  shouldComponentUpdate(newProps){
+    //Don't update when devices has changed (wich happens periodicaly)
+    return !_.isEqual(this.props.fields, newProps.fields)
+  }
   componentDidUpdate(){
     validationErrorMessage(this.props)
   }
@@ -122,6 +127,7 @@ class FolderEdit extends Component {
         fileVersioningSelector,
         minDiskFreePct,
       },
+      devices,
     } = this.props
 
     const isNewFolder = id.initialValue.length < 1 || label.initialValue.length < 1 || path.initialValue.length < 1
@@ -135,6 +141,7 @@ class FolderEdit extends Component {
         onClick: this.handlePath.bind(this),
         ...path,
       }),
+      h(SharedDevices, {devices, devicesField: this.props.fields.devices}),
       isNewFolder && h('div.form-group', [
         h('label', 'Type'),
         h('select.form-control', {...type}, typeOptions.map(
@@ -165,6 +172,7 @@ FolderEdit.propTypes = {
   initialValues: PropTypes.object.isRequired,
   showMessageBar: PropTypes.func.isRequired,
   hideMessageBar: PropTypes.func.isRequired,
+  devices: PropTypes.array.isRequired,
 }
 
 export default reduxForm(
@@ -173,6 +181,36 @@ export default reduxForm(
     fields,
     validate,
   },
-  () => {},
+  state => ({
+    devices: state.devices,
+  }),
   dispatch => bindActionCreators(messageBarActionCreators, dispatch)
 )(FolderEdit)
+
+
+const SharedDevices = ({devices, devicesField}) => {
+
+  const onChange = e => {
+    const deviceID = e.target.id
+    const checked = e.target.checked
+
+    const updatedDevices = checked ? [
+      ...devicesField.value,
+      {deviceID},
+    ] : devicesField.value.filter(device => device.deviceID !== deviceID)
+
+    devicesField.onChange(updatedDevices)
+  }
+
+  return h('div.form-group', [
+    h('label', 'Shared Devices'),
+    h('div.shared-devices', devices.map(({name, deviceID}) => {
+      return h(CheckBox, {
+        label: name,
+        id: deviceID,
+        onChange,
+        checked: devicesField.value.filter(device => device.deviceID == deviceID).length > 0,
+      })
+    })),
+  ])
+}

@@ -1,2 +1,12 @@
 :local(.styles){
+  .shared-devices {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    & > .checkbox {
+      margin: 5px 0;
+      width: 50%;
+    }
+  }
 }
