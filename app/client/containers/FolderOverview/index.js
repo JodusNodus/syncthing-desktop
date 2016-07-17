@@ -16,7 +16,11 @@ class FolderOverview extends Component {
     this.getDeviceCompletion.apply(this)
   }
   componentWillUpdate(newProps){
-    if(this.props.initialValues.id !== newProps.initialValues.id){
+    const { initialValues: { id, status } } = this.props
+    const isNewFolder = id !== newProps.initialValues.id
+    const isDoneSyncing = status.state == 'syncing' && newProps.initialValues.status.state == 'idle'
+
+    if(isNewFolder || isDoneSyncing){
       this.getDeviceCompletion.apply(this)
     }
   }
