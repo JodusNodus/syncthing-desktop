@@ -1,0 +1,15 @@
+:local(.styles) {
+  align-items: baseline;
+  display: flex;
+  flex-direction: row;
+
+  &.online {
+    padding-left: 0;
+
+    .icon.icon-record {
+      font-size: 12px;
+      margin-left: 4px;
+      margin-right: 2px;
+    }
+  }
+}
