@@ -1,17 +1,10 @@
-import React, { PropTypes, Component } from 'react'
+import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
-import { Table, ButtonGroup, Button } from 'react-photonkit'
+import { Table } from 'react-photonkit'
 import Size from '../Size'
 
 export default class SharedFolders extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      activeItem: null,
-    }
-  }
   render(){
-    const { activeItem } = this.state
     const { folders } = this.props
 
     return h('div.section-item.shared-folders', [
@@ -24,20 +17,13 @@ export default class SharedFolders extends Component {
               h('th', 'Size'),
             ]),
           ]),
-          h('tbody', folders.map(({label, id, status}) => h('tr', {
-            className: activeItem == id ? 'active' : '',
-            onClick: () => this.setState({ activeItem: id }),
-          }, [
+          h('tbody', folders.map(({label, id, status}) => h('tr', [
             h('td', label || id),
             h('td', [
               h(Size, {value: status ? status.globalBytes : 0}),
             ]),
           ]))),
         ]),
-        //h(ButtonGroup, [
-          //h(Button, {ptStyle: 'default', glyph: 'plus'}),
-          //h(Button, {ptStyle: 'default', glyph: 'minus'}),    
-        //]),
       ]),
       h('div.right'),
     ])

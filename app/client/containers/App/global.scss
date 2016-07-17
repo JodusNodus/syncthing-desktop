@@ -88,10 +88,6 @@
 
   table {
     border: 1px solid #ddd;
-    & > tbody > tr.active {
-      background-color: #116cd6 !important;
-      color: #fff !important;
-    }
   }
 
 
