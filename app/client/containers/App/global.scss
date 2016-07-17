@@ -11,6 +11,26 @@
     -webkit-app-region: drag;
   }
 
+  .toolbar-footer .toolbar-actions {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+
+    &:before,
+    &:after {
+      content: normal;
+    }
+
+    .btn {
+      order: 1;
+    }
+
+    .pull-right {
+      float: none;
+      order: 0;
+    }
+  }
+
   .sidebar {
     padding-top: 35px;
     -webkit-app-region: drag;
