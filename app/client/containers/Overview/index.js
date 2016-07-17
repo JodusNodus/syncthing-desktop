@@ -8,11 +8,19 @@ import moment from 'moment'
 import { clipboard } from 'electron'
 
 import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
+import * as messageBarActionCreators from '../../actions/message-bar'
 
 import Size from '../../components/Size'
 import { styles } from './styles.scss'
 
 class Overview extends Component {
+  handleCopy(myID){
+    clipboard.writeText(myID)   
+    this.props.showMessageBar({
+      msg: 'Device ID was copied to the clipboard.',
+      ptStyle: 'positive',
+    })
+  }
   render(){
     const { status, version, showQrCodeModal } = this.props
 
@@ -21,7 +29,7 @@ class Overview extends Component {
         h('h2', 'Overview'),
       ]),
       h('hr'),
-      h(DeviceID, {onQrCode: showQrCodeModal, ...status}),
+      h(DeviceID, {onQrCode: showQrCodeModal, onCopy: this.handleCopy.bind(this) , ...status}),
       status && h(CpuUsage, status),
       status && h(RamUsage, status),
       status && h(Uptime, status),
@@ -34,6 +42,7 @@ Overview.propTypes = {
   status: PropTypes.object.isRequired,
   version: PropTypes.object.isRequired,
   showQrCodeModal: PropTypes.func.isRequired,
+  showMessageBar: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -41,7 +50,10 @@ export default connect(
     status: state.systemStatus,
     version: state.version,
   }),
-  dispatch => bindActionCreators(qrCodeModalActionCreators, dispatch)
+  dispatch => bindActionCreators({
+    ...qrCodeModalActionCreators,
+    ...messageBarActionCreators,
+  }, dispatch)
 )(Overview)
 
 const CpuUsage = ({cpuPercent}) => h('div.section-item.cpu-usage', [
@@ -58,11 +70,11 @@ const RamUsage = ({sys}) => h('div.section-item.ram-usage', [
   h('a.right'),
 ])
 
-const DeviceID = ({myID, onQrCode}) => h('div.section-item.my-id', [
+const DeviceID = ({myID, onQrCode, onCopy}) => h('div.section-item.my-id', [
   h('p.left', 'My ID:'),
   h('p.center', myID),
   h('div.right', [
-    h('a', {onClick: () => clipboard.writeText(myID)}, 'Copy'),
+    h('a', {onClick: () => onCopy(myID)}, 'Copy'),
     h('a', {onClick: () => onQrCode(myID)}, 'QR Code'),   
   ]),
 ])
