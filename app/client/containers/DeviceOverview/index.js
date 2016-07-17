@@ -3,10 +3,19 @@ import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { clipboard } from 'electron'
 import moment from 'moment'
+import { bindActionCreators } from 'redux'
 
+import * as messageBarActionCreators from '../../actions/message-bar'
 import SharedFolders from '../../components/SharedFolders'
 
 class DeviceOverview extends Component {
+  handleCopy(myID){
+    clipboard.writeText(myID)   
+    this.props.showMessageBar({
+      msg: 'Device ID was copied to the clipboard.',
+      ptStyle: 'positive',
+    })
+  }
   render(){
     const { folders, initialValues } = this.props
     const device = initialValues
@@ -16,7 +25,7 @@ class DeviceOverview extends Component {
     })
 
     return h('div', [ 
-      h(DeviceID, device),
+      h(DeviceID, {onCopy: this.handleCopy.bind(this), ...device}),
       h(Status, device),
       !device.online && device.lastSeen && h(LastSeen, device),
       h(SharedFolders, {folders: sharedFolders}),
@@ -27,20 +36,22 @@ class DeviceOverview extends Component {
 DeviceOverview.propTypes = {
   folders: PropTypes.array.isRequired,
   initialValues: PropTypes.object.isRequired,
+  showMessageBar: PropTypes.func.isRequired,
 }
 
 export default connect(
   state => ({
     folders: state.folders,
   }),
+  dispatch => bindActionCreators(messageBarActionCreators, dispatch),
 )(DeviceOverview)
 
-const DeviceID = ({deviceID}) => h('div.section-item.device-id', [
+const DeviceID = ({deviceID, onCopy}) => h('div.section-item.device-id', [
   h('p.left', 'Device ID:'),
   h('p.center', [
     deviceID,
   ]),
-  h('a.right', {onClick: () => clipboard.writeText(deviceID)}, 'Copy'),
+  h('a.right', {onClick: () => onCopy(deviceID)}, 'Copy'),
 ])
 
 const Status = ({online, address}) => h('div.section-item', [
