@@ -2,19 +2,43 @@ import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { shell } from 'electron'
+import { bindActionCreators } from 'redux'
 
 import Size from '../../components/Size'
 import SharedDevices from '../../components/SharedDevices'
 import { styles } from './styles.scss'
 import Progress from 'react-progressbar'
 
+import * as dbActionCreators from '../../../main/actions/db'
+
 class FolderOverview extends Component {
+  componentDidMount(){
+    this.getDeviceCompletion.apply(this)
+  }
+  componentWillUpdate(newProps){
+    if(this.props.initialValues.id !== newProps.initialValues.id){
+      this.getDeviceCompletion.apply(this)
+    }
+  }
+  getDeviceCompletion(){
+    const { initialValues, getDeviceFolderCompletion } = this.props
+
+    const sharedDevices = initialValues.devices.filter(x => x)
+
+    getDeviceFolderCompletion(sharedDevices, initialValues.id)
+  }
   render(){
     const { devices, initialValues, status } = this.props
     const folder = initialValues
 
-    const sharedDevices = folder.devices.map(({deviceID}) => {
-      return devices.filter(device => device.deviceID == deviceID)[0]
+    const sharedDevices = folder.devices.map(({deviceID, completion}) => {
+      const device = devices.filter(device => device.deviceID == deviceID)[0]
+      if(device){
+        return {
+          ...device,
+          completion,
+        }
+      }
     }).filter(x => x)
 
     return h('div', {className: styles}, [
@@ -30,13 +54,15 @@ FolderOverview.propTypes = {
   status: PropTypes.object.isRequired,
   devices: PropTypes.array.isRequired,
   initialValues: PropTypes.object.isRequired,
+  getDeviceFolderCompletion: PropTypes.func.isRequired,
 }
 
 export default connect(
   state => ({
     status: state.systemStatus,
     devices: state.devices,
-  })
+  }),
+  dispatch => bindActionCreators(dbActionCreators, dispatch),
 )(FolderOverview)
 
 const Path = ({path, home}) => h('div.section-item', [

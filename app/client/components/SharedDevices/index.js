@@ -13,12 +13,12 @@ export default class SharedDevices extends Component {
           h('thead', [
             h('tr', [
               h('th', 'Name'),
-              h('th', 'Sync'),
+              h('th', 'Completion'),
             ]),
           ]),
-          h('tbody', devices.map(({name, deviceID}) => h('tr', [
+          h('tbody', devices.map(({name, deviceID, completion=0}) => h('tr', [
             h('td', name),
-            h('td', `${0}%`),
+            h('td', `${Math.round(completion)}%`),
           ]))),
         ]),
       ]),
