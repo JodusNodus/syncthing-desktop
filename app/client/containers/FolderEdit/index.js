@@ -85,8 +85,8 @@ function validate({
   //Minimum Disk Free
   if(isNaN(parseInt(minDiskFreePct))){
     errors.minDiskFreePct = 'Minimum Disk Free should be a number.'
-  }else if(parseInt(minDiskFreePct) < 1){
-    errors.minDiskFreePct = 'Minimum Disk Free should be larger than 0.'
+  }else if(parseInt(minDiskFreePct) > 100 || parseInt(minDiskFreePct) < 0){
+    errors.minDiskFreePct = 'Minimum Disk Free should be percent value between 0 and 100.'
   }
 
   return errors
