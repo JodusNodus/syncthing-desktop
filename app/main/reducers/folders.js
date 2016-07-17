@@ -10,6 +10,20 @@ export default function folders(state = [], {type, payload, id, ...action}) {
         return folder
       }
     })
+    case 'FOLDER_STATE_CHANGE':
+      return state.map(folder => {
+      if(id == folder.id && folder.status){
+        return {
+          ...folder,
+          status: {
+            ...folder.status,
+            state: payload,
+          },
+        }
+      }else{
+        return folder
+      }
+    })
     case 'DEVICE_FOLDER_COMPLETION_GET_SUCCESS':
       return state.map(folder => {
       if(folder.id == action.folder){

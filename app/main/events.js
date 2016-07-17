@@ -47,31 +47,26 @@ export function stEvents(store){
     notify(`Connected to ${name}`, `on ${addr}`)
     store.dispatch(getConnections())
   })
+
   //Listen for devices disconnecting
   global.st.on('deviceDisconnected', ({id}) => {
     const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]
     notify(`${name} disconnected`, 'Syncing to this device is paused')
     store.dispatch(getConnections())
   })
-  //Listen for errors
+
+  //Listen for connection errors
   global.st.on('error', () => {
     store.dispatch({ type: 'CONNECTION_ERROR' })
   })
+
   //Listen for folder state changes
   global.st.on('stateChanged', ({ folder, to }) => {
-    const state = store.getState()
-    switch (to) {
-    case 'syncing':
-      notify('Syncthing', `${folder} is Syncing`)
-      store.dispatch(getFolderStatus(state.folders))
-      break
-    case 'error':
-      notify(`${folder} has an Error`, 'click to see the error.')
-      break
-    case 'idle':
-      store.dispatch(getFolderStatus(state.folders))
-      break
-    }
+    store.dispatch({
+      type: 'FOLDER_STATE_CHANGE',
+      payload: to,
+      id: folder,
+    })
   })
 
   //Listen for syncthing config changes
@@ -80,11 +75,34 @@ export function stEvents(store){
     store.dispatch(getServiceConfig(myID))
   })
 
+  //Listen for local status changes to folder
+  global.st.on('folderSummary', ({folder, summary}) => {
+    store.dispatch({
+      type: 'FOLDER_STATUS_GET_SUCCESS',
+      id: folder,
+      payload: summary,
+    })
+  })
+
+  //Listen for changes in completion
+  global.st.on('folderCompletion', ({completion, folder, device}) => { 
+    store.dispatch({
+      type: 'DEVICE_FOLDER_COMPLETION_GET_SUCCESS',
+      payload: completion,
+      folder,
+      device,
+    })
+  })
+
+  //Listen for new folders shared with the current device
+  //global.st.on('folderRejected', ({device, folder, folderLabel}) => {
+    //notify('New Folder', `${folderLabel || folder} was shared with this device.`)
+  //})
+
   //Check periodicaly for connections
   setInterval(() => {
     const state = store.getState()
     if(state.connected && state.power == 'awake'){
-      store.dispatch(getConnections())
       store.dispatch(getMyID())
     }
   }, 2000)
