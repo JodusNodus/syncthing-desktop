@@ -18,6 +18,7 @@ import * as systemActionCreators from '../../../main/actions/system'
 import * as configActionCreators from '../../../main/actions/config'
 import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
 import * as qrCodeScanModalActionCreators from '../../actions/qr-code-scan-modal'
+import * as folderRejectedActionCreators from '../../../main/actions/folder-rejected'
 import './global.scss'
 
 const partOf = x => y => x.indexOf(y) >= 0
@@ -41,6 +42,28 @@ class App extends Component {
   }
   componentWillUpdate(nextProps){
     this.redirect(nextProps)
+
+    const { devices, folderRejected, history, acceptFolderRejected } = nextProps
+
+    if(!this.props.folderRejected.folder && folderRejected.folder){
+      const deviceName = devices.filter(device => device.deviceID == folderRejected.device)[0].name
+
+      const buttons = ['Accept', 'Decline']
+
+      dialog.showMessageBox({
+        browserWindow: remote.getCurrentWindow(),
+        type: 'warning',
+        buttons,
+        title: 'New Folder',
+        message: `${deviceName} wants to share folder '${folderRejected.folderLabel}' ?`,
+        detail: `Would you like to add the folder with an ID of '${folderRejected.folder}' localy?`,
+      }, i => {
+        if(buttons[i] == 'Accept'){
+          acceptFolderRejected()
+          history.push('/folder-add')
+        }
+      })
+    }
   }
   handleSubmitButton(){
     if(this.refs.child.submit){
@@ -272,6 +295,8 @@ App.propTypes = {
   qrCodeScanModal: PropTypes.object.isRequired,
   hideQrCodeScanModal: PropTypes.func.isRequired,
   scanQrCode: PropTypes.func.isRequired,
+  folderRejected: PropTypes.object.isRequired,
+  acceptFolderRejected: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -284,11 +309,13 @@ export default connect(
     form: state.form,
     messageBar: state.messageBar,
     qrCodeScanModal: state.qrCodeScanModal,
+    folderRejected: state.folderRejected,
   }),
   dispatch => bindActionCreators({
     ...configActionCreators,
     ...systemActionCreators,
     ...qrCodeModalActionCreators,
     ...qrCodeScanModalActionCreators,
+    ...folderRejectedActionCreators,
   }, dispatch)
 )(App)

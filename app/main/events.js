@@ -1,7 +1,7 @@
 import { app, BrowserWindow, powerMonitor, ipcMain } from 'electron'
 import notify from './utils/notify'
 import { getConnections, getMyID, getServiceConfig } from './actions/system'
-import { getFolderStatus } from './actions/db'
+import { showFolderRejected } from './actions/folder-rejected'
 
 export function mainEvents(store) {
 
@@ -95,9 +95,10 @@ export function stEvents(store){
   })
 
   //Listen for new folders shared with the current device
-  //global.st.on('folderRejected', ({device, folder, folderLabel}) => {
-    //notify('New Folder', `${folderLabel || folder} was shared with this device.`)
-  //})
+  global.st.on('folderRejected', payload => {
+    store.dispatch(showFolderRejected(payload))
+    //notify(payload.device, `wants to share the folder ${payload.folderLabel || payload.folder} with you.`)
+  })
 
   //Check periodicaly for connections
   setInterval(() => {

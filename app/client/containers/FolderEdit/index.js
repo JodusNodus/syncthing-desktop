@@ -124,7 +124,7 @@ class FolderEdit extends Component {
       },
     } = this.props
 
-    const isNewFolder = id.initialValue.length < 1 || label.initialValue.length < 1
+    const isNewFolder = id.initialValue.length < 1 || label.initialValue.length < 1 || path.initialValue.length < 1
 
     return h('form', {className: styles}, [
       isNewFolder && h(Input, {label: 'Folder ID', placeholder: 'e.g. GXWxf-3zgnU', ...id}),

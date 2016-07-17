@@ -2,12 +2,19 @@ import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import randomString from 'randomstring'
+import { bindActionCreators } from 'redux'
 
 import FolderEdit from '../../containers/FolderEdit'
+import * as folderRejectedActionCreators from '../../../main/actions/folder-rejected'
 
 class FolderAdd extends Component {
+  componentWillUnmount(){
+    if(this.props.folderRejected.accepted){
+      this.props.clearFolderRejected()
+    }
+  } 
   render(){
-    const { onSubmit, myID } = this.props
+    const { onSubmit, myID, folderRejected: {accepted, folder, device, folderLabel} } = this.props
 
     const randomID = randomString.generate(10)
 
@@ -17,8 +24,8 @@ class FolderAdd extends Component {
     ].join('-')
 
     const initialValues = {
-      id: formattedRandomID,
-      label: '',
+      id: accepted ? folder : formattedRandomID,
+      label: accepted ? folderLabel : '',
       rescanIntervalS: 60,
       ignorePerms: false,
       order: 'random',
@@ -29,6 +36,7 @@ class FolderAdd extends Component {
       autoNormalize: true,
       devices: [
         {deviceID: myID},
+        accepted && {deviceID: device},
       ],
       maxConflicts: 10,
       simpleKeep: 5,
@@ -51,11 +59,16 @@ class FolderAdd extends Component {
 FolderAdd.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   myID: PropTypes.string.isRequired,
+  folderRejected: PropTypes.object.isRequired,
+  clearFolderRejected: PropTypes.func.isRequired,
 }
 
 export default connect(
-  state => ({myID: state.myID}),
-  undefined,
+  state => ({
+    myID: state.myID,
+    folderRejected: state.folderRejected,
+  }),
+  dispatch => bindActionCreators(folderRejectedActionCreators, dispatch),
   undefined,
   {withRef: true},
 )(FolderAdd)
