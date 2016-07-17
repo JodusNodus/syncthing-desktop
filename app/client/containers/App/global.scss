@@ -125,10 +125,27 @@
   .btn {
     padding: 0 13px;
     line-height: 19px;
+    text-transform: capitalize;
 
     &.btn-default {
       background: #fff;
     }
+
+    &.btn-primary {
+      background: $blue;
+      border: $blue;
+    }
+
+    &.btn-negative {
+      background: $red;
+      border: $red;
+    }
+
+    &.btn-positive {
+      background: $green;
+      border: $green;
+    }
+
   }
 
   .btn-group .btn {
