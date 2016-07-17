@@ -196,8 +196,8 @@ class App extends Component {
 
         //Modal for scanning qr codes
         h(Modal, {
-          cancelButton: false,
-          onDone: hideQrCodeScanModal,
+          doneButton: false,
+          onCancel: hideQrCodeScanModal,
           visible: qrCodeScanModal.show,
         }, [
           qrCodeScanModal.show && h(QrReader, {handleScan: myID => {

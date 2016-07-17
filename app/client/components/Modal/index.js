@@ -4,7 +4,7 @@ import { Button } from 'react-photonkit'
 
 import { styles } from './styles.scss'
 
-const Modal = ({ children, onCancel, onDone, visible, cancelButton=true }) =>
+const Modal = ({ children, onCancel, onDone, visible, doneButton=true, cancelButton=true }) =>
 h('div.modal-container', {className: `${styles} ${visible && 'visible'}`}, [
   h('div.overlay'),
   h('div.modal', [
@@ -13,7 +13,7 @@ h('div.modal-container', {className: `${styles} ${visible && 'visible'}`}, [
     ]),
     h('div.options', [
       cancelButton && h(Button, {text: 'Cancel', onClick: onCancel}),
-      h(Button, {text: 'Done', ptStyle: 'primary', onClick: onDone}),
+      doneButton && h(Button, {text: 'Done', ptStyle: 'primary', onClick: onDone}),
     ]),
   ]),
 ])
@@ -21,9 +21,10 @@ h('div.modal-container', {className: `${styles} ${visible && 'visible'}`}, [
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
   onCancel: PropTypes.func,
-  onDone: PropTypes.func.isRequired,
+  onDone: PropTypes.func,
   visible: PropTypes.bool.isRequired,
   cancelButton: PropTypes.bool,
+  doneButton: PropTypes.bool,
 }
 
 export default Modal
