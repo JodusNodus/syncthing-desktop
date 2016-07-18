@@ -1,19 +1,13 @@
 
-export function showFolderRejected(payload) {
-  return {
-    type: 'FOLDER_REJECTED',
-    payload,
-  }
-}
+export const showFolderRejected = payload => ({
+  type: 'FOLDER_REJECTED',
+  payload,
+})
 
-export function acceptFolderRejected(){
-  return {
-    type: 'FOLDER_REJECTED_ACCEPT',
-  }
-}
+export const acceptFolderRejected = () => ({
+  type: 'FOLDER_REJECTED_ACCEPT',
+})
 
-export function clearFolderRejected(){
-  return {
-    type: 'FOLDER_REJECTED_CLEAR',
-  }
-}
+export const clearFolderRejected = () => ({
+  type: 'FOLDER_REJECTED_CLEAR',
+})

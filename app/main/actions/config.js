@@ -1,7 +1,6 @@
 import storage from 'electron-json-storage'
 
-export function getClientConfig() {
-  return dispatch =>
+export const getClientConfig = () => dispatch =>
   storage.get('config', (error, config) => {
     if(!error && config.apiKey){
       dispatch({
@@ -15,21 +14,18 @@ export function getClientConfig() {
       })
     }
   })
-}
 
-export function setClientConfig(config) {
-  return dispatch => 
-  storage.set('config', config, error => {
-    if(!error){
-      dispatch({
-        type: 'CLIENT_CONFIG_SET_SUCCESS',
-        payload: config,
-      })
-    }else{
-      dispatch({
-        type: 'CLIENT_CONFIG_SET_FAILED',
-        error,
-      })
-    }
-  })
-}
+export const setClientConfig = config => dispatch => 
+storage.set('config', config, error => {
+  if(!error){
+    dispatch({
+      type: 'CLIENT_CONFIG_SET_SUCCESS',
+      payload: config,
+    })
+  }else{
+    dispatch({
+      type: 'CLIENT_CONFIG_SET_FAILED',
+      error,
+    })
+  }
+})

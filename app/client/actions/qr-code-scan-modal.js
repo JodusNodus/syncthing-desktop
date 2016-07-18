@@ -1,18 +1,12 @@
-export function showQrCodeScanModal() {
-  return {
-    type: 'QR_CODE_SCAN_MODAL_SHOW',
-  }
-}
+export const showQrCodeScanModal = () => ({
+  type: 'QR_CODE_SCAN_MODAL_SHOW',
+})
 
-export function hideQrCodeScanModal() {
-  return {
-    type: 'QR_CODE_SCAN_MODAL_HIDE',
-  }
-}
+export const hideQrCodeScanModal = () => ({
+  type: 'QR_CODE_SCAN_MODAL_HIDE',
+})
 
-export function scanQrCode(qrCode){
-  return {
-    type: 'QR_CODE_SCAN',
-    payload: qrCode,
-  }
-}
+export const scanQrCode = qrCode => ({
+  type: 'QR_CODE_SCAN',
+  payload: qrCode,
+})

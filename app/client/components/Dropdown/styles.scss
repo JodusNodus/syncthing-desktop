@@ -1,0 +1,29 @@
+:local(.styles){
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  .dropdown {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background: #f0f0f0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #aeaeae;
+    border-radius: 6px;
+    overflow: hidden;
+    //transform: translateX(-100%);
+
+    a {
+      padding: 2px 12px;
+      font-size: 1em;
+      color: inherit !important;
+      transition: none !important;
+      
+      &:hover {
+        background: #3a91fd;
+        color: #fff !important;
+      }
+    }
+  }
+}

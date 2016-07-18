@@ -32,8 +32,15 @@
   }
 
   .sidebar {
-    padding-top: 35px;
     -webkit-app-region: drag;
+
+    .toolbar-options {
+      padding: 9px;
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: flex-end;
+    }
 
     .nav-group-title {
       display: flex;

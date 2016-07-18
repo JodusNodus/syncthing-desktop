@@ -1,12 +1,8 @@
-export function showQrCodeModal(qrCode) {
-  return {
-    type: 'QR_CODE_MODAL_SHOW',
-    payload: qrCode,
-  }
-}
+export const showQrCodeModal = qrCode => ({
+  type: 'QR_CODE_MODAL_SHOW',
+  payload: qrCode,
+})
 
-export function hideQrCodeModal() {
-  return {
-    type: 'QR_CODE_MODAL_HIDE',
-  }
-}
+export const hideQrCodeModal = () => ({
+  type: 'QR_CODE_MODAL_HIDE',
+})
