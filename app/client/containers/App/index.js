@@ -223,10 +223,16 @@ class App extends Component {
           onCancel: hideQrCodeScanModal,
           visible: qrCodeScanModal.show,
         }, [
-          qrCodeScanModal.show && h(QrReader, {handleScan: myID => {
-            scanQrCode(myID)
-            hideQrCodeScanModal()
-          }}),
+          qrCodeScanModal.show && h(QrReader, {
+            handleScan: myID => {
+              scanQrCode(myID)
+              hideQrCodeScanModal()
+            },
+            handleError: console.error,
+            previewStyle: {
+              width: '100%',
+            },
+          }),
         ]),
 
         h(Pane, [
