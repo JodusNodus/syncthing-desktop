@@ -7,10 +7,11 @@ import { bindActionCreators } from 'redux'
 
 import * as messageBarActionCreators from '../../actions/message-bar'
 import SharedFolders from '../../components/SharedFolders'
+import { getFolders } from '../../selectors/folders'
 
 class DeviceOverview extends Component {
   handleCopy(myID){
-    clipboard.writeText(myID)   
+    clipboard.writeText(myID)
     this.props.showMessageBar({
       msg: 'Device ID was copied to the clipboard.',
       ptStyle: 'positive',
@@ -24,7 +25,7 @@ class DeviceOverview extends Component {
       return 0 < folder.devices.filter(x => x.deviceID == device.deviceID).length
     })
 
-    return h('div', [ 
+    return h('div', [
       h(DeviceID, {onCopy: this.handleCopy.bind(this), ...device}),
       h(Status, device),
       !device.online && device.lastSeen && h(LastSeen, device),
@@ -39,10 +40,12 @@ DeviceOverview.propTypes = {
   showMessageBar: PropTypes.func.isRequired,
 }
 
+const mapStateToProps = state => ({
+  folders: getFolders(state),
+})
+
 export default connect(
-  state => ({
-    folders: state.folders,
-  }),
+  mapStateToProps,
   dispatch => bindActionCreators(messageBarActionCreators, dispatch),
 )(DeviceOverview)
 

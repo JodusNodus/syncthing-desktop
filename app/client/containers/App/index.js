@@ -20,6 +20,7 @@ import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
 import * as qrCodeScanModalActionCreators from '../../actions/qr-code-scan-modal'
 import * as folderRejectedActionCreators from '../../../main/actions/folder-rejected'
 import { getDevices } from '../../selectors/devices'
+import { getFolders } from '../../selectors/folders'
 import './global.scss'
 
 const partOf = x => y => x.indexOf(y) >= 0
@@ -306,18 +307,20 @@ App.propTypes = {
   acceptFolderRejected: PropTypes.func.isRequired,
 }
 
+const mapStateToProps = state => ({
+  devices: getDevices(state),
+  folders: getFolders(state),
+  connected: state.connected,
+  config: state.config,
+  qrCodeModal: state.qrCodeModal,
+  form: state.form,
+  messageBar: state.messageBar,
+  qrCodeScanModal: state.qrCodeScanModal,
+  folderRejected: state.folderRejected,
+})
+
 export default connect(
-  state => ({
-    devices: getDevices(state),
-    folders: state.folders,
-    connected: state.connected,
-    config: state.config,
-    qrCodeModal: state.qrCodeModal,
-    form: state.form,
-    messageBar: state.messageBar,
-    qrCodeScanModal: state.qrCodeScanModal,
-    folderRejected: state.folderRejected,
-  }),
+  mapStateToProps,
   dispatch => bindActionCreators({
     ...configActionCreators,
     ...systemActionCreators,

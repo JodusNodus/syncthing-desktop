@@ -42,8 +42,8 @@ export default function stateHandler({store, tray}){
     }
 
     //Check if present folders have a status
-    if(newState.folders && newState.folders.length > 0 && !newState.folders[0].status){
-      store.dispatch(getFolderStatus(newState.folders))
+    if(newState.folders.folders.length > 0 && _.toArray(!newState.folders.status).length > 0){
+      store.dispatch(getFolderStatus(newState.folders.folders))
     }
 
     //Check if devices were added or removed

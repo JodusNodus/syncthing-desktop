@@ -17,7 +17,7 @@ export function mainEvents(store) {
     if (process.platform !== 'darwin')
       app.quit()
   })
-  
+
   //Dispatch action on suspension changes
   powerMonitor.on('suspend', () => {
     store.dispatch({ type: 'SUSPEND' })
@@ -39,18 +39,21 @@ export function mainEvents(store) {
   }
 
 }
+
+const getDevice = ({devices}, id) => devices.devices.filter(x => x.deviceID == id)[0]
+
 export function stEvents(store){
 
   //Listen for devices connecting
   global.st.on('deviceConnected', ({ id, addr }) => {
-    const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]
+    const { name } = getDevice(store.getState(), id)
     notify(`Connected to ${name}`, `on ${addr}`)
     store.dispatch(getConnections())
   })
 
   //Listen for devices disconnecting
   global.st.on('deviceDisconnected', ({id}) => {
-    const { name } = store.getState().devices.filter(device => device.deviceID == id)[0]
+    const { name } = getDevice(store.getState(), id)
     notify(`${name} disconnected`, 'Syncing to this device is paused')
     store.dispatch(getConnections())
   })
@@ -85,7 +88,7 @@ export function stEvents(store){
   })
 
   //Listen for changes in completion
-  global.st.on('folderCompletion', ({completion, folder, device}) => { 
+  global.st.on('folderCompletion', ({completion, folder, device}) => {
     store.dispatch({
       type: 'DEVICE_FOLDER_COMPLETION_GET_SUCCESS',
       payload: completion,

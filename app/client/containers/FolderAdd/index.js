@@ -20,7 +20,7 @@ class FolderAdd extends Component {
         accepted,
         folder,
         device,
-        folderLabel
+        folderLabel,
       },
     } = this.props
 
@@ -71,11 +71,13 @@ FolderAdd.propTypes = {
   clearFolderRejected: PropTypes.func.isRequired,
 }
 
+const mapStateToProps = state => ({
+  myID: state.myID,
+  folderRejected: state.folderRejected,
+})
+
 export default connect(
-  state => ({
-    myID: state.myID,
-    folderRejected: state.folderRejected,
-  }),
+  mapStateToProps,
   {clearFolderRejected},
   undefined,
   {withRef: true},
