@@ -1,6 +1,6 @@
-import webpack from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import baseConfig from './webpack.config.base';
+import webpack from 'webpack'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import baseConfig from './webpack.config.base'
 
 const config = {
   ...baseConfig,
@@ -25,7 +25,7 @@ const config = {
           'css-loader?localIdentName=[path][name]--[local]!postcss-loader!sass'
         ),
       },
-    ]
+    ],
   },
 
   plugins: [
@@ -34,19 +34,19 @@ const config = {
     new webpack.DefinePlugin({
       __DEV__: false,
       'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
+        NODE_ENV: JSON.stringify('production'),
+      },
     }),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         screw_ie8: true,
-        warnings: false
-      }
+        warnings: false,
+      },
     }),
-    new ExtractTextPlugin('style.css', { allChunks: true })
+    new ExtractTextPlugin('style.css', { allChunks: true }),
   ],
 
-  target: 'electron-renderer'
-};
+  target: 'electron-renderer',
+}
 
-export default config;
+export default config

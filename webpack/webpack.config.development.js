@@ -1,6 +1,6 @@
 /* eslint max-len: 0 */
-import webpack from 'webpack';
-import baseConfig from './webpack.config.base';
+import webpack from 'webpack'
+import baseConfig from './webpack.config.base'
 
 const config = {
   ...baseConfig,
@@ -11,12 +11,12 @@ const config = {
 
   entry: [
     'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
-    './app/client/index.js'
+    './app/client/index.js',
   ],
 
   output: {
     ...baseConfig.output,
-    publicPath: 'http://localhost:3000/dist/'
+    publicPath: 'http://localhost:3000/dist/',
   },
 
   module: {
@@ -25,9 +25,9 @@ const config = {
       ...baseConfig.module.loaders,
       {
         test: /\.scss$/,
-        loader: 'style!css?localIdentName=[path][name]--[local]!postcss-loader!sass'
+        loader: 'style!css?localIdentName=[path][name]--[local]!postcss-loader!sass',
       },
-    ]
+    ],
   },
 
   plugins: [
@@ -37,12 +37,12 @@ const config = {
     new webpack.DefinePlugin({
       __DEV__: true,
       'process.env': {
-        NODE_ENV: JSON.stringify('development')
-      }
-    })
+        NODE_ENV: JSON.stringify('development'),
+      },
+    }),
   ],
 
-  target: 'electron-renderer'
-};
+  target: 'electron-renderer',
+}
 
-export default config;
+export default config
