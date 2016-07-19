@@ -3,8 +3,7 @@ import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
 import Input from '../../components/Input'
 import { CheckBox } from 'react-photonkit'
-import * as messageBarActionCreators from '../../actions/message-bar'
-import { bindActionCreators } from 'redux'
+import { showMessageBar, hideMessageBar } from '../../actions/message-bar'
 import validationErrorMessage from '../../utils/validation-error-message'
 import { remote } from 'electron'
 import _ from 'lodash'
@@ -181,10 +180,8 @@ export default reduxForm(
     fields,
     validate,
   },
-  state => ({
-    devices: state.devices,
-  }),
-  dispatch => bindActionCreators(messageBarActionCreators, dispatch)
+  state => ({ devices: state.devices }),
+  {showMessageBar, hideMessageBar},
 )(FolderEdit)
 
 

@@ -3,9 +3,8 @@ import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
 import Input from '../../components/Input'
 import { CheckBox } from 'react-photonkit'
-import * as messageBarActionCreators from '../../actions/message-bar'
-import * as qrCodeScanModalActionCreators from '../../actions/qr-code-scan-modal'
-import { bindActionCreators } from 'redux'
+import { showMessageBar, hideMessageBar } from '../../actions/message-bar'
+import { showQrCodeScanModal } from '../../actions/qr-code-scan-modal'
 import validationErrorMessage from '../../utils/validation-error-message'
 
 const fields = [
@@ -40,7 +39,7 @@ function validate({
     errors.deviceID = 'Device ID should conform to the official format.'
   }
 
-  
+
   //Name
   if(name.length < 1){
     errors.name = 'Name should have at least one character.'
@@ -118,8 +117,5 @@ export default reduxForm(
     validate,
   },
   state => ({qrCodeScanModal: state.qrCodeScanModal}),
-  dispatch => bindActionCreators({
-    ...messageBarActionCreators,
-    ...qrCodeScanModalActionCreators,
-  }, dispatch)
+  {showMessageBar, hideMessageBar, showQrCodeScanModal}
 )(DeviceEdit)

@@ -1,13 +1,12 @@
 import { PropTypes, Component, cloneElement } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
 import Toggle from '../../components/Toggle'
 import SegmentedControl from '../../components/SegmentedControl'
 import { styles } from './styles.scss'
 
-import * as systemActionCreators from '../../../main/actions/system'
+import { resumeDevice, pauseDevice } from '../../../main/actions/system'
 
 class Device extends Component {
   handleToggle(){
@@ -23,7 +22,7 @@ class Device extends Component {
     this.device = devices.filter(x => x.deviceID == params.id)[0]
 
     if(this.device) {
-      return h('div.padded-more', {className: styles}, [ 
+      return h('div.padded-more', {className: styles}, [
         h('header.page-header', [
           h('h2', this.device.name),
           h(Toggle, {state: !this.device.paused, onToggle: this.handleToggle.bind(this)}),
@@ -56,7 +55,7 @@ export default connect(
   state => ({
     devices: state.devices,
   }),
-  dispatch => bindActionCreators(systemActionCreators, dispatch),
+  {resumeDevice, pauseDevice},
   undefined,
   {withRef: true},
 )(Device)

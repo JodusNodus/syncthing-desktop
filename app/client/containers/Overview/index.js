@@ -1,21 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
-import _ from 'lodash'
 import moment from 'moment'
 import { clipboard } from 'electron'
 
-import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
-import * as messageBarActionCreators from '../../actions/message-bar'
+import { showQrCodeModal } from '../../actions/qr-code-modal'
+import { showMessageBar } from '../../actions/message-bar'
 
 import Size from '../../components/Size'
 import { styles } from './styles.scss'
 
 class Overview extends Component {
   handleCopy(myID){
-    clipboard.writeText(myID)   
+    clipboard.writeText(myID)
     this.props.showMessageBar({
       msg: 'Device ID was copied to the clipboard.',
       ptStyle: 'positive',
@@ -50,10 +48,7 @@ export default connect(
     status: state.systemStatus,
     version: state.version,
   }),
-  dispatch => bindActionCreators({
-    ...qrCodeModalActionCreators,
-    ...messageBarActionCreators,
-  }, dispatch)
+  {showQrCodeModal, showMessageBar},
 )(Overview)
 
 const CpuUsage = ({cpuPercent}) => h('div.section-item.cpu-usage', [
@@ -75,7 +70,7 @@ const DeviceID = ({myID, onQrCode, onCopy}) => h('div.section-item.my-id', [
   h('p.center', myID),
   h('div.right', [
     h('a', {onClick: () => onCopy(myID)}, 'Copy'),
-    h('a', {onClick: () => onQrCode(myID)}, 'QR Code'),   
+    h('a', {onClick: () => onQrCode(myID)}, 'QR Code'),
   ]),
 ])
 
@@ -93,7 +88,7 @@ const durationDisplay = x => {
     'days',
     'months',
     'years',
-  ] 
+  ]
 
   const parsedUnits = units.map(unit => {
     const amount = x.get(unit)

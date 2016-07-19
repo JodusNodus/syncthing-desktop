@@ -2,19 +2,27 @@ import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import randomString from 'randomstring'
-import { bindActionCreators } from 'redux'
 
 import FolderEdit from '../../containers/FolderEdit'
-import * as folderRejectedActionCreators from '../../../main/actions/folder-rejected'
+import { clearFolderRejected } from '../../../main/actions/folder-rejected'
 
 class FolderAdd extends Component {
   componentWillUnmount(){
     if(this.props.folderRejected.accepted){
       this.props.clearFolderRejected()
     }
-  } 
+  }
   render(){
-    const { onSubmit, myID, folderRejected: {accepted, folder, device, folderLabel} } = this.props
+    const {
+      onSubmit,
+      myID,
+      folderRejected: {
+        accepted,
+        folder,
+        device,
+        folderLabel
+      },
+    } = this.props
 
     const randomID = randomString.generate(10)
 
@@ -46,7 +54,7 @@ class FolderAdd extends Component {
       trashcanClean: 0,
     }
 
-    return h('div.padded-more', [ 
+    return h('div.padded-more', [
       h('header.page-header', [
         h('h2', 'Add Folder'),
       ]),
@@ -68,7 +76,7 @@ export default connect(
     myID: state.myID,
     folderRejected: state.folderRejected,
   }),
-  dispatch => bindActionCreators(folderRejectedActionCreators, dispatch),
+  {clearFolderRejected},
   undefined,
   {withRef: true},
 )(FolderAdd)
