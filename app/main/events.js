@@ -2,6 +2,7 @@ import { app, BrowserWindow, powerMonitor, ipcMain } from 'electron'
 import notify from './utils/notify'
 import { getConnections, getMyID, getServiceConfig } from './actions/system'
 import { showFolderRejected } from './actions/folder-rejected'
+import { getDevice } from './reducers/devices'
 
 export function mainEvents(store) {
 
@@ -39,8 +40,6 @@ export function mainEvents(store) {
   }
 
 }
-
-const getDevice = ({devices}, id) => devices.devices.filter(x => x.deviceID == id)[0]
 
 export function stEvents(store){
 
@@ -106,9 +105,10 @@ export function stEvents(store){
   //Check periodicaly for connections
   setInterval(() => {
     const state = store.getState()
-    if(state.connected && state.power == 'awake'){
+    if(state.power == 'awake'){
       store.dispatch(getMyID())
     }
+
   }, 2000)
 
 }

@@ -1,9 +1,9 @@
 import { shell } from 'electron'
 
-const device = ({ deviceID, name, online, address }) => ({
-  label: `${name} ${online ? '('+address+')' : '(disconnected)'}`,
+const device = ({ deviceID, name, connected, address }) => ({
+  label: `${name} ${connected ? '('+address+')' : '(disconnected)'}`,
   id: deviceID,
-  enabled: online ? true : false,
+  enabled: connected ? true : false,
   address,
   click: ({address}) => shell.openExternal('http://'+address),
 })

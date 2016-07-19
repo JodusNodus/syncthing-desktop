@@ -19,8 +19,8 @@ import * as configActionCreators from '../../../main/actions/config'
 import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
 import * as qrCodeScanModalActionCreators from '../../actions/qr-code-scan-modal'
 import * as folderRejectedActionCreators from '../../../main/actions/folder-rejected'
-import { getDevices } from '../../selectors/devices'
-import { getFolders } from '../../selectors/folders'
+import { getDevices } from '../../../main/reducers/devices'
+import { getFolders } from '../../../main/reducers/folders'
 import './global.scss'
 
 const partOf = x => y => x.indexOf(y) >= 0

@@ -6,10 +6,17 @@ import Toggle from '../../components/Toggle'
 import SegmentedControl from '../../components/SegmentedControl'
 import { styles } from './styles.scss'
 
-import { getDevice } from '../../selectors/devices'
+import { getDevice } from '../../../main/reducers/devices'
 import { resumeDevice, pauseDevice } from '../../../main/actions/system'
 
 class Device extends Component {
+  constructor(props){
+    super(props)
+    this.componentDidUpdate = this.componentDidMount = this.redirect.bind(this)
+  }
+  redirect(){
+    if(!this.props.device) this.props.history.push('/')
+  }
   handleToggle(){
     const { device, resumeDevice, pauseDevice } = this.props
     if(device.paused){
@@ -19,7 +26,7 @@ class Device extends Component {
     }
   }
   render(){
-    const { device, params, children, onSubmit, history } = this.props
+    const { device, params, children, onSubmit } = this.props
 
     if(device) {
       return h('div.padded-more', {className: styles}, [
@@ -31,11 +38,10 @@ class Device extends Component {
           {text: 'Overview', link: `/device/${params.id}/overview`},
           {text: 'Edit', link: `/device/${params.id}/edit`},
         ]}, [
-          cloneElement(children, {ref: 'form', initialValues: device, onSubmit}),
+          cloneElement(children, {ref: 'form', onSubmit}),
         ]),
       ])
     }else {
-      history.push('/')
       return h('div')
     }
   }
@@ -52,7 +58,7 @@ Device.propTypes = {
 }
 
 const mapStateToProps = (state, { params }) => ({
-  device: getDevice(state, params.id),
+  device: state.devices.devices[params.id],
 })
 
 export default connect(

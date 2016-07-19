@@ -4,13 +4,13 @@ import h from 'react-hyperscript'
 import { Pane, NavGroup, NavTitle } from 'react-photonkit'
 import NavGroupItem from '../NavGroupItem'
 
-import Dropdown from '../Dropdown'
+// import Dropdown from '../Dropdown'
 
 const Sidebar = ({ folders, devices, preferences}) => {
   return h(Pane, {ptSize: 'sm', sidebar: true}, [
-    h('div.toolbar-options', [
-      h(AddItem),
-    ]),
+    // h('div.toolbar-options', [
+    //   h(AddItem),
+    // ]),
     h(NavGroup, [
       h(NavGroupItem, {glyph: 'home', text: 'Overview', link: '/overview'}),
 

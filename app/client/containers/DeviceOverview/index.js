@@ -7,7 +7,8 @@ import { bindActionCreators } from 'redux'
 
 import * as messageBarActionCreators from '../../actions/message-bar'
 import SharedFolders from '../../components/SharedFolders'
-import { getFolders } from '../../selectors/folders'
+import { getFolders } from '../../../main/reducers/folders'
+import { getDevice } from '../../../main/reducers/devices'
 
 class DeviceOverview extends Component {
   handleCopy(myID){
@@ -18,8 +19,7 @@ class DeviceOverview extends Component {
     })
   }
   render(){
-    const { folders, initialValues } = this.props
-    const device = initialValues
+    const { folders, device } = this.props
 
     const sharedFolders = folders.filter(folder => {
       return 0 < folder.devices.filter(x => x.deviceID == device.deviceID).length
@@ -36,12 +36,13 @@ class DeviceOverview extends Component {
 
 DeviceOverview.propTypes = {
   folders: PropTypes.array.isRequired,
-  initialValues: PropTypes.object.isRequired,
+  device: PropTypes.object.isRequired,
   showMessageBar: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, {params}) => ({
   folders: getFolders(state),
+  device: getDevice(state, params.id),
 })
 
 export default connect(

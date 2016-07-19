@@ -6,11 +6,14 @@ import buildMenu from './menu/index'
 import _ from 'lodash'
 import Syncthing from 'node-syncthing'
 import { stEvents } from './events'
+import { getFolders } from './reducers/folders'
 
 export default function stateHandler({store, tray}){
   let previousState = store.getState()
+  let counter = 0
   return () => {
     const newState = store.getState()
+    console.log(counter++)
 
     //Check if config was loaded
     if((!previousState.config.isSuccess && newState.config.isSuccess) || !_.isEqual(previousState.config.config, newState.config.config)){
@@ -23,12 +26,7 @@ export default function stateHandler({store, tray}){
       //Start listening for syncthing events
       stEvents(store)
 
-
       store.dispatch(getMyID())
-    }
-
-    if(!newState.connected && newState.power == 'awake'){
-      setTimeout(() => store.dispatch(getMyID()), 1000)
     }
 
     if(!previousState.connected && newState.connected){
@@ -41,15 +39,11 @@ export default function stateHandler({store, tray}){
       store.dispatch(getVersion())
     }
 
-    //Check if present folders have a status
-    if(newState.folders.folders.length > 0 && _.toArray(!newState.folders.status).length > 0){
-      store.dispatch(getFolderStatus(newState.folders.folders))
-    }
-
     //Check if devices were added or removed
-    if(previousState.devices.devices.length !== newState.devices.devices.length){
+    if(previousState.devices.byId.length !== newState.devices.byId.length){
       store.dispatch(getConnections())
       store.dispatch(getDeviceStats())
+      store.dispatch(getFolderStatus(getFolders(newState)))
     }
 
     const StateIsDifferent = !_.isEqual({

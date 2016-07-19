@@ -10,29 +10,31 @@ import { styles } from './styles.scss'
 import Progress from 'react-progressbar'
 
 import * as dbActionCreators from '../../../main/actions/db'
+import { getDevices } from '../../../main/reducers/devices'
+import { getFolder } from '../../../main/reducers/folders'
 
 class FolderOverview extends Component {
   componentDidMount(){
     this.getDeviceCompletion.apply(this)
   }
   componentWillUpdate(newProps){
-    const { initialValues: { id } } = this.props
-    const isNewFolder = id !== newProps.initialValues.id
+    const { folder } = this.props
+    const isNewFolder = folder.id !== newProps.folder.id
 
     if(isNewFolder){
       this.getDeviceCompletion.apply(this)
     }
   }
   getDeviceCompletion(){
-    const { initialValues, getDeviceFolderCompletion } = this.props
+    const { folder, getDeviceFolderCompletion } = this.props
 
-    const sharedDevices = initialValues.devices.filter(x => x)
+    const sharedDevices = folder.devices
 
-    getDeviceFolderCompletion(sharedDevices, initialValues.id)
+    getDeviceFolderCompletion(sharedDevices, folder.id)
   }
   render(){
-    const { devices, initialValues, status } = this.props
-    const folder = initialValues
+    const { folder, devices, status } = this.props
+    console.log(folder.status)
 
     const sharedDevices = folder.devices.map(({deviceID, completion}) => {
       const device = devices.filter(device => device.deviceID == deviceID)[0]
@@ -53,16 +55,16 @@ class FolderOverview extends Component {
 }
 
 FolderOverview.propTypes = {
-  params: PropTypes.object.isRequired,
   status: PropTypes.object.isRequired,
   devices: PropTypes.array.isRequired,
-  initialValues: PropTypes.object.isRequired,
+  folder: PropTypes.object.isRequired,
   getDeviceFolderCompletion: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, {params}) => ({
   status: state.systemStatus,
-  devices: state.devices.devices,
+  devices: getDevices(state),
+  folder: getFolder(state, params.id),
 })
 
 export default connect(

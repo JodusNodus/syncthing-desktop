@@ -33,6 +33,7 @@
 
   .sidebar {
     -webkit-app-region: drag;
+    margin-top: 35px;
 
     .toolbar-options {
       padding: 9px;
@@ -122,10 +123,10 @@
     margin-right: 7px;
     &.online {
       color: $green;
-    }   
+    }
     &.offline {
       color: $red;
-    }  
+    }
   }
 
   a {

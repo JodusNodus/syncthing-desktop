@@ -4,11 +4,17 @@ import { connect } from 'react-redux'
 
 import { styles } from './styles.scss'
 import SegmentedControl from '../../components/SegmentedControl'
-import { getFolder } from '../../selectors/folders'
 
 class Folder extends Component {
+  constructor(props){
+    super(props)
+    this.componentDidUpdate = this.componentDidMount = this.redirect.bind(this)
+  }
+  redirect(){
+    // if(!this.props.folder) this.props.history.push('/')
+  }
   render(){
-    const { folder, params, children, onSubmit, history } = this.props
+    const { folder, params, children, onSubmit } = this.props
 
     if(folder){
       return h('div.padded-more', {className: styles}, [
@@ -20,11 +26,10 @@ class Folder extends Component {
           {text: 'Overview', link: `/folder/${params.id}/overview`},
           {text: 'Edit', link: `/folder/${params.id}/edit`},
         ]}, [
-          cloneElement(children, {ref: 'form', initialValues: folder, onSubmit}),
+          cloneElement(children, {ref: 'form', onSubmit}),
         ]),
       ])
     }else{
-      history.push('/')
       return h('div')
     }
   }
@@ -38,8 +43,8 @@ Folder.propTypes = {
   history: PropTypes.object.isRequired,
 }
 
-const mapStateToProps = (state, { params }) => ({
-  folder: getFolder(state, params.id),
+const mapStateToProps = (state, {params}) => ({
+  folder: state.folders.folders[params.id],
 })
 
 export default connect(

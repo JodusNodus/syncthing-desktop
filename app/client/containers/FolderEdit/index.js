@@ -10,6 +10,7 @@ import _ from 'lodash'
 const dialog = remote.dialog
 
 import { styles } from './styles.scss'
+import { getDevices } from '../../../main/reducers/devices'
 
 const fields = [
   'id',
@@ -174,8 +175,9 @@ FolderEdit.propTypes = {
   devices: PropTypes.array.isRequired,
 }
 
-const mapStateToProps = state => ({
-  devices: state.devices.devices,
+const mapStateToProps = (state, {params, initialValues}) => ({
+  devices: getDevices(state),
+  initialValues: initialValues || state.folders.folders[params.id],
 })
 
 export default reduxForm(

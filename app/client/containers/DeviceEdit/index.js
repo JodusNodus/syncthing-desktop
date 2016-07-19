@@ -55,14 +55,11 @@ function validate({
 
 class DeviceEdit extends Component {
   componentWillUpdate(newProps){
-    validationErrorMessage(newProps)
+    validationErrorMessage(this.props)
 
     if(!this.props.qrCodeScanModal.qrCode && newProps.qrCodeScanModal.qrCode){
       this.props.fields.deviceID.onChange(newProps.qrCodeScanModal.qrCode)
     }
-  }
-  componentDidUpdate(){
-    validationErrorMessage(this.props)
   }
   handleQrCodeClick(){
     const { showQrCodeScanModal } = this.props
@@ -110,12 +107,17 @@ DeviceEdit.propTypes = {
   qrCodeScanModal: PropTypes.object.isRequired,
 }
 
+const mapStateToProps = (state, {params, initialValues}) => ({
+  qrCodeScanModal: state.qrCodeScanModal,
+  initialValues: initialValues || state.devices.devices[params.id],
+})
+
 export default reduxForm(
   {
     form: 'deviceEdit',
     fields,
     validate,
   },
-  state => ({qrCodeScanModal: state.qrCodeScanModal}),
+  mapStateToProps,
   {showMessageBar, hideMessageBar, showQrCodeScanModal}
 )(DeviceEdit)
