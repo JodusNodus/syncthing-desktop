@@ -22,8 +22,8 @@ export default function stateHandler({store, tray}){
 
       //Start listening for syncthing events
       stEvents(store)
-     
-      
+
+
       store.dispatch(getMyID())
     }
 
@@ -47,7 +47,7 @@ export default function stateHandler({store, tray}){
     }
 
     //Check if devices were added or removed
-    if(previousState.devices.length !== newState.devices.length){
+    if(previousState.devices.devices.length !== newState.devices.devices.length){
       store.dispatch(getConnections())
       store.dispatch(getDeviceStats())
     }

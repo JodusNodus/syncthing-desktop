@@ -19,6 +19,7 @@ import * as configActionCreators from '../../../main/actions/config'
 import * as qrCodeModalActionCreators from '../../actions/qr-code-modal'
 import * as qrCodeScanModalActionCreators from '../../actions/qr-code-scan-modal'
 import * as folderRejectedActionCreators from '../../../main/actions/folder-rejected'
+import { getDevices } from '../../selectors/devices'
 import './global.scss'
 
 const partOf = x => y => x.indexOf(y) >= 0
@@ -307,7 +308,7 @@ App.propTypes = {
 
 export default connect(
   state => ({
-    devices: state.devices,
+    devices: getDevices(state),
     folders: state.folders,
     connected: state.connected,
     config: state.config,

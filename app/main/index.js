@@ -8,7 +8,7 @@ import { getClientConfig } from './actions/config'
 import stateHandler from './state-change'
 import { mainEvents } from './events'
 
-app.dock.hide()
+// app.dock.hide()
 
 global.__base = `${__dirname}/`
 
@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
 app.on('ready', () => {
   //Configure and assign the redux store
   const store = configureStore()
-  
+
   //Initialize tray menu
   const tray = new Tray(store)
 
@@ -39,4 +39,3 @@ app.on('ready', () => {
   appWindow()
 
 })
-

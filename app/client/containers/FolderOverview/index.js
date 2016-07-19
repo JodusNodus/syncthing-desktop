@@ -60,11 +60,13 @@ FolderOverview.propTypes = {
   getDeviceFolderCompletion: PropTypes.func.isRequired,
 }
 
+const mapStateToProps = state => ({
+  status: state.systemStatus,
+  devices: state.devices.devices,
+})
+
 export default connect(
-  state => ({
-    status: state.systemStatus,
-    devices: state.devices,
-  }),
+  mapStateToProps,
   dispatch => bindActionCreators(dbActionCreators, dispatch),
 )(FolderOverview)
 

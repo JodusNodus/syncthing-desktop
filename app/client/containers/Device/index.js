@@ -51,7 +51,6 @@ Device.propTypes = {
   history: PropTypes.object.isRequired,
 }
 
-
 const mapStateToProps = (state, { params }) => ({
   device: getDevice(state, params.id),
 })

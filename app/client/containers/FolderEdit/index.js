@@ -174,13 +174,17 @@ FolderEdit.propTypes = {
   devices: PropTypes.array.isRequired,
 }
 
+const mapStateToProps = state => ({
+  devices: state.devices.devices,
+})
+
 export default reduxForm(
   {
     form: 'folderEdit',
     fields,
     validate,
   },
-  state => ({ devices: state.devices }),
+  mapStateToProps,
   {showMessageBar, hideMessageBar},
 )(FolderEdit)
 
