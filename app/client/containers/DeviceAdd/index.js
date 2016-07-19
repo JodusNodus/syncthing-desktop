@@ -2,7 +2,7 @@ import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 
-import DeviceEdit from '../../containers/DeviceEdit'
+import DeviceEdit from 'client/containers/DeviceEdit'
 
 const initialValues = {
   deviceID: '',
@@ -16,7 +16,7 @@ class DeviceAdd extends Component {
   render(){
     const { onSubmit } = this.props
 
-    return h('div.padded-more', [ 
+    return h('div.padded-more', [
       h('header.page-header', [
         h('h2', 'Add Device'),
       ]),

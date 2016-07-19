@@ -4,14 +4,15 @@ import { connect } from 'react-redux'
 import { shell } from 'electron'
 import { bindActionCreators } from 'redux'
 
-import Size from '../../components/Size'
-import SharedDevices from '../../components/SharedDevices'
-import { styles } from './styles.scss'
+import Size from 'client/components/Size'
+import SharedDevices from 'client/components/SharedDevices'
 import Progress from 'react-progressbar'
 
-import * as dbActionCreators from '../../../main/actions/db'
-import { getDevices } from '../../../main/reducers/devices'
-import { getFolder } from '../../../main/reducers/folders'
+import * as dbActionCreators from 'main/actions/db'
+import { getDevices } from 'main/reducers/devices'
+import { getFolder } from 'main/reducers/folders'
+
+import { styles } from './styles.scss'
 
 class FolderOverview extends Component {
   componentDidMount(){

@@ -2,8 +2,9 @@ import { PropTypes, Component, cloneElement } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 
+import SegmentedControl from 'client/components/SegmentedControl'
+
 import { styles } from './styles.scss'
-import SegmentedControl from '../../components/SegmentedControl'
 
 class Folder extends Component {
   constructor(props){

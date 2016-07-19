@@ -3,8 +3,9 @@ import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import randomString from 'randomstring'
 
-import FolderEdit from '../../containers/FolderEdit'
-import { clearFolderRejected } from '../../../main/actions/folder-rejected'
+import FolderEdit from 'client/containers/FolderEdit'
+
+import { clearFolderRejected } from 'main/actions/folder-rejected'
 
 class FolderAdd extends Component {
   componentWillUnmount(){

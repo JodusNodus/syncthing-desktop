@@ -2,7 +2,7 @@ import { PropTypes } from 'react'
 import { Link } from 'react-router'
 import h from 'react-hyperscript'
 import { Pane, NavGroup, NavTitle } from 'react-photonkit'
-import NavGroupItem from '../NavGroupItem'
+import NavGroupItem from 'client/components/NavGroupItem'
 
 // import Dropdown from '../Dropdown'
 

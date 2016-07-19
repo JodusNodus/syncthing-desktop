@@ -2,9 +2,9 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { hashHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
-import rootReducer from '../reducers'
+import rootReducer from 'client/reducers'
 import { electronEnhancer } from 'redux-electron-store'
-import messageBarMiddleware from '../middleware/message-bar'
+import messageBarMiddleware from 'client/middleware/message-bar'
 
 const router = routerMiddleware(hashHistory)
 

@@ -1,11 +1,13 @@
 import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
-import Input from '../../components/Input'
+
+import Input from 'client/components/Input'
 import { CheckBox } from 'react-photonkit'
-import { showMessageBar, hideMessageBar } from '../../actions/message-bar'
-import { showQrCodeScanModal } from '../../actions/qr-code-scan-modal'
-import validationErrorMessage from '../../utils/validation-error-message'
+
+import { showMessageBar, hideMessageBar } from 'client/actions/message-bar'
+import { showQrCodeScanModal } from 'client/actions/qr-code-scan-modal'
+import validationErrorMessage from 'client/utils/validation-error-message'
 
 const fields = [
   'deviceID',
@@ -16,7 +18,6 @@ const fields = [
 ]
 
 const deviceIDFormat = /([A-Z0-9]{7}\-?){8}/
-
 
 const compressionOptions = [
   {value: 'always', text: 'All Data'},

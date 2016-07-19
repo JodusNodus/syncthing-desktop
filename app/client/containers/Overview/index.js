@@ -1,14 +1,14 @@
-import React, { Component, PropTypes } from 'react'
+import { Component, PropTypes } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
-
 import moment from 'moment'
 import { clipboard } from 'electron'
 
-import { showQrCodeModal } from '../../actions/qr-code-modal'
-import { showMessageBar } from '../../actions/message-bar'
+import Size from 'client/components/Size'
 
-import Size from '../../components/Size'
+import { showQrCodeModal } from 'client/actions/qr-code-modal'
+import { showMessageBar } from 'client/actions/message-bar'
+
 import { styles } from './styles.scss'
 
 class Overview extends Component {

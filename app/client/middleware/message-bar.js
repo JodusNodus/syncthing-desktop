@@ -1,4 +1,4 @@
-import { showMessageBar, hideMessageBar } from '../actions/message-bar'
+import { showMessageBar, hideMessageBar } from 'client/actions/message-bar'
 
 export default function messageBar(store){
   return next => action => {

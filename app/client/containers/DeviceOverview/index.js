@@ -5,10 +5,11 @@ import { clipboard } from 'electron'
 import moment from 'moment'
 import { bindActionCreators } from 'redux'
 
-import * as messageBarActionCreators from '../../actions/message-bar'
-import SharedFolders from '../../components/SharedFolders'
-import { getFolders } from '../../../main/reducers/folders'
-import { getDevice } from '../../../main/reducers/devices'
+import SharedFolders from 'client/components/SharedFolders'
+
+import * as messageBarActionCreators from 'client/actions/message-bar'
+import { getFolders } from 'main/reducers/folders'
+import { getDevice } from 'main/reducers/devices'
 
 class DeviceOverview extends Component {
   handleCopy(myID){

@@ -1,12 +1,15 @@
 import { Component, PropTypes } from 'react'
 import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
-import { CheckBox } from 'react-photonkit'
-import Input from '../../components/Input'
-import { styles } from './styles.scss'
-import * as messageBarActionCreators from '../../actions/message-bar'
 import { bindActionCreators } from 'redux'
-import validationErrorMessage from '../../utils/validation-error-message'
+
+import { CheckBox } from 'react-photonkit'
+import Input from 'client/components/Input'
+
+import * as messageBarActionCreators from 'client/actions/message-bar'
+import validationErrorMessage from 'client/utils/validation-error-message'
+
+import { styles } from './styles.scss'
 
 const fields = [
   'hostname',

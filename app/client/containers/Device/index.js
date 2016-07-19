@@ -2,12 +2,12 @@ import { PropTypes, Component, cloneElement } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 
-import Toggle from '../../components/Toggle'
-import SegmentedControl from '../../components/SegmentedControl'
-import { styles } from './styles.scss'
+import Toggle from 'client/components/Toggle'
+import SegmentedControl from 'client/components/SegmentedControl'
 
-import { getDevice } from '../../../main/reducers/devices'
-import { resumeDevice, pauseDevice } from '../../../main/actions/system'
+import { resumeDevice, pauseDevice } from 'main/actions/system'
+
+import { styles } from './styles.scss'
 
 class Device extends Component {
   constructor(props){

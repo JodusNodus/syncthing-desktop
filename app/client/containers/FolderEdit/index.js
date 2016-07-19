@@ -1,16 +1,18 @@
 import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
-import Input from '../../components/Input'
-import { CheckBox } from 'react-photonkit'
-import { showMessageBar, hideMessageBar } from '../../actions/message-bar'
-import validationErrorMessage from '../../utils/validation-error-message'
 import { remote } from 'electron'
 import _ from 'lodash'
 const dialog = remote.dialog
+import validationErrorMessage from 'client/utils/validation-error-message'
+
+import Input from 'client/components/Input'
+import { CheckBox } from 'react-photonkit'
+
+import { getDevices } from 'main/reducers/devices'
+import { showMessageBar, hideMessageBar } from 'client/actions/message-bar'
 
 import { styles } from './styles.scss'
-import { getDevices } from '../../../main/reducers/devices'
 
 const fields = [
   'id',

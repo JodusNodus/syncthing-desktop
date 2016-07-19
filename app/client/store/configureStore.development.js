@@ -4,11 +4,11 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { hashHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
-import rootReducer from '../reducers'
-import DevTools from '../containers/DevTools'
+import rootReducer from 'client/reducers'
+import DevTools from 'client/containers/DevTools'
 import { electronEnhancer } from 'redux-electron-store'
 import { ipcRenderer } from 'electron'
-import messageBarMiddleware from '../middleware/message-bar'
+import messageBarMiddleware from 'client/middleware/message-bar'
 
 const logger = createLogger({
   level: 'info',
