@@ -28,7 +28,7 @@ class DeviceOverview extends Component {
     return h('div', [
       h(DeviceID, {onCopy: this.handleCopy.bind(this), ...device}),
       h(Status, device),
-      !device.online && device.lastSeen && h(LastSeen, device),
+      !device.connected && device.lastSeen && h(LastSeen, device),
       h(SharedFolders, {folders: sharedFolders}),
     ])
   }
@@ -57,11 +57,11 @@ const DeviceID = ({deviceID, onCopy}) => h('div.section-item.device-id', [
   h('a.right', {onClick: () => onCopy(deviceID)}, 'Copy'),
 ])
 
-const Status = ({online, address}) => h('div.section-item', [
+const Status = ({connected, address}) => h('div.section-item', [
   h('p.left', 'Status:'),
   h('p.center', [
-    h('span.icon.icon-record', {className: online ? 'online': 'offline'}),
-    online ? `Connected at ${address}` : 'Not connected',
+    h('span.icon.icon-record', {className: connected ? 'online': 'offline'}),
+    connected ? `Connected at ${address}` : 'Not connected',
   ]),
   h('div.right'),
 ])

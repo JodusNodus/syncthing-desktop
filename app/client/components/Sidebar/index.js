@@ -24,7 +24,7 @@ const Sidebar = ({ folders, devices, preferences}) => {
         'Devices',
         h(Link, {className: 'fa fa-plus pull-right', to: '/device-add'}),
       ]),
-      ...devices.map(({key, text, glyph, online}) => h(NavGroupItem, {glyph, text, online, link: `/device/${key}`})),
+      ...devices.map(({key, text, glyph, connected}) => h(NavGroupItem, {glyph, text, connected, link: `/device/${key}`})),
 
       h(NavTitle, 'Preferences'),
       ...preferences.map(({key, text, glyph}) => h(NavGroupItem, {glyph, text, link: `/preferences/${key}`})),

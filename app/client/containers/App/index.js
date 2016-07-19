@@ -194,11 +194,11 @@ class App extends Component {
         text: label || id,
         key: id,
       })),
-      devices: devices.map(({name, deviceID, online}) => ({
+      devices: devices.map(({name, deviceID, connected}) => ({
         glyph: 'monitor',
         text: name,
         key: deviceID,
-        online,
+        connected,
       })),
       preferences: [
         { text: 'Service', glyph: 'cog', key: 'service' },
