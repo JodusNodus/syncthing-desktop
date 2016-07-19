@@ -126,7 +126,7 @@ class App extends Component {
   handleDelete(){
     const { params: { id }, location: { pathname }, devices, folders, setServiceConfig } = this.props
 
-    const type = pathname == `/device/${id}/edit` ? 'devices' : 'folders' 
+    const type = pathname == `/device/${id}/edit` ? 'devices' : 'folders'
 
     const object = type == 'devices' ? devices : folders
 
@@ -148,14 +148,14 @@ class App extends Component {
   }
   redirect(nextProps={config: {isSuccess: false}}){
     const { config, location } = this.props
- 
+
     //Redirect when config was saved
-    if(config.isFailed && nextProps.config.isSuccess && location.pathname == '/preferences/client'){
+    if(config.isFailure && nextProps.config.isSuccess && location.pathname == '/preferences/client'){
       push('/')
     }
-    
+
     //Redirect if config was not found
-    if(config.isFailed && location.pathname !== '/preferences/client'){
+    if(config.isFailure && location.pathname !== '/preferences/client'){
       push('/preferences/client')
     }
   }
@@ -238,7 +238,7 @@ class App extends Component {
         h(Pane, [
 
           ...messageBar.statics.map(msg => h(MessageBar, {text: msg.msg, staticMsg: true, ...msg})),
-          
+
           h(MessageBar, {
             text: messageBar.msg,
             ptStyle: messageBar.ptStyle,

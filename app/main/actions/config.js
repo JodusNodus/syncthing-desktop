@@ -9,13 +9,13 @@ export const getClientConfig = () => dispatch =>
       })
     }else{
       dispatch({
-        type: 'CLIENT_CONFIG_GET_FAILED',
+        type: 'CLIENT_CONFIG_GET_FAILURE',
         error,
       })
     }
   })
 
-export const setClientConfig = config => dispatch => 
+export const setClientConfig = config => dispatch =>
 storage.set('config', config, error => {
   if(!error){
     dispatch({
@@ -24,7 +24,7 @@ storage.set('config', config, error => {
     })
   }else{
     dispatch({
-      type: 'CLIENT_CONFIG_SET_FAILED',
+      type: 'CLIENT_CONFIG_SET_FAILURE',
       error,
     })
   }
