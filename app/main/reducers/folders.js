@@ -48,3 +48,6 @@ export default function folders(state = [], {type, payload, id, ...action}) {
       return state
   }
 }
+
+export const getFolder = ({folders}, id) => folders
+.filter(x => x.id == id)[0]

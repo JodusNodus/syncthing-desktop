@@ -6,32 +6,32 @@ import Toggle from '../../components/Toggle'
 import SegmentedControl from '../../components/SegmentedControl'
 import { styles } from './styles.scss'
 
+import { getDevice } from '../../selectors/devices'
 import { resumeDevice, pauseDevice } from '../../../main/actions/system'
 
 class Device extends Component {
   handleToggle(){
-    const { resumeDevice, pauseDevice } = this.props
-    if(this.device.paused){
-      resumeDevice(this.device.deviceID)
+    const { device, resumeDevice, pauseDevice } = this.props
+    if(device.paused){
+      resumeDevice(device.deviceID)
     }else{
-      pauseDevice(this.device.deviceID)
+      pauseDevice(device.deviceID)
     }
   }
   render(){
-    const { devices, params, children, onSubmit, history } = this.props
-    this.device = devices.filter(x => x.deviceID == params.id)[0]
+    const { device, params, children, onSubmit, history } = this.props
 
-    if(this.device) {
+    if(device) {
       return h('div.padded-more', {className: styles}, [
         h('header.page-header', [
-          h('h2', this.device.name),
-          h(Toggle, {state: !this.device.paused, onToggle: this.handleToggle.bind(this)}),
+          h('h2', device.name),
+          h(Toggle, {state: !device.paused, onToggle: this.handleToggle.bind(this)}),
         ]),
         h(SegmentedControl, {buttons: [
           {text: 'Overview', link: `/device/${params.id}/overview`},
           {text: 'Edit', link: `/device/${params.id}/edit`},
         ]}, [
-          cloneElement(children, {ref: 'form', initialValues: this.device, onSubmit}),
+          cloneElement(children, {ref: 'form', initialValues: device, onSubmit}),
         ]),
       ])
     }else {
@@ -43,7 +43,7 @@ class Device extends Component {
 
 Device.propTypes = {
   params: PropTypes.object.isRequired,
-  devices: PropTypes.array.isRequired,
+  device: PropTypes.object.isRequired,
   resumeDevice: PropTypes.func.isRequired,
   pauseDevice: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
@@ -51,10 +51,13 @@ Device.propTypes = {
   history: PropTypes.object.isRequired,
 }
 
+
+const mapStateToProps = (state, { params }) => ({
+  device: getDevice(state, params.id),
+})
+
 export default connect(
-  state => ({
-    devices: state.devices,
-  }),
+  mapStateToProps,
   {resumeDevice, pauseDevice},
   undefined,
   {withRef: true},

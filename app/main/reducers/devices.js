@@ -38,3 +38,6 @@ export default function devices(state = [], {type, payload, id}) {
       return state
   }
 }
+
+export const getDevice = ({devices}, id) => devices
+.filter(x => x.deviceID == id)[0]

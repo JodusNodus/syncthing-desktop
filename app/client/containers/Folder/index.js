@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 
 import { styles } from './styles.scss'
 import SegmentedControl from '../../components/SegmentedControl'
+import { getFolder } from '../../selectors/folders'
 
 class Folder extends Component {
   render(){
-    const { folders, params, children, onSubmit, history } = this.props
-    const folder = folders.filter(x => x.id == params.id)[0]
+    const { folder, params, children, onSubmit, history } = this.props
 
     if(folder){
       return h('div.padded-more', {className: styles}, [
@@ -32,16 +32,18 @@ class Folder extends Component {
 
 Folder.propTypes = {
   params: PropTypes.object.isRequired,
-  folders: PropTypes.array.isRequired,
+  folder: PropTypes.object.isRequired,
   children: PropTypes.element.isRequired,
   onSubmit: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 }
 
+const mapStateToProps = (state, { params }) => ({
+  folder: getFolder(state, params.id),
+})
+
 export default connect(
-  state => ({
-    folders: state.folders,
-  }),
+  mapStateToProps,
   undefined,
   undefined,
   {withRef: true},
