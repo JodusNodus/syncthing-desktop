@@ -15,6 +15,14 @@ export default function messageBar(store){
         static: true,
       }))
 
+    }else if(action.type == 'CLIENT_CONFIG_SET_SUCCESS'){
+
+      store.dispatch(showMessageBar({
+        msg: 'The config was saved and loaded succesfully.',
+        ptStyle: 'positive',
+        static: true,
+      }))
+
     }
     next(action)
   }
