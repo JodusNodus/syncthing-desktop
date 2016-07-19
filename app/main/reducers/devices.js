@@ -40,8 +40,4 @@ export const getDevice = ({devices}, id) => {
   }
 }
 
-export const getDevices = ({devices}) => devices.byId.map(id => ({
-  ...devices.devices[id],
-  ...devices.connections[id],
-  ...devices.stats[id],
-}))
+export const getDevices = ({devices}) => devices.byId.map(id => getDevice({devices}, id))

@@ -44,15 +44,4 @@ export const getFolder = ({folders}, id) => {
   }
 }
 
-export const getFolders = ({folders}) => folders.byId.map(id => {
-  const folder = folders.folders[id]
-  const completion = folders.completion[id]
-  return {
-    ...folder,
-    status: folders.status[id],
-    devices: folder.devices.map(({deviceID}) => ({
-      deviceID,
-      completion: completion && completion[deviceID],
-    })),
-  }
-})
+export const getFolders = ({folders}) => folders.byId.map(id => getFolder({folders}, id))
