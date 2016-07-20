@@ -10,10 +10,8 @@ import { getFolders } from './reducers/folders'
 
 export default function stateHandler({store, tray}){
   let previousState = store.getState()
-  let counter = 0
   return () => {
     const newState = store.getState()
-    console.log(counter++)
 
     //Check if config was loaded
     if((!previousState.config.isSuccess && newState.config.isSuccess) || !_.isEqual(previousState.config.config, newState.config.config)){

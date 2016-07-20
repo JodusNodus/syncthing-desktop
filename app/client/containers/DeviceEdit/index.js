@@ -8,6 +8,7 @@ import { CheckBox } from 'react-photonkit'
 import { showMessageBar, hideMessageBar } from 'client/actions/message-bar'
 import { showQrCodeScanModal } from 'client/actions/qr-code-scan-modal'
 import validationErrorMessage from 'client/utils/validation-error-message'
+import validate from './validate'
 
 const fields = [
   'deviceID',
@@ -17,42 +18,11 @@ const fields = [
   'introducer',
 ]
 
-const deviceIDFormat = /([A-Z0-9]{7}\-?){8}/
-
 const compressionOptions = [
   {value: 'always', text: 'All Data'},
   {value: 'metadata', text: 'Only Metadata'},
   {value: 'never', text: 'No Data'},
 ]
-
-function validate({
-  deviceID='',
-  name='',
-  addresses=[],
-}) {
-  const errors = {}
-
-  //Device ID
-  if(deviceID.length < 1){
-    errors.deviceID = 'Device ID should have at least one character.'
-  }else if(!deviceIDFormat.test(deviceID)){
-    //Test if deviceID is correctly formatted
-    errors.deviceID = 'Device ID should conform to the official format.'
-  }
-
-
-  //Name
-  if(name.length < 1){
-    errors.name = 'Name should have at least one character.'
-  }
-
-  //Addresses
-  if(addresses.length < 1){
-    errors.addresses = 'Addresses should have at least one address.'
-  }
-
-  return errors
-}
 
 class DeviceEdit extends Component {
   componentWillUpdate(newProps){

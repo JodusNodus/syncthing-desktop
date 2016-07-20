@@ -1,12 +1,14 @@
 import { Component, PropTypes } from 'react'
 import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
+
 import { CheckBox } from 'react-photonkit'
-import Input from '../../components/Input'
-import * as messageBarActionCreators from '../../actions/message-bar'
+import Input from 'client/components/Input'
+
+import * as messageBarActionCreators from 'client/actions/message-bar'
 import { bindActionCreators } from 'redux'
-import _ from 'lodash'
-import validationErrorMessage from '../../utils/validation-error-message'
+import validationErrorMessage from 'client/utils/validation-error-message'
+import validate from './validate.js'
 
 const fields = [
   'deviceName',
@@ -19,43 +21,6 @@ const fields = [
   'maxSendKbps',
   'natEnabled',
 ]
-
-function validate({
-  deviceName='',
-  globalAnnounceServers=[],
-  listenAddresses=[],
-  maxRecvKbps='',
-  maxSendKbps='',
-}) {
-  const errors = {}
-
-  //Device Name
-  if(deviceName.length < 1){
-    errors.deviceName = 'Device Name should have at least one character.'
-  }
-
-  //Global Discovery Servers
-  if(globalAnnounceServers.length < 1){
-    errors.globalAnnounceServers = 'Global Discovery Servers should have at least one server.'
-  }
-
-  //Listen Addresses
-  if(listenAddresses.length < 1){
-    errors.listenAddresses = 'Listen Addresses should have at least one address.'
-  }
-
-  //Incoming Rate Limit
-  if(isNaN(parseInt(maxRecvKbps))){
-    errors.maxRecvKbps = 'Incoming Rate Limit should be a number.'
-  }
-
-  //Outgoing Rate Limit
-  if(isNaN(parseInt(maxSendKbps))){
-    errors.maxSendKbps = 'Outgoing Rate Limit should be a number.'
-  }
-  
-  return errors
-}
 
 class ServicePreferences extends Component {
   componentDidUpdate(){
