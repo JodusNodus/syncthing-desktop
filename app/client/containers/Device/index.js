@@ -6,11 +6,12 @@ import Toggle from 'client/components/Toggle'
 import SegmentedControl from 'client/components/SegmentedControl'
 
 import { resumeDevice, pauseDevice } from 'main/actions/system'
+import { getDevice } from 'main/reducers/devices'
 
 import { styles } from './styles.scss'
 
 const mapStateToProps = (state, { params }) => ({
-  device: state.devices.devices[params.id],
+  device: getDevice(state, params.id),
 })
 
 @connect(
