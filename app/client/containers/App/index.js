@@ -161,7 +161,7 @@ export default class App extends Component {
 
       setServiceConfig('devices', updatedDevices)
     }else if(pathname == '/folder-add'){
-      const updatedFolders = [
+      const updatedFolders =  [
         ...folders,
         form,
       ]
@@ -180,8 +180,7 @@ export default class App extends Component {
 
     const buttons = ['Cancel', 'Delete']
 
-    dialog.showMessageBox({
-      browserWindow: remote.getCurrentWindow(),
+    dialog.showMessageBox(remote.getCurrentWindow(), {
       type: 'warning',
       buttons,
       message: `Are you sure you want to delete ${item.label || item.name} from ${type}?`,

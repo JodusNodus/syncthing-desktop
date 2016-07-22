@@ -43,13 +43,16 @@ export default class FolderAdd extends Component {
       },
     } = this.props
 
-    const randomID = randomString.generate(10)
+    const randomID = randomString.generate(10).toLowerCase()
 
     const formattedRandomID = [
       randomID.slice(0, 5),
       randomID.slice(5),
     ].join('-')
 
+    const initialDevices = [
+      {deviceID: myID},
+    ]
     const initialValues = {
       id: accepted ? folder : formattedRandomID,
       label: accepted ? folderLabel : '',
@@ -61,10 +64,10 @@ export default class FolderAdd extends Component {
       fileVersioningSelector: 'none',
       minDiskFreePct: 1,
       autoNormalize: true,
-      devices: [
-        {deviceID: myID},
-        accepted && {deviceID: device},
-      ],
+      devices: accepted ? [
+        ...initialDevices,
+        {deviceID: device},
+      ] : initialDevices,
       maxConflicts: 10,
       simpleKeep: 5,
       staggeredCleanInterval: 3600,
