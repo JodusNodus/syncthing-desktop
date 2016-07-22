@@ -8,17 +8,17 @@ const initialState = {
 export default function folderRejected(state = initialState, {type, payload}) {
   switch (type){
     case 'FOLDER_REJECTED':
-      return {
+    return {
       ...payload,
     }
     case 'FOLDER_REJECTED_ACCEPT':
-      return {
+    return {
       ...state,
       accepted: true,
     }
     case 'FOLDER_REJECTED_CLEAR':
-      return initialState
+    return initialState
     default:
-      return state
+    return state
   }
 }

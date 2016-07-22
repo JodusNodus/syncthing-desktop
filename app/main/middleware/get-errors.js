@@ -1,9 +1,10 @@
 import { dialog } from 'electron'
+import { win } from '../utils/app-window'
 
 import { clearErrors } from '../actions/system'
 
 const showErrorMsg = ({message}) =>
-dialog.showMessageBox({
+dialog.showMessageBox(win, {
   type: 'error',
   message: 'Syncthing Error',
   detail: message,

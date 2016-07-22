@@ -97,8 +97,7 @@ export default class App extends Component {
 
       const buttons = ['Accept', 'Decline']
 
-      dialog.showMessageBox({
-        browserWindow: remote.getCurrentWindow(),
+      dialog.showMessageBox(remote.getCurrentWindow(), {
         type: 'warning',
         buttons,
         title: 'New Folder',

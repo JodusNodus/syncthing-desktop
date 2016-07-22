@@ -1,6 +1,7 @@
 import { PropTypes, Component, cloneElement } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 
 import SegmentedControl from 'client/components/SegmentedControl'
 
@@ -57,5 +58,16 @@ export default class Folder extends Component {
   }
 }
 
+const stateText = state => {
+  switch (state) {
+    case 'idle':
+    return 'Up to Date'
+    case 'error':
+    return 'stopped'
+    default:
+    return _.capitalize(state)
+  }
+}
+
 const HeaderStateIcon = ({state}) =>
-  h('h3.text-muted', state == 'error' ? 'stopped' : state)
+  h('h3.text-muted', stateText(state))

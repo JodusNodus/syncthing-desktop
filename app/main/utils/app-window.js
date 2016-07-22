@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 
-let win
+export let win
+
 export default function appWindow(){
   if(win){
     if(win.isMinimized())
