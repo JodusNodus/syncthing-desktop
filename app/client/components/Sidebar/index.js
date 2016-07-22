@@ -16,6 +16,8 @@ const getIndicatorStyle = (state) => {
     return 'negative'
     case 'syncing':
     return 'primary'
+    case 'unshared':
+    return 'warning'
     default:
     return 'default'
   }

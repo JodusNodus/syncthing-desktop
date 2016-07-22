@@ -11,6 +11,7 @@ import FromNow from 'client/components/FromNow'
 import { getDeviceFolderCompletion } from 'main/actions/db'
 import { getFolderStats } from 'main/actions/stats'
 import { scanFolder } from 'main/actions/db'
+import { showMessageBar } from 'client/actions/message-bar'
 import { getDevices } from 'main/reducers/devices'
 import { getFolder } from 'main/reducers/folders'
 
@@ -25,7 +26,12 @@ const mapStateToProps = (state, {params}) => ({
 
 @connect(
   mapStateToProps,
-  {getDeviceFolderCompletion, getFolderStats, scanFolder},
+  {
+    getDeviceFolderCompletion,
+    getFolderStats,
+    scanFolder,
+    showMessageBar,
+  },
 )
 export default class FolderOverview extends Component {
   static propTypes = {
@@ -35,6 +41,7 @@ export default class FolderOverview extends Component {
     getDeviceFolderCompletion: PropTypes.func.isRequired,
     getFolderStats: PropTypes.func.isRequired,
     scanFolder: PropTypes.func.isRequired,
+    showMessageBar: PropTypes.func.isRequired,
   }
 
   componentDidMount(){
@@ -45,17 +52,31 @@ export default class FolderOverview extends Component {
     const isNewFolder = folder.id !== newProps.folder.id
 
     if(isNewFolder){
-      this.newDevice.apply(this)
+      this.newDevice.call(this, newProps)
     }
   }
-  newDevice(){
-    const { folder, getDeviceFolderCompletion, getFolderStats } = this.props
+  newDevice(props=this.props){
+    const {
+      folder,
+      getDeviceFolderCompletion,
+      getFolderStats,
+      showMessageBar,
+    } = props
 
     const sharedDevices = folder.devices
 
     getDeviceFolderCompletion(sharedDevices, folder.id)
 
+    //Get stats for last scan field
     getFolderStats()
+
+    //No Shared Devices
+    if(folder.status && folder.status.state == 'unshared'){
+      showMessageBar({
+        msg: 'You have not shared this folder with any device.',
+        ptStyle: 'warning',
+      })
+    }
   }
   handleScan(){
     const { scanFolder, folder } = this.props
@@ -78,7 +99,7 @@ export default class FolderOverview extends Component {
       h(Path, {path: folder.path, home: status.tilde}),
       folder.status && folder.status.state != 'error' && h(InSync, folder.status),
       folder.stats && h(LastScan, {state: folder.stats.state, handleScan: this.handleScan.bind(this)}),
-      h(SharedDevices, {devices: sharedDevices}),
+      folder.status && folder.status.state != 'unshared' && h(SharedDevices, {devices: sharedDevices}),
     ])
   }
 }

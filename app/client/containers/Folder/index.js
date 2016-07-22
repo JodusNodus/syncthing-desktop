@@ -3,15 +3,14 @@ import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
+import { getFolder } from 'main/reducers/folders'
+
 import SegmentedControl from 'client/components/SegmentedControl'
 
 import { styles } from './styles.scss'
 
 const mapStateToProps = (state, {params}) => ({
-  folder: {
-    ...state.folders.folders[params.id],
-    status: state.folders.status[params.id],
-  },
+  folder: getFolder(state, params.id),
 })
 
 @connect(
@@ -64,6 +63,8 @@ const stateText = state => {
     return 'Up to Date'
     case 'error':
     return 'stopped'
+    case 'unshared':
+    return 'Not Shared'
     default:
     return _.capitalize(state)
   }

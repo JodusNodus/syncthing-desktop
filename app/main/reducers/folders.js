@@ -36,9 +36,17 @@ export default combineReducers({
 export const getFolder = ({folders}, id) => {
   const folder = folders.folders[id]
   const completion = folders.completion[id]
+
+  const state = folder.devices.length <= 1
+  ? 'unshared'
+  : folders.status[id] && folders.status[id].state
+
   return {
     ...folder,
-    status: folders.status[id],
+    status: {
+      ...folders.status[id],
+      state,
+    },
     devices: folder.devices.map(({deviceID}) => ({
       deviceID,
       completion: completion && completion[deviceID],
