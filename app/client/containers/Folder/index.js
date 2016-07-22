@@ -33,7 +33,7 @@ export default class Folder extends Component {
     this.componentDidUpdate = this.componentDidMount = this.redirect.bind(this)
   }
   redirect(){
-    // if(!this.props.folder) this.props.history.push('/')
+    if(!this.props.folder || !this.props.folder.id) this.props.history.push('/')
   }
   render(){
     const { folder, params, children, onSubmit } = this.props

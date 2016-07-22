@@ -20,7 +20,6 @@ export default function messageBar(store){
       store.dispatch(showMessageBar({
         msg: 'The config could not be saved.',
         ptStyle: 'negative',
-        static: true,
       }))
 
     }else if(action.type == 'CLIENT_CONFIG_SET_SUCCESS'){
@@ -36,7 +35,6 @@ export default function messageBar(store){
       store.dispatch(showMessageBar({
         msg: 'The config could not be saved.',
         ptStyle: 'negative',
-        static: true,
       }))
 
     }

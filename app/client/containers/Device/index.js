@@ -36,7 +36,7 @@ export default class Device extends Component {
     this.componentDidUpdate = this.componentDidMount = this.redirect.bind(this)
   }
   redirect(){
-    if(!this.props.device) this.props.history.push('/')
+    if(!this.props.device || !this.props.device.deviceID) this.props.history.push('/')
   }
   handleToggle(){
     const { device, resumeDevice, pauseDevice } = this.props
