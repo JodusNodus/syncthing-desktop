@@ -6,6 +6,19 @@ import NavGroupItem from 'client/components/NavGroupItem'
 
 // import Dropdown from '../Dropdown'
 
+const getIndicatorStyle = (state) => {
+  switch (state) {
+    case 'idle':
+    return 'positive'
+    case 'scanning':
+    return 'primary'
+    case 'error':
+    return 'negative'
+    default:
+    return 'default'
+  }
+}
+
 const Sidebar = ({ folders, devices, preferences}) => {
   return h(Pane, {ptSize: 'sm', sidebar: true}, [
     // h('div.toolbar-options', [
@@ -18,13 +31,13 @@ const Sidebar = ({ folders, devices, preferences}) => {
         'Folders',
         h(Link, {className: 'fa fa-plus pull-right', to: '/folder-add'}),
       ]),
-      ...folders.map(({key, text, glyph}) => h(NavGroupItem, {glyph, text, link: `/folder/${key}`})),
+      ...folders.map(({key, text, glyph, state}) => h(NavGroupItem, {indicator: state, indicatorStyle: getIndicatorStyle(state), glyph, text, link: `/folder/${key}`})),
 
       h(NavTitle, [
         'Devices',
         h(Link, {className: 'fa fa-plus pull-right', to: '/device-add'}),
       ]),
-      ...devices.map(({key, text, glyph, connected}) => h(NavGroupItem, {glyph, text, connected, link: `/device/${key}`})),
+      ...devices.map(({key, text, glyph, connected}) => h(NavGroupItem, {indicator: connected, indicatorStyle: 'positive', glyph, text, connected, link: `/device/${key}`})),
 
       h(NavTitle, 'Preferences'),
       ...preferences.map(({key, text, glyph}) => h(NavGroupItem, {glyph, text, link: `/preferences/${key}`})),

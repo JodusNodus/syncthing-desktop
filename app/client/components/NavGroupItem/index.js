@@ -4,12 +4,12 @@ import { Link } from 'react-router'
 
 import { styles } from './styles.scss'
 
-const NavGroupItem = ({text, glyph, link, connected}) => h(Link, {
+const NavGroupItem = ({text, glyph, link, indicator=false, indicatorStyle='default'}) => h(Link, {
   to: link,
-  className: `nav-group-item ${styles} ${connected && 'online'}`,
+  className: `nav-group-item ${styles} ${indicator && 'indicator'}`,
   activeClassName: 'active',
 }, [
-  connected && h('span.icon.icon-record.online'),
+  indicator && h('span.icon.icon-record', {className: indicatorStyle}),
   glyph && h('span', { className: `icon icon-text icon-${glyph}` }),
   text,
 ])
@@ -18,7 +18,8 @@ NavGroupItem.propTypes = {
   link: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   glyph: PropTypes.string,
-  connected: PropTypes.bool,
+  indicator: PropTypes.bool,
+  indicatorStyle: PropTypes.string,
 }
 
 export default NavGroupItem

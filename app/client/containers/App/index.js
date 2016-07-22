@@ -191,10 +191,11 @@ class App extends Component {
 
     //An object defining all sections and items in the sidebar
     const sections = {
-      folders: folders.map(({id, label}) => ({
+      folders: folders.map(({id, label, status}) => ({
         glyph: 'folder',
         text: label || id,
         key: id,
+        state: status && status.state,
       })),
       devices: devices.map(({name, deviceID, connected}) => ({
         glyph: 'monitor',

@@ -121,11 +121,14 @@
 
   .icon.icon-record {
     margin-right: 7px;
-    &.online {
+    &.positive {
       color: $green;
     }
-    &.offline {
+    &.negative {
       color: $red;
+    }
+    &.warning {
+      color: $yellow;
     }
   }
 
