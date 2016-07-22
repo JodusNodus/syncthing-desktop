@@ -42,6 +42,15 @@ export function mainEvents(store) {
 }
 
 export function stEvents(store){
+  //Clear all previous syncthing listeners
+  global.st.removeAllListeners('deviceConnected')
+  global.st.removeAllListeners('deviceDisconnected')
+  global.st.removeAllListeners('error')
+  global.st.removeAllListeners('stateChanged')
+  global.st.removeAllListeners('configSaved')
+  global.st.removeAllListeners('folderSummary')
+  global.st.removeAllListeners('folderCompletion')
+  global.st.removeAllListeners('folderRejected')
 
   //Listen for devices connecting
   global.st.on('deviceConnected', ({ id, addr }) => {
@@ -58,8 +67,8 @@ export function stEvents(store){
   })
 
   //Listen for connection errors
-  global.st.on('error', () => {
-    store.dispatch({ type: 'CONNECTION_ERROR' })
+  global.st.on('error', (error) => {
+    store.dispatch({ type: 'CONNECTION_ERROR', error })
   })
 
   //Listen for folder state changes
@@ -110,6 +119,6 @@ export function stEvents(store){
       store.dispatch(getMyID())
     }
 
-  }, 2000)
+  }, 5000)
 
 }

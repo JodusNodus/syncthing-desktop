@@ -21,7 +21,7 @@ class Folder extends Component {
       return h('div.padded-more', {className: styles}, [
         h('header.page-header', [
           h('h2', folder.label || folder.id),
-          folder.status && h(HeaderStateIcon, {state: folder.status.state}),
+          folder.status && h(HeaderStateIcon, folder.status),
         ]),
         h(SegmentedControl, {buttons: [
           {text: 'Overview', link: `/folder/${params.id}/overview`},
@@ -45,7 +45,10 @@ Folder.propTypes = {
 }
 
 const mapStateToProps = (state, {params}) => ({
-  folder: state.folders.folders[params.id],
+  folder: {
+    ...state.folders.folders[params.id],
+    status: state.folders.status[params.id],
+  },
 })
 
 export default connect(

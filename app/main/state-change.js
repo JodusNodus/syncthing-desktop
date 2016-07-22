@@ -3,7 +3,7 @@ import { getServiceConfig, getConnections, getMyID, getVersion } from './actions
 import { getFolderStatus } from './actions/db'
 import { getDeviceStats } from './actions/stats'
 import buildMenu from './menu/index'
-import _ from 'lodash'
+import isEqual from 'lodash/isEqual'
 import Syncthing from 'node-syncthing'
 import { stEvents } from './events'
 import { getFolders } from './reducers/folders'
@@ -13,8 +13,17 @@ export default function stateHandler({store, tray}){
   return () => {
     const newState = store.getState()
 
-    //Check if config was loaded
-    if((!previousState.config.isSuccess && newState.config.isSuccess) || !_.isEqual(previousState.config.config, newState.config.config)){
+    //Check if config was loaded or changed
+    const configIsNowSuccesfull = !previousState.config.isSuccess && newState.config.isSuccess
+    const configHasChanged = !isEqual(previousState.config.config, newState.config.config)
+
+    if(configIsNowSuccesfull || configHasChanged){
+
+      //Remove all listeners from previous Syncthing instance
+      if(global.st){
+        global.st.removeAllListeners()
+      }
+
       //Initialize syncthing connection
       global.st = new Syncthing({
         ...newState.config.config,
@@ -38,13 +47,13 @@ export default function stateHandler({store, tray}){
     }
 
     //Check if devices were added or removed
-    if(previousState.devices.byId.length !== newState.devices.byId.length){
+    if(!isEqual(previousState.devices.byId, newState.devices.byId)){
       store.dispatch(getConnections())
       store.dispatch(getDeviceStats())
       store.dispatch(getFolderStatus(getFolders(newState)))
     }
 
-    const StateIsDifferent = !_.isEqual({
+    const StateIsDifferent = !isEqual({
       ...newState,
       systemStatus: null,
     }, {

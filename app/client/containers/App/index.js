@@ -274,17 +274,13 @@ class App extends Component {
           }),
         ]),
       ]),
+      (() => {
+        if (process.env.NODE_ENV !== 'production') {
+          const DevTools = require('client/containers/DevTools') // eslint-disable-line global-require
+          return h(DevTools)
+        }
+      })(),
     ])
-    //return (
-      //{
-        //(() => {
-          //if (process.env.NODE_ENV !== 'production') {
-            //const DevTools = require('./DevTools') // eslint-disable-line global-require
-            //return <DevTools />
-          //}
-        //})()
-      //}
-    //);
   }
 }
 

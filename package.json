@@ -70,7 +70,7 @@
     "is-electron-renderer": "^2.0.0",
     "lodash": "^4.13.1",
     "moment": "^2.14.1",
-    "node-syncthing": "^3.2.0",
+    "node-syncthing": "^3.3.0",
     "postcss": "^5.0.19",
     "qrcode.react": "^0.6.1",
     "randomstring": "^1.1.5",

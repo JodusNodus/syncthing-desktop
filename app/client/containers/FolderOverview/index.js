@@ -35,7 +35,6 @@ class FolderOverview extends Component {
   }
   render(){
     const { folder, devices, status } = this.props
-    console.log(folder.status)
 
     const sharedDevices = folder.devices.map(({deviceID, completion}) => {
       const device = devices.filter(device => device.deviceID == deviceID)[0]
