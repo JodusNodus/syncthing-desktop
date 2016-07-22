@@ -78,3 +78,28 @@ global.st.system.resume(device).then(payload => {
 }).catch(error => {
   dispatch({ type: 'DEVICE_RESUME_FAILURE', error })
 })
+
+export const getErrors = () => dispatch =>
+global.st.system.errors().then(payload => {
+  dispatch({
+    type: 'ERRORS_GET_SUCCESS',
+    payload,
+  })
+}).catch(error => {
+  dispatch({
+    type: 'ERRORS_GET_FAILURE',
+    error,
+  })
+})
+
+export const clearErrors = () => dispatch =>
+global.st.system.clearErrors().then(() => {
+  dispatch({
+    type: 'ERRORS_CLEAR_SUCCESS',
+  })
+}).catch(error => {
+  dispatch({
+    type: 'ERRORS_CLEAR_FAILURE',
+    error,
+  })
+})

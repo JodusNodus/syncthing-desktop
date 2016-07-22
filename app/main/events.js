@@ -1,5 +1,5 @@
 import notify from './utils/notify'
-import { getConnections, getMyID, getServiceConfig } from './actions/system'
+import { getConnections, getMyID, getServiceConfig, getErrors } from './actions/system'
 import { showFolderRejected } from './actions/folder-rejected'
 import { getFolderStats } from './actions/stats'
 import { getDevice } from './reducers/devices'
@@ -118,23 +118,14 @@ export function stEvents(store){
     notify(device.name, `wants to share the folder ${payload.folderLabel || payload.folder}.`)
   })
 
-  //Listen for folder errors
-  global.st.on('folderErrors', payload => {
-    console.log('error')
-    // alert(payload.errors.error)
-    // store.dispatch({
-    //   type: 'FOLDER_ERROR',
-    //   payload,
-    // })
-  })
-
-  //Check periodicaly for connections
+  //Check periodicaly for system status & errors
   setInterval(() => {
     const state = store.getState()
     if(state.power == 'awake'){
       store.dispatch(getMyID())
+      store.dispatch(getErrors())
     }
 
-  }, 5000)
+  }, 3000)
 
 }

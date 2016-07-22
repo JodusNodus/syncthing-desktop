@@ -4,7 +4,7 @@ import { getFolderStatus } from './actions/db'
 import { getDeviceStats } from './actions/stats'
 import buildMenu from './menu/index'
 import isEqual from 'lodash/isEqual'
-import Syncthing from 'node-syncthing'
+import syncthing from 'node-syncthing'
 import { stEvents } from './events'
 import { getFolders } from './reducers/folders'
 
@@ -25,7 +25,7 @@ export default function stateHandler({store, tray}){
       }
 
       //Initialize syncthing connection
-      global.st = new Syncthing({
+      global.st = syncthing({
         ...newState.config.config,
         eventListener: true,
         retries: 10 ** 10,

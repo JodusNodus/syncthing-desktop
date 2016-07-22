@@ -11,6 +11,7 @@ import guiPreferences from './gui-preferences'
 import version from './version'
 import config from './config'
 import folderRejected from './folder-rejected'
+import errors from './errors'
 
 export const reducers = {
   connected,
@@ -24,6 +25,7 @@ export const reducers = {
   version,
   config,
   folderRejected,
+  errors,
 }
 
 const rootReducer = combineReducers(reducers)

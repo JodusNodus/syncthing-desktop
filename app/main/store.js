@@ -4,8 +4,9 @@ import rootReducer from './reducers/index'
 import errorMiddleware from './middleware/error'
 import { electronEnhancer } from 'redux-electron-store'
 import loggingMiddleware from './middleware/logging'
+import getErrorsMiddleware from './middleware/get-errors'
 
-const middleware = [thunk, errorMiddleware]
+const middleware = [thunk, errorMiddleware, getErrorsMiddleware]
 
 if (process.env.NODE_ENV === 'development') {
   middleware.push(loggingMiddleware)
