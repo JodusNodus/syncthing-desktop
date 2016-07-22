@@ -14,6 +14,8 @@ const getIndicatorStyle = (state) => {
     return 'primary'
     case 'error':
     return 'negative'
+    case 'syncing':
+    return 'primary'
     default:
     return 'default'
   }

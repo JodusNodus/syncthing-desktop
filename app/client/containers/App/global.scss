@@ -121,6 +121,9 @@
 
   .icon.icon-record {
     margin-right: 7px;
+    &.primary {
+      color: $blue;
+    }
     &.positive {
       color: $green;
     }
