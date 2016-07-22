@@ -2,10 +2,10 @@ import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { clipboard } from 'electron'
-import moment from 'moment'
 import { bindActionCreators } from 'redux'
 
 import SharedFolders from 'client/components/SharedFolders'
+import FromNow from 'client/components/FromNow'
 
 import * as messageBarActionCreators from 'client/actions/message-bar'
 import { getFolders } from 'main/reducers/folders'
@@ -70,6 +70,6 @@ const Status = ({connected, address}) => h('div.section-item', [
 
 const LastSeen = ({lastSeen}) => h('div.section-item.last-seen', [
   h('p.left', 'Last Seen:'),
-  h('p.center', moment(lastSeen).fromNow()),
+  h(FromNow, {className: 'center', value: lastSeen}),
   h('div.right'),
 ])

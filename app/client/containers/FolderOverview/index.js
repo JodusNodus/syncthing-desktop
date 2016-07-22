@@ -2,13 +2,14 @@ import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { shell } from 'electron'
-import { bindActionCreators } from 'redux'
 
 import Size from 'client/components/Size'
 import SharedDevices from 'client/components/SharedDevices'
 import Progress from 'react-progressbar'
+import FromNow from 'client/components/FromNow'
 
-import * as dbActionCreators from 'main/actions/db'
+import { getDeviceFolderCompletion } from 'main/actions/db'
+import { getFolderStats } from 'main/actions/stats'
 import { getDevices } from 'main/reducers/devices'
 import { getFolder } from 'main/reducers/folders'
 
@@ -16,22 +17,24 @@ import { styles } from './styles.scss'
 
 class FolderOverview extends Component {
   componentDidMount(){
-    this.getDeviceCompletion.apply(this)
+    this.newDevice.apply(this)
   }
   componentWillUpdate(newProps){
     const { folder } = this.props
     const isNewFolder = folder.id !== newProps.folder.id
 
     if(isNewFolder){
-      this.getDeviceCompletion.apply(this)
+      this.newDevice.apply(this)
     }
   }
-  getDeviceCompletion(){
-    const { folder, getDeviceFolderCompletion } = this.props
+  newDevice(){
+    const { folder, getDeviceFolderCompletion, getFolderStats } = this.props
 
     const sharedDevices = folder.devices
 
     getDeviceFolderCompletion(sharedDevices, folder.id)
+
+    getFolderStats()
   }
   render(){
     const { folder, devices, status } = this.props
@@ -48,7 +51,8 @@ class FolderOverview extends Component {
 
     return h('div', {className: styles}, [
       h(Path, {path: folder.path, home: status.tilde}),
-      folder.status && h(InSync, folder.status),
+      folder.status && folder.status.state != 'error' && h(InSync, folder.status),
+      folder.stats && h(LastScan, folder.stats),
       h(SharedDevices, {devices: sharedDevices}),
     ])
   }
@@ -59,6 +63,7 @@ FolderOverview.propTypes = {
   devices: PropTypes.array.isRequired,
   folder: PropTypes.object.isRequired,
   getDeviceFolderCompletion: PropTypes.func.isRequired,
+  getFolderStats: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state, {params}) => ({
@@ -69,7 +74,7 @@ const mapStateToProps = (state, {params}) => ({
 
 export default connect(
   mapStateToProps,
-  dispatch => bindActionCreators(dbActionCreators, dispatch),
+  {getDeviceFolderCompletion, getFolderStats},
 )(FolderOverview)
 
 const Path = ({path, home}) => h('div.section-item', [
@@ -95,3 +100,10 @@ const InSync = ({globalBytes, inSyncBytes}) => {
     h('p.right'),
   ])
 }
+
+const LastScan = ({lastScan}) =>
+  h('div.section-item.last-scan', [
+    h('p.left', 'Last Scan:'),
+    h(FromNow, {className: 'center', value: lastScan}),
+    h('p.right'),
+  ])

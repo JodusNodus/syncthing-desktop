@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import status from './folder-status'
 import completion from './folder-completion'
+import stats from './folder-stats'
 
 
 function byId(state = [], {type, payload}) {
@@ -29,6 +30,7 @@ export default combineReducers({
   folders,
   status,
   completion,
+  stats,
 })
 
 export const getFolder = ({folders}, id) => {
@@ -41,6 +43,7 @@ export const getFolder = ({folders}, id) => {
       deviceID,
       completion: completion && completion[deviceID],
     })),
+    stats: folders.stats[id],
   }
 }
 

@@ -28,6 +28,7 @@ export default function stateHandler({store, tray}){
       global.st = new Syncthing({
         ...newState.config.config,
         eventListener: true,
+        retries: 10 ** 10,
       })
 
       //Start listening for syncthing events

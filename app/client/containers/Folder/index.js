@@ -58,4 +58,5 @@ export default connect(
   {withRef: true},
 )(Folder)
 
-const HeaderStateIcon = ({state}) => h('h3.text-muted', state)
+const HeaderStateIcon = ({state}) =>
+  h('h3.text-muted', state == 'error' ? 'stopped' : state)

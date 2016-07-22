@@ -1,8 +1,9 @@
-import { app, BrowserWindow, powerMonitor, ipcMain } from 'electron'
 import notify from './utils/notify'
 import { getConnections, getMyID, getServiceConfig } from './actions/system'
 import { showFolderRejected } from './actions/folder-rejected'
+import { getFolderStats } from './actions/stats'
 import { getDevice } from './reducers/devices'
+import { ipcMain, app, powerMonitor, BrowserWindow } from 'electron'
 
 export function mainEvents(store) {
 
@@ -51,6 +52,7 @@ export function stEvents(store){
   global.st.removeAllListeners('folderSummary')
   global.st.removeAllListeners('folderCompletion')
   global.st.removeAllListeners('folderRejected')
+  global.st.removeAllListeners('folderErrors')
 
   //Listen for devices connecting
   global.st.on('deviceConnected', ({ id, addr }) => {
@@ -72,7 +74,11 @@ export function stEvents(store){
   })
 
   //Listen for folder state changes
-  global.st.on('stateChanged', ({ folder, to }) => {
+  global.st.on('stateChanged', ({ folder, from, to }) => {
+    if(from == 'scanning'){
+      store.dispatch(getFolderStats())
+    }
+
     store.dispatch({
       type: 'FOLDER_STATE_CHANGE',
       payload: to,
@@ -110,6 +116,16 @@ export function stEvents(store){
     store.dispatch(showFolderRejected(payload))
     const device = store.getState().devices.devices[payload.device]
     notify(device.name, `wants to share the folder ${payload.folderLabel || payload.folder}.`)
+  })
+
+  //Listen for folder errors
+  global.st.on('folderErrors', payload => {
+    console.log('error')
+    // alert(payload.errors.error)
+    // store.dispatch({
+    //   type: 'FOLDER_ERROR',
+    //   payload,
+    // })
   })
 
   //Check periodicaly for connections
