@@ -11,7 +11,7 @@ export default class FromNow extends Component {
   }
   componentDidMount(){
     //Force redraw every 5 seconds
-    this.interval = this.setInterval(() => {
+    this.interval = setInterval(() => {
       this.setState({ ping: 'pong' })
     }, 5000)
   }
