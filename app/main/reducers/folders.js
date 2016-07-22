@@ -3,7 +3,6 @@ import status from './folder-status'
 import completion from './folder-completion'
 import stats from './folder-stats'
 
-
 function byId(state = [], {type, payload}) {
   switch (type){
     case 'FOLDERS_GET_SUCCESS':
@@ -33,7 +32,7 @@ export default combineReducers({
   stats,
 })
 
-export const getFolder = ({folders}, id) => {
+export const getFolder = ({folders, devices}, id) => {
   const folder = folders.folders[id]
   const completion = folders.completion[id]
 
@@ -49,10 +48,11 @@ export const getFolder = ({folders}, id) => {
     },
     devices: folder.devices.map(({deviceID}) => ({
       deviceID,
+      name: devices.devices[deviceID] && devices.devices[deviceID].name,
       completion: completion && completion[deviceID],
     })),
     stats: folders.stats[id],
   }
 }
 
-export const getFolders = ({folders}) => folders.byId.map(id => getFolder({folders}, id))
+export const getFolders = ({folders, ...state}) => folders.byId.map(id => getFolder({folders, ...state}, id))

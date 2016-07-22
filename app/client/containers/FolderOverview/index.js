@@ -12,7 +12,6 @@ import { getDeviceFolderCompletion } from 'main/actions/db'
 import { getFolderStats } from 'main/actions/stats'
 import { scanFolder } from 'main/actions/db'
 import { showMessageBar } from 'client/actions/message-bar'
-import { getDevices } from 'main/reducers/devices'
 import { getFolder } from 'main/reducers/folders'
 
 import { styles } from './styles.scss'
@@ -20,7 +19,6 @@ import { styles } from './styles.scss'
 
 const mapStateToProps = (state, {params}) => ({
   status: state.systemStatus,
-  devices: getDevices(state),
   folder: getFolder(state, params.id),
 })
 
@@ -83,17 +81,10 @@ export default class FolderOverview extends Component {
     scanFolder(folder.id)
   }
   render(){
-    const { folder, devices, status } = this.props
+    const { folder, status } = this.props
 
-    const sharedDevices = folder.devices.map(({deviceID, completion}) => {
-      const device = devices.filter(device => device.deviceID == deviceID)[0]
-      if(device){
-        return {
-          ...device,
-          completion,
-        }
-      }
-    }).filter(x => x)
+    //Filter out this device
+    const sharedDevices = folder.devices.filter(x => x.name)
 
     return h('div', {className: styles}, [
       h(Path, {path: folder.path, home: status.tilde}),
