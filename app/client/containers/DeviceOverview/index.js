@@ -62,7 +62,7 @@ const DeviceID = ({deviceID, onCopy}) => h('div.section-item.device-id', [
 const Status = ({connected, address}) => h('div.section-item', [
   h('p.left', 'Status:'),
   h('p.center', [
-    h('span.icon.icon-record', {className: connected ? 'online': 'offline'}),
+    h('span.icon.icon-record', {className: connected ? 'positive': 'negative'}),
     connected ? `Connected at ${address}` : 'Not connected',
   ]),
   h('div.right'),
