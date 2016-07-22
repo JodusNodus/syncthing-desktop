@@ -57,6 +57,14 @@ const versioningOptions = [
 ]
 
 class FolderEdit extends Component {
+  static propTypes = {
+    fields: PropTypes.object.isRequired,
+    initialValues: PropTypes.object.isRequired,
+    showMessageBar: PropTypes.func.isRequired,
+    hideMessageBar: PropTypes.func.isRequired,
+    devices: PropTypes.array.isRequired,
+  }
+
   shouldComponentUpdate(newProps){
     //Don't update when devices has changed (wich happens periodicaly)
     return !_.isEqual(this.props.fields, newProps.fields)
@@ -128,14 +136,6 @@ class FolderEdit extends Component {
       h(Input, {label: 'Minimum Disk Free (in percent)', type: 'number', ...minDiskFreePct}),
     ])
   }
-}
-
-FolderEdit.propTypes = {
-  fields: PropTypes.object.isRequired,
-  initialValues: PropTypes.object.isRequired,
-  showMessageBar: PropTypes.func.isRequired,
-  hideMessageBar: PropTypes.func.isRequired,
-  devices: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = (state, {params, initialValues}) => ({

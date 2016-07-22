@@ -15,7 +15,26 @@ import { getFolder } from 'main/reducers/folders'
 
 import { styles } from './styles.scss'
 
-class FolderOverview extends Component {
+
+const mapStateToProps = (state, {params}) => ({
+  status: state.systemStatus,
+  devices: getDevices(state),
+  folder: getFolder(state, params.id),
+})
+
+@connect(
+  mapStateToProps,
+  {getDeviceFolderCompletion, getFolderStats},
+)
+export default class FolderOverview extends Component {
+  static propTypes = {
+    status: PropTypes.object.isRequired,
+    devices: PropTypes.array.isRequired,
+    folder: PropTypes.object.isRequired,
+    getDeviceFolderCompletion: PropTypes.func.isRequired,
+    getFolderStats: PropTypes.func.isRequired,
+  }
+
   componentDidMount(){
     this.newDevice.apply(this)
   }
@@ -58,25 +77,6 @@ class FolderOverview extends Component {
   }
 }
 
-FolderOverview.propTypes = {
-  status: PropTypes.object.isRequired,
-  devices: PropTypes.array.isRequired,
-  folder: PropTypes.object.isRequired,
-  getDeviceFolderCompletion: PropTypes.func.isRequired,
-  getFolderStats: PropTypes.func.isRequired,
-}
-
-const mapStateToProps = (state, {params}) => ({
-  status: state.systemStatus,
-  devices: getDevices(state),
-  folder: getFolder(state, params.id),
-})
-
-export default connect(
-  mapStateToProps,
-  {getDeviceFolderCompletion, getFolderStats},
-)(FolderOverview)
-
 const Path = ({path, home}) => h('div.section-item', [
   h('p.left', 'Path:'),
   h('p.center', path.replace(home, '~')),
@@ -102,8 +102,8 @@ const InSync = ({globalBytes, inSyncBytes}) => {
 }
 
 const LastScan = ({lastScan}) =>
-  h('div.section-item.last-scan', [
-    h('p.left', 'Last Scan:'),
-    h(FromNow, {className: 'center', value: lastScan}),
-    h('p.right'),
-  ])
+h('div.section-item.last-scan', [
+  h('p.left', 'Last Scan:'),
+  h(FromNow, {className: 'center', value: lastScan}),
+  h('p.right'),
+])

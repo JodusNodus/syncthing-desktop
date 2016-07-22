@@ -11,7 +11,21 @@ import { showMessageBar } from 'client/actions/message-bar'
 
 import { styles } from './styles.scss'
 
-class Overview extends Component {
+@connect(
+  state => ({
+    status: state.systemStatus,
+    version: state.version,
+  }),
+  {showQrCodeModal, showMessageBar},
+)
+export default class Overview extends Component {
+  static propTypes = {
+    status: PropTypes.object.isRequired,
+    version: PropTypes.object.isRequired,
+    showQrCodeModal: PropTypes.func.isRequired,
+    showMessageBar: PropTypes.func.isRequired,
+  }
+
   handleCopy(myID){
     clipboard.writeText(myID)
     this.props.showMessageBar({
@@ -35,21 +49,6 @@ class Overview extends Component {
     ])
   }
 }
-
-Overview.propTypes = {
-  status: PropTypes.object.isRequired,
-  version: PropTypes.object.isRequired,
-  showQrCodeModal: PropTypes.func.isRequired,
-  showMessageBar: PropTypes.func.isRequired,
-}
-
-export default connect(
-  state => ({
-    status: state.systemStatus,
-    version: state.version,
-  }),
-  {showQrCodeModal, showMessageBar},
-)(Overview)
 
 const CpuUsage = ({cpuPercent}) => h('div.section-item.cpu-usage', [
   h('p.left', 'CPU Usage:'),

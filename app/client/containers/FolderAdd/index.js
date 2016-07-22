@@ -7,7 +7,25 @@ import FolderEdit from 'client/containers/FolderEdit'
 
 import { clearFolderRejected } from 'main/actions/folder-rejected'
 
-class FolderAdd extends Component {
+const mapStateToProps = state => ({
+  myID: state.myID,
+  folderRejected: state.folderRejected,
+})
+
+@connect(
+  mapStateToProps,
+  {clearFolderRejected},
+  undefined,
+  {withRef: true},
+)
+export default class FolderAdd extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    myID: PropTypes.string.isRequired,
+    folderRejected: PropTypes.object.isRequired,
+    clearFolderRejected: PropTypes.func.isRequired,
+  }
+
   componentWillUnmount(){
     if(this.props.folderRejected.accepted){
       this.props.clearFolderRejected()
@@ -64,22 +82,3 @@ class FolderAdd extends Component {
     ])
   }
 }
-
-FolderAdd.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  myID: PropTypes.string.isRequired,
-  folderRejected: PropTypes.object.isRequired,
-  clearFolderRejected: PropTypes.func.isRequired,
-}
-
-const mapStateToProps = state => ({
-  myID: state.myID,
-  folderRejected: state.folderRejected,
-})
-
-export default connect(
-  mapStateToProps,
-  {clearFolderRejected},
-  undefined,
-  {withRef: true},
-)(FolderAdd)

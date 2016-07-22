@@ -6,7 +6,28 @@ import SegmentedControl from 'client/components/SegmentedControl'
 
 import { styles } from './styles.scss'
 
-class Folder extends Component {
+const mapStateToProps = (state, {params}) => ({
+  folder: {
+    ...state.folders.folders[params.id],
+    status: state.folders.status[params.id],
+  },
+})
+
+@connect(
+  mapStateToProps,
+  undefined,
+  undefined,
+  {withRef: true},
+)
+export default class Folder extends Component {
+  static propTypes = {
+    params: PropTypes.object.isRequired,
+    folder: PropTypes.object.isRequired,
+    children: PropTypes.element.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+  }
+
   constructor(props){
     super(props)
     this.componentDidUpdate = this.componentDidMount = this.redirect.bind(this)
@@ -35,28 +56,6 @@ class Folder extends Component {
     }
   }
 }
-
-Folder.propTypes = {
-  params: PropTypes.object.isRequired,
-  folder: PropTypes.object.isRequired,
-  children: PropTypes.element.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
-}
-
-const mapStateToProps = (state, {params}) => ({
-  folder: {
-    ...state.folders.folders[params.id],
-    status: state.folders.status[params.id],
-  },
-})
-
-export default connect(
-  mapStateToProps,
-  undefined,
-  undefined,
-  {withRef: true},
-)(Folder)
 
 const HeaderStateIcon = ({state}) =>
   h('h3.text-muted', state == 'error' ? 'stopped' : state)

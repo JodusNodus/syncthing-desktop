@@ -27,7 +27,50 @@ import './global.scss'
 
 const partOf = x => y => x.indexOf(y) >= 0
 
-class App extends Component {
+const mapStateToProps = state => ({
+  devices: getDevices(state),
+  folders: getFolders(state),
+  connected: state.connected,
+  config: state.config,
+  qrCodeModal: state.qrCodeModal,
+  form: state.form,
+  messageBar: state.messageBar,
+  qrCodeScanModal: state.qrCodeScanModal,
+  folderRejected: state.folderRejected,
+})
+
+@connect(
+  mapStateToProps,
+  dispatch => bindActionCreators({
+    ...configActionCreators,
+    ...systemActionCreators,
+    ...qrCodeModalActionCreators,
+    ...qrCodeScanModalActionCreators,
+    ...folderRejectedActionCreators,
+  }, dispatch)
+)
+export default class App extends Component {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+    devices: PropTypes.array.isRequired,
+    folders: PropTypes.array.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    connected: PropTypes.bool.isRequired,
+    config: PropTypes.object.isRequired,
+    setClientConfig: PropTypes.func.isRequired,
+    setServiceConfig: PropTypes.func.isRequired,
+    qrCodeModal: PropTypes.object.isRequired,
+    hideQrCodeModal: PropTypes.func.isRequired,
+    messageBar: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
+    qrCodeScanModal: PropTypes.object.isRequired,
+    hideQrCodeScanModal: PropTypes.func.isRequired,
+    scanQrCode: PropTypes.func.isRequired,
+    folderRejected: PropTypes.object.isRequired,
+    acceptFolderRejected: PropTypes.func.isRequired,
+  }
+
   constructor(props){
     super(props)
     this.redirect = this.redirect.bind(this)
@@ -284,47 +327,3 @@ class App extends Component {
     ])
   }
 }
-
-App.propTypes = {
-  children: PropTypes.element.isRequired,
-  devices: PropTypes.array.isRequired,
-  folders: PropTypes.array.isRequired,
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  connected: PropTypes.bool.isRequired,
-  config: PropTypes.object.isRequired,
-  setClientConfig: PropTypes.func.isRequired,
-  setServiceConfig: PropTypes.func.isRequired,
-  qrCodeModal: PropTypes.object.isRequired,
-  hideQrCodeModal: PropTypes.func.isRequired,
-  messageBar: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
-  qrCodeScanModal: PropTypes.object.isRequired,
-  hideQrCodeScanModal: PropTypes.func.isRequired,
-  scanQrCode: PropTypes.func.isRequired,
-  folderRejected: PropTypes.object.isRequired,
-  acceptFolderRejected: PropTypes.func.isRequired,
-}
-
-const mapStateToProps = state => ({
-  devices: getDevices(state),
-  folders: getFolders(state),
-  connected: state.connected,
-  config: state.config,
-  qrCodeModal: state.qrCodeModal,
-  form: state.form,
-  messageBar: state.messageBar,
-  qrCodeScanModal: state.qrCodeScanModal,
-  folderRejected: state.folderRejected,
-})
-
-export default connect(
-  mapStateToProps,
-  dispatch => bindActionCreators({
-    ...configActionCreators,
-    ...systemActionCreators,
-    ...qrCodeModalActionCreators,
-    ...qrCodeScanModalActionCreators,
-    ...folderRejectedActionCreators,
-  }, dispatch)
-)(App)

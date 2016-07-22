@@ -12,7 +12,17 @@ const initialValues = {
   introducer: false,
 }
 
-class DeviceAdd extends Component {
+@connect(
+  undefined,
+  undefined,
+  undefined,
+  {withRef: true},
+)
+export default class DeviceAdd extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  }
+
   render(){
     const { onSubmit } = this.props
 
@@ -25,14 +35,3 @@ class DeviceAdd extends Component {
     ])
   }
 }
-
-DeviceAdd.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-}
-
-export default connect(
-  undefined,
-  undefined,
-  undefined,
-  {withRef: true},
-)(DeviceAdd)

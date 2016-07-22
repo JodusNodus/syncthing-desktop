@@ -7,11 +7,26 @@ import { bindActionCreators } from 'redux'
 import SharedFolders from 'client/components/SharedFolders'
 import FromNow from 'client/components/FromNow'
 
-import * as messageBarActionCreators from 'client/actions/message-bar'
+import { showMessageBar } from 'client/actions/message-bar'
 import { getFolders } from 'main/reducers/folders'
 import { getDevice } from 'main/reducers/devices'
 
-class DeviceOverview extends Component {
+const mapStateToProps = (state, {params}) => ({
+  folders: getFolders(state),
+  device: getDevice(state, params.id),
+})
+
+@connect(
+  mapStateToProps,
+  {showMessageBar},
+)
+export default class DeviceOverview extends Component {
+  static propTypes = {
+    folders: PropTypes.array.isRequired,
+    device: PropTypes.object.isRequired,
+    showMessageBar: PropTypes.func.isRequired,
+  }
+
   handleCopy(myID){
     clipboard.writeText(myID)
     this.props.showMessageBar({
@@ -34,22 +49,6 @@ class DeviceOverview extends Component {
     ])
   }
 }
-
-DeviceOverview.propTypes = {
-  folders: PropTypes.array.isRequired,
-  device: PropTypes.object.isRequired,
-  showMessageBar: PropTypes.func.isRequired,
-}
-
-const mapStateToProps = (state, {params}) => ({
-  folders: getFolders(state),
-  device: getDevice(state, params.id),
-})
-
-export default connect(
-  mapStateToProps,
-  dispatch => bindActionCreators(messageBarActionCreators, dispatch),
-)(DeviceOverview)
 
 const DeviceID = ({deviceID, onCopy}) => h('div.section-item.device-id', [
   h('p.left', 'Device ID:'),

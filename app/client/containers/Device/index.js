@@ -9,7 +9,27 @@ import { resumeDevice, pauseDevice } from 'main/actions/system'
 
 import { styles } from './styles.scss'
 
-class Device extends Component {
+const mapStateToProps = (state, { params }) => ({
+  device: state.devices.devices[params.id],
+})
+
+@connect(
+  mapStateToProps,
+  {resumeDevice, pauseDevice},
+  undefined,
+  {withRef: true},
+)
+export default class Device extends Component {
+  static propTypes = {
+    params: PropTypes.object.isRequired,
+    device: PropTypes.object.isRequired,
+    resumeDevice: PropTypes.func.isRequired,
+    pauseDevice: PropTypes.func.isRequired,
+    children: PropTypes.element.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+  }
+
   constructor(props){
     super(props)
     this.componentDidUpdate = this.componentDidMount = this.redirect.bind(this)
@@ -46,24 +66,3 @@ class Device extends Component {
     }
   }
 }
-
-Device.propTypes = {
-  params: PropTypes.object.isRequired,
-  device: PropTypes.object.isRequired,
-  resumeDevice: PropTypes.func.isRequired,
-  pauseDevice: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
-}
-
-const mapStateToProps = (state, { params }) => ({
-  device: state.devices.devices[params.id],
-})
-
-export default connect(
-  mapStateToProps,
-  {resumeDevice, pauseDevice},
-  undefined,
-  {withRef: true},
-)(Device)

@@ -23,6 +23,12 @@ const fields = [
 ]
 
 class ServicePreferences extends Component {
+  static propTypes = {
+    fields: PropTypes.object.isRequired,
+    showMessageBar: PropTypes.func.isRequired,
+    hideMessageBar: PropTypes.func.isRequired,
+  }
+
   componentDidUpdate(){
     validationErrorMessage(this.props)
   }
@@ -55,12 +61,6 @@ class ServicePreferences extends Component {
       h(Input, {label: 'Global Discovery Servers', ...globalAnnounceServers}),
     ])
   }
-}
-
-ServicePreferences.propTypes = {
-  fields: PropTypes.object.isRequired,
-  showMessageBar: PropTypes.func.isRequired,
-  hideMessageBar: PropTypes.func.isRequired,
 }
 
 export default reduxForm(

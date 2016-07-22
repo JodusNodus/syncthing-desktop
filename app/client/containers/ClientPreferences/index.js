@@ -1,12 +1,11 @@
 import { Component, PropTypes } from 'react'
 import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
-import { bindActionCreators } from 'redux'
 
 import { CheckBox } from 'react-photonkit'
 import Input from 'client/components/Input'
 
-import * as messageBarActionCreators from 'client/actions/message-bar'
+import { showMessageBar, hideMessageBar } from 'client/actions/message-bar'
 import validationErrorMessage from 'client/utils/validation-error-message'
 import validate from './validate'
 
@@ -20,6 +19,12 @@ const fields = [
 ]
 
 class ClientPreferences extends Component {
+  static propTypes = {
+    fields: PropTypes.object.isRequired,
+    showMessageBar: PropTypes.func.isRequired,
+    hideMessageBar: PropTypes.func.isRequired,
+  }
+
   componentDidUpdate(){
     validationErrorMessage(this.props)
   }
@@ -42,12 +47,6 @@ class ClientPreferences extends Component {
   }
 }
 
-ClientPreferences.propTypes = {
-  fields: PropTypes.object.isRequired,
-  showMessageBar: PropTypes.func.isRequired,
-  hideMessageBar: PropTypes.func.isRequired,
-}
-
 export default reduxForm(
   {
     form: 'clientPreferences',
@@ -57,5 +56,5 @@ export default reduxForm(
   state => ({ // mapStateToProps
     initialValues: state.config.config,
   }),
-  dispatch => bindActionCreators(messageBarActionCreators, dispatch)
+  {showMessageBar, hideMessageBar},
 )(ClientPreferences)

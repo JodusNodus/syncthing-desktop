@@ -25,6 +25,15 @@ const compressionOptions = [
 ]
 
 class DeviceEdit extends Component {
+  static propTypes = {
+    fields: PropTypes.object.isRequired,
+    initialValues: PropTypes.object.isRequired,
+    showMessageBar: PropTypes.func.isRequired,
+    hideMessageBar: PropTypes.func.isRequired,
+    showQrCodeScanModal: PropTypes.func.isRequired,
+    qrCodeScanModal: PropTypes.object.isRequired,
+  }
+
   componentWillUpdate(newProps){
     validationErrorMessage(this.props)
 
@@ -67,15 +76,6 @@ class DeviceEdit extends Component {
       ]),
     ])
   }
-}
-
-DeviceEdit.propTypes = {
-  fields: PropTypes.object.isRequired,
-  initialValues: PropTypes.object.isRequired,
-  showMessageBar: PropTypes.func.isRequired,
-  hideMessageBar: PropTypes.func.isRequired,
-  showQrCodeScanModal: PropTypes.func.isRequired,
-  qrCodeScanModal: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state, {params, initialValues}) => ({
