@@ -10,6 +10,7 @@ import FromNow from 'client/components/FromNow'
 
 import { getDeviceFolderCompletion } from 'main/actions/db'
 import { getFolderStats } from 'main/actions/stats'
+import { scanFolder } from 'main/actions/db'
 import { getDevices } from 'main/reducers/devices'
 import { getFolder } from 'main/reducers/folders'
 
@@ -24,7 +25,7 @@ const mapStateToProps = (state, {params}) => ({
 
 @connect(
   mapStateToProps,
-  {getDeviceFolderCompletion, getFolderStats},
+  {getDeviceFolderCompletion, getFolderStats, scanFolder},
 )
 export default class FolderOverview extends Component {
   static propTypes = {
@@ -33,6 +34,7 @@ export default class FolderOverview extends Component {
     folder: PropTypes.object.isRequired,
     getDeviceFolderCompletion: PropTypes.func.isRequired,
     getFolderStats: PropTypes.func.isRequired,
+    scanFolder: PropTypes.func.isRequired,
   }
 
   componentDidMount(){
@@ -55,6 +57,10 @@ export default class FolderOverview extends Component {
 
     getFolderStats()
   }
+  handleScan(){
+    const { scanFolder, folder } = this.props
+    scanFolder(folder.id)
+  }
   render(){
     const { folder, devices, status } = this.props
 
@@ -71,7 +77,7 @@ export default class FolderOverview extends Component {
     return h('div', {className: styles}, [
       h(Path, {path: folder.path, home: status.tilde}),
       folder.status && folder.status.state != 'error' && h(InSync, folder.status),
-      folder.stats && h(LastScan, folder.stats),
+      folder.stats && h(LastScan, {state: folder.stats.state, handleScan: this.handleScan.bind(this)}),
       h(SharedDevices, {devices: sharedDevices}),
     ])
   }
@@ -101,9 +107,9 @@ const InSync = ({globalBytes, inSyncBytes}) => {
   ])
 }
 
-const LastScan = ({lastScan}) =>
+const LastScan = ({lastScan, handleScan}) =>
 h('div.section-item.last-scan', [
   h('p.left', 'Last Scan:'),
   h(FromNow, {className: 'center', value: lastScan}),
-  h('p.right'),
+  h('a.right', {onClick: handleScan}, 'Force Scan'),
 ])

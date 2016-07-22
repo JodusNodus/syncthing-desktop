@@ -37,6 +37,13 @@ export default function messageBar(store){
         ptStyle: 'negative',
       }))
 
+    }else if(action.type == 'FOLDER_SCAN_SUCCESS'){
+
+      store.dispatch(showMessageBar({
+        msg: 'The folder will be immediatly rescanned.',
+        ptStyle: 'primary',
+      }))
+
     }
     next(action)
   }

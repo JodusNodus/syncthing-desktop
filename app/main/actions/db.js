@@ -30,3 +30,15 @@ devices.forEach(({deviceID}) => {
     })
   })
 })
+
+export const scanFolder = folder => dispatch =>
+global.st.db.scan(folder).then(() => {
+  dispatch({
+    type: 'FOLDER_SCAN_SUCCESS',
+  })
+}).catch(error => {
+  dispatch({
+    type: 'FOLDER_SCAN_FAILURE',
+    error,
+  })
+})
