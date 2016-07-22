@@ -8,7 +8,7 @@ folders.forEach(({id}) => {
     })
   }).catch(error => {
     dispatch({
-      type: 'CONNECTION_ERROR',
+      type: 'FOLDER_STATUS_GET_FAILURE',
       error,
     })
   })
@@ -25,7 +25,7 @@ devices.forEach(({deviceID}) => {
     })
   }).catch(error => {
     dispatch({
-      type: 'CONNECTION_ERROR',
+      type: 'DEVICE_FOLDER_COMPLETION_GET_FAILURE',
       error,
     })
   })

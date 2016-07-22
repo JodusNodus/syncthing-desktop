@@ -15,11 +15,27 @@ export default function messageBar(store){
         static: true,
       }))
 
+    }else if(action.type == 'SERVICE_CONFIG_SET_FAILURE'){
+
+      store.dispatch(showMessageBar({
+        msg: 'The config could not be saved.',
+        ptStyle: 'negative',
+        static: true,
+      }))
+
     }else if(action.type == 'CLIENT_CONFIG_SET_SUCCESS'){
 
       store.dispatch(showMessageBar({
         msg: 'The config was saved and loaded succesfully.',
         ptStyle: 'positive',
+        static: true,
+      }))
+
+    }else if(action.type == 'CLIENT_CONFIG_SET_FAILURE'){
+
+      store.dispatch(showMessageBar({
+        msg: 'The config could not be saved.',
+        ptStyle: 'negative',
         static: true,
       }))
 

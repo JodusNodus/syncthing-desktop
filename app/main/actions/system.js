@@ -15,7 +15,7 @@ export const getConnections = () => dispatch =>
 global.st.system.connections().then(({connections}) => {
   dispatch({ type: 'CONNECTIONS_GET_SUCCESS', payload: connections})
 }).catch(error => {
-  dispatch({ type: 'CONNECTION_ERROR', error })
+  dispatch({ type: 'CONNECTIONS_GET_FAILURE', error })
 })
 
 export const getServiceConfig = myID => dispatch =>
@@ -25,21 +25,21 @@ global.st.system.getConfig().then(({devices, folders, options, gui}) => {
   dispatch({ type: 'GUI_PREFERENCES_GET_SUCCESS', payload: gui })
   dispatch({ type: 'PREFERENCES_GET_SUCCESS', payload: options })
 }).catch(error => {
-  dispatch({ type: 'CONNECTION_ERROR', error })
+  dispatch({ type: 'SERVICE_CONFIG_GET_FAILURE', error })
 })
 
 export const getVersion = () => dispatch =>
 global.st.system.version((error, payload) => {
-  if(error){
-    dispatch({ type: 'CONNECTION_ERROR', error })
-  }else{
+  if(!error){
     dispatch({ type: 'VERSION_GET_SUCCESS', payload })
+  }else{
+    dispatch({ type: 'VERSION_GET_FAILURE', error })
   }
 })
 
 export const setServiceConfig = (key, value) => dispatch => {
   const handleError = error => dispatch({
-    type: 'SERVICE_CONFIG_SET_FAILED',
+    type: 'SERVICE_CONFIG_SET_FAILURE',
     payload: error,
   })
 
@@ -69,12 +69,12 @@ export const pauseDevice = device => dispatch =>
 global.st.system.pause(device).then(payload => {
   dispatch({ type: 'DEVICE_PAUSE_SUCCESS', payload, id: device })
 }).catch(error => {
-  dispatch({ type: 'CONNECTION_ERROR', error })
+  dispatch({ type: 'DEVICE_PAUSE_FAILURE', error })
 })
 
 export const resumeDevice = device => dispatch =>
 global.st.system.resume(device).then(payload => {
   dispatch({ type: 'DEVICE_RESUME_SUCCESS', payload, id: device })
 }).catch(error => {
-  dispatch({ type: 'CONNECTION_ERROR', error })
+  dispatch({ type: 'DEVICE_RESUME_FAILURE', error })
 })
