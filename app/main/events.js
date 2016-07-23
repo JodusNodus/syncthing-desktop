@@ -5,6 +5,24 @@ import { getFolderStats } from './actions/stats'
 import { getDevice } from './reducers/devices'
 import { ipcMain, app, powerMonitor, BrowserWindow } from 'electron'
 
+let interval
+
+export function clearEventListeners() {
+  //Clear interval
+  if(interval) clearInterval(interval)
+
+  //Clear all previous syncthing listeners
+  global.st.removeAllListeners('deviceConnected')
+  global.st.removeAllListeners('deviceDisconnected')
+  global.st.removeAllListeners('error')
+  global.st.removeAllListeners('stateChanged')
+  global.st.removeAllListeners('configSaved')
+  global.st.removeAllListeners('folderSummary')
+  global.st.removeAllListeners('folderCompletion')
+  global.st.removeAllListeners('folderRejected')
+  global.st.removeAllListeners('ping')
+}
+
 export function mainEvents(store) {
 
   ipcMain.on('ready', (e, winId) => {
@@ -23,36 +41,35 @@ export function mainEvents(store) {
   //Dispatch action on suspension changes
   powerMonitor.on('suspend', () => {
     store.dispatch({ type: 'SUSPEND' })
+
+    //Remove event listeners
+    clearEventListeners()
+    console.log('stopped listening')
   })
 
   //Dispatch action on resumation changes
   powerMonitor.on('resume', () => {
     store.dispatch({ type: 'RESUME' })
+
+    //Start listening again
+    stEvents(store)
+    console.log('resumed listening')
   })
 
-  if (process.env.NODE_ENV === 'development') {
-
-    //Listen for hot reloads
-    ipcMain.on('renderer-reload', event => {
-      delete require.cache[require.resolve('./reducers/index')]
-      store.replaceReducer(require('./reducers/index'))
-      event.returnValue = true
-    })
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //
+  //   //Listen for hot reloads
+  //   ipcMain.on('renderer-reload', event => {
+  //     delete require.cache[require.resolve('./reducers/index')]
+  //     store.replaceReducer(require('./reducers/index'))
+  //     event.returnValue = true
+  //   })
+  // }
 
 }
 
 export function stEvents(store){
-  //Clear all previous syncthing listeners
-  global.st.removeAllListeners('deviceConnected')
-  global.st.removeAllListeners('deviceDisconnected')
-  global.st.removeAllListeners('error')
-  global.st.removeAllListeners('stateChanged')
-  global.st.removeAllListeners('configSaved')
-  global.st.removeAllListeners('folderSummary')
-  global.st.removeAllListeners('folderCompletion')
-  global.st.removeAllListeners('folderRejected')
-  global.st.removeAllListeners('folderErrors')
+  clearEventListeners()
 
   //Listen for devices connecting
   global.st.on('deviceConnected', ({ id, addr }) => {
@@ -118,8 +135,10 @@ export function stEvents(store){
     notify(device.name, `wants to share the folder ${payload.folderLabel || payload.folder}.`)
   })
 
+
+
   //Check periodicaly for system status & errors
-  setInterval(() => {
+  interval = setInterval(() => {
     const state = store.getState()
     if(state.power == 'awake'){
       store.dispatch(getMyID())

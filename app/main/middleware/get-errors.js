@@ -12,7 +12,7 @@ dialog.showMessageBox(win, {
 })
 
 const getErrors = store => next => action => {
-  if(action.type == 'ERRORS_GET_SUCCESS'){
+  if(action.type == 'ERRORS_GET_SUCCESS' && action.payload.errors){
     const errors = action.payload.errors
     errors.forEach(showErrorMsg)
 
