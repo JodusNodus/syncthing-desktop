@@ -131,8 +131,6 @@ export function stEvents(store){
   //Listen for new folders shared with the current device
   global.st.on('folderRejected', payload => {
     store.dispatch(showFolderRejected(payload))
-    const device = store.getState().devices.devices[payload.device]
-    notify(device.name, `wants to share the folder ${payload.folderLabel || payload.folder}.`)
   })
 
 

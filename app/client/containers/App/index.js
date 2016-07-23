@@ -92,8 +92,12 @@ export default class App extends Component {
 
     const { devices, folderRejected, history, acceptFolderRejected } = nextProps
 
-    if(!this.props.folderRejected.folder && folderRejected.folder){
+    if(folderRejected.folder && this.props.folderRejected.folder != folderRejected.folder){
       const deviceName = devices.filter(device => device.deviceID == folderRejected.device)[0].name
+
+      new Notification(deviceName, {
+        body: `wants to share the folder ${folderRejected.folderLabel || folderRejected.folder}.`,
+      })
 
       const buttons = ['Accept', 'Decline']
 

@@ -1,7 +1,7 @@
 const initialState = {
-  device: '',
-  folder: '',
-  folderLabel: '',
+  device: null,
+  folder: null,
+  folderLabel: null,
   accepted: false,
 }
 
