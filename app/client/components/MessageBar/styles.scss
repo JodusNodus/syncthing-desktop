@@ -1,21 +1,23 @@
 :local(.styles) {
-  $height: 28px;
-  
+
   color: #fff;
-  height: $height;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin-top: (-$height);
-  transition: margin-top 0.4s;
+  transition: all 0.4s;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+  padding: 0;
+  transform: translateY(-100%);
+  padding: 5px 10px;
+  line-height: 1.2em;
 
   &.visible, &.static {
-    margin-top: 0;
+    transform: none;
   }
 
   &.static {
     z-index: 1;
+    position: static;
   }
 
   //Styles
