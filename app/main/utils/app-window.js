@@ -13,8 +13,8 @@ export default function appWindow(){
     win = new BrowserWindow({
       show: false,
       titleBarStyle: 'hidden-inset',
-      minHeight: 400,
-      minWidth: 800,
+      minHeight: 300,
+      minWidth: 500,
       height: 550,
       width: 800,
     })

@@ -2,6 +2,21 @@ import { showMessageBar, hideMessageBar } from 'client/actions/message-bar'
 
 export default function messageBar(store){
   return next => action => {
+
+    if(action.type == 'MESSAGE_BAR_SHOW' && action.payload.timeout){
+
+      //Hide msg after specifief time
+      const { name, ptStyle, timeout } = action.payload
+      setTimeout(() => {
+        const currentMsg = store.getState().messageBar
+        //Check if the message is still current
+        if(currentMsg.name == name && currentMsg.ptStyle == ptStyle){
+          store.dispatch(hideMessageBar())
+        }
+      }, timeout)
+
+    }
+
     if(action.type == '@@router/LOCATION_CHANGE'){
 
       //Hide message bar
@@ -20,6 +35,7 @@ export default function messageBar(store){
       store.dispatch(showMessageBar({
         msg: 'The config could not be saved.',
         ptStyle: 'negative',
+        timeout: 5000,
       }))
 
     }else if(action.type == 'CLIENT_CONFIG_SET_SUCCESS'){
@@ -28,6 +44,7 @@ export default function messageBar(store){
         msg: 'The config was saved and loaded succesfully.',
         ptStyle: 'positive',
         static: true,
+        timeout: 5000,
       }))
 
     }else if(action.type == 'CLIENT_CONFIG_SET_FAILURE'){
@@ -35,6 +52,7 @@ export default function messageBar(store){
       store.dispatch(showMessageBar({
         msg: 'The config could not be saved.',
         ptStyle: 'negative',
+        timeout: 5000,
       }))
 
     }else if(action.type == 'FOLDER_SCAN_SUCCESS'){
@@ -42,6 +60,7 @@ export default function messageBar(store){
       store.dispatch(showMessageBar({
         msg: 'The folder will be immediatly rescanned.',
         ptStyle: 'primary',
+        timeout: 3000,
       }))
 
     }
