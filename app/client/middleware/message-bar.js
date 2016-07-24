@@ -63,6 +63,22 @@ export default function messageBar(store){
         timeout: 3000,
       }))
 
+    }else if(action.type == 'IGNORES_SET_SUCCESS'){
+
+      store.dispatch(showMessageBar({
+        msg: 'The ignore patterns have been saved succesfully.',
+        ptStyle: 'positive',
+        timeout: 5000,
+      }))
+
+    }else if(action.type == 'IGNORES_SET_FAILURE'){
+
+      store.dispatch(showMessageBar({
+        msg: 'The ignore patterns could not be saved.',
+        ptStyle: 'negative',
+        timeout: 5000,
+      }))
+
     }
     next(action)
   }

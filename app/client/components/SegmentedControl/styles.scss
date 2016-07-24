@@ -1,6 +1,7 @@
 :local(.styles) {
   display: flex;
   flex-direction: column;
+  flex: 1;
 
   & > .segmented-controls {
 
@@ -24,6 +25,9 @@
 
 
   & > .segmented-content {
+    flex: 1;
     margin-top: 15px;
+    display: flex;
+    flex-direction: column;
   }
 }

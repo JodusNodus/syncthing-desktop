@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import status from './folder-status'
 import completion from './folder-completion'
 import stats from './folder-stats'
+import ignores from './folder-ignores'
 
 function byId(state = [], {type, payload}) {
   switch (type){
@@ -30,6 +31,7 @@ export default combineReducers({
   status,
   completion,
   stats,
+  ignores,
 })
 
 export const getFolder = ({folders, devices}, id) => {
@@ -56,3 +58,10 @@ export const getFolder = ({folders, devices}, id) => {
 }
 
 export const getFolders = ({folders, ...state}) => folders.byId.map(id => getFolder({folders, ...state}, id))
+
+export const getIgnoresInitialValues = ({folders}, id) => {
+  const ignores = folders.ignores[id]
+  return {
+    ignores: (ignores && ignores.ignore) ? ignores.ignore.join('\n') : '',
+  }
+}

@@ -47,6 +47,7 @@ export default class Folder extends Component {
         h(SegmentedControl, {buttons: [
           {text: 'Overview', link: `/folder/${params.id}/overview`},
           {text: 'Edit', link: `/folder/${params.id}/edit`},
+          {text: 'Ignores', link: `/folder/${params.id}/ignores`},
         ]}, [
           cloneElement(children, {ref: 'form', onSubmit}),
         ]),

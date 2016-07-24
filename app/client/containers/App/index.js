@@ -17,6 +17,7 @@ import Sidebar from 'client/components/Sidebar'
 
 import * as systemActionCreators from 'main/actions/system'
 import * as configActionCreators from 'main/actions/config'
+import * as dbActionCreators from 'main/actions/db'
 import * as qrCodeModalActionCreators from 'client/actions/qr-code-modal'
 import * as qrCodeScanModalActionCreators from 'client/actions/qr-code-scan-modal'
 import * as folderRejectedActionCreators from 'main/actions/folder-rejected'
@@ -44,6 +45,7 @@ const mapStateToProps = state => ({
   dispatch => bindActionCreators({
     ...configActionCreators,
     ...systemActionCreators,
+    ...dbActionCreators,
     ...qrCodeModalActionCreators,
     ...qrCodeScanModalActionCreators,
     ...folderRejectedActionCreators,
@@ -69,6 +71,7 @@ export default class App extends Component {
     scanQrCode: PropTypes.func.isRequired,
     folderRejected: PropTypes.object.isRequired,
     acceptFolderRejected: PropTypes.func.isRequired,
+    setIgnores: PropTypes.func.isRequired,
   }
 
   constructor(props){
@@ -123,7 +126,7 @@ export default class App extends Component {
     }
   }
   handleSubmit(form){
-    const { location: { pathname }, setClientConfig, setServiceConfig, folders, devices, params } = this.props
+    const { location: { pathname }, setClientConfig, setServiceConfig, folders, devices, params, setIgnores } = this.props
 
     if(pathname == '/preferences/client'){
       setClientConfig(form)
@@ -171,6 +174,11 @@ export default class App extends Component {
       ]
 
       setServiceConfig('folders', updatedFolders)
+    }else if(pathname == `/folder/${params.id}/ignores`){
+      const ignores = {
+        ignore: form.ignores.split('\n'),
+      }
+      setIgnores(params.id, ignores)
     }
   }
   handleDelete(){
@@ -232,6 +240,7 @@ export default class App extends Component {
 
     const onPreferencePage = partOf(pathname)('/preferences')
     const onEditPage = pathname == `/device/${id}/edit` || pathname == `/folder/${id}/edit`
+    const onIgnoresPage = pathname == `/folder/${id}/ignores`
     const onAddPage = pathname == '/folder-add' || pathname == '/device-add'
 
     //An object defining all sections and items in the sidebar
@@ -305,7 +314,7 @@ export default class App extends Component {
         ]),
 
       ]),
-      (onPreferencePage || onEditPage || onAddPage) && h(Toolbar, {ptType: 'footer'}, [
+      (onPreferencePage || onEditPage || onAddPage || onIgnoresPage) && h(Toolbar, {ptType: 'footer'}, [
         h(Actionbar, [
           onEditPage && h(Button, {
             text: 'delete',

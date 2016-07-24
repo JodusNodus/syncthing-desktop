@@ -64,8 +64,14 @@
   .main-pane {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    flex: 1;
     overflow: auto;
+
+    .padded-more {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .page-header {

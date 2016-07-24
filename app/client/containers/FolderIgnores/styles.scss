@@ -1,0 +1,17 @@
+:local(.styles) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  textarea {
+    resize: none;
+    flex: 1;
+    min-height: 100px;
+  }
+
+  .pattern-overview {
+    code {
+      margin-right: 5px;
+    }
+  }
+}

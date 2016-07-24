@@ -42,3 +42,31 @@ global.st.db.scan(folder).then(() => {
     error,
   })
 })
+
+export const getIgnores = id => dispatch =>
+global.st.db.getIgnores(id).then(payload => {
+  dispatch({
+    type: 'IGNORES_GET_SUCCESS',
+    id,
+    payload,
+  })
+}).catch(error => {
+  dispatch({
+    type: 'IGNORES_GET_FAILURE',
+    error,
+  })
+})
+
+export const setIgnores = (id, ignores) => dispatch =>
+global.st.db.setIgnores(id, ignores).then(payload => {
+  dispatch({
+    type: 'IGNORES_SET_SUCCESS',
+    id,
+    payload,
+  })
+}).catch(error => {
+  dispatch({
+    type: 'IGNORES_SET_FAILURE',
+    error,
+  })
+})
