@@ -19,7 +19,7 @@ h('div.modal-container', {className: `${styles} ${visible && 'visible'}`}, [
 ])
 
 Modal.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.any,
   onCancel: PropTypes.func,
   onDone: PropTypes.func,
   visible: PropTypes.bool.isRequired,

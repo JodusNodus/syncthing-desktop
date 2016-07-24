@@ -34,7 +34,6 @@ const mapStateToProps = (state, {params}) => ({
 export default class FolderOverview extends Component {
   static propTypes = {
     status: PropTypes.object.isRequired,
-    devices: PropTypes.array.isRequired,
     folder: PropTypes.object.isRequired,
     getDeviceFolderCompletion: PropTypes.func.isRequired,
     getFolderStats: PropTypes.func.isRequired,

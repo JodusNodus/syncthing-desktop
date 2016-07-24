@@ -35,7 +35,7 @@ const Sidebar = ({ folders, devices, preferences}) => {
         'Folders',
         h(Link, {className: 'fa fa-plus pull-right', to: '/folder-add'}),
       ]),
-      ...folders.map(({key, text, glyph, state}) => h(NavGroupItem, {indicator: state, indicatorStyle: getIndicatorStyle(state), glyph, text, link: `/folder/${key}`})),
+      ...folders.map(({key, text, glyph, state}) => h(NavGroupItem, {indicator: state ? true : false, indicatorStyle: getIndicatorStyle(state), glyph, text, link: `/folder/${key}`})),
 
       h(NavTitle, [
         'Devices',
