@@ -5,7 +5,7 @@ import { getDeviceStats } from './actions/stats'
 import buildMenu from './menu/index'
 import isEqual from 'lodash/isEqual'
 import syncthing from 'node-syncthing'
-import { stEvents } from './events'
+import { stEvents, clearEventListeners } from './events'
 import { getFolders } from './reducers/folders'
 
 export default function stateHandler({store, tray}){
@@ -21,7 +21,7 @@ export default function stateHandler({store, tray}){
 
       //Remove all listeners from previous Syncthing instance
       if(global.st){
-        global.st.removeAllListeners()
+        clearEventListeners()
       }
 
       //Initialize syncthing connection
@@ -31,20 +31,18 @@ export default function stateHandler({store, tray}){
         retries: 10 ** 10,
       })
 
-      //Start listening for syncthing events
-      stEvents(store)
-
-      store.dispatch(getMyID())
+      if(global.st){
+        store.dispatch(getMyID())
+      }
     }
 
-    if(!previousState.connected && newState.connected){
-      store.dispatch(getServiceConfig(newState.myID))
-      notify('Connection Established', 'Connected to Syncthing instance')
-    }
-
-    if(previousState.myID !== newState.myID){
+    if(!previousState.connected && newState.connected || previousState.myID != newState.myID){
       store.dispatch(getServiceConfig(newState.myID))
       store.dispatch(getVersion())
+      notify('Connection Established', 'Connected to Syncthing instance')
+
+      //Start listening for syncthing events
+      stEvents(store)
     }
 
     //Check if devices were added or removed

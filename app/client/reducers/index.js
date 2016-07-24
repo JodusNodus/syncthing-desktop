@@ -5,6 +5,7 @@ import { reducer as form } from 'redux-form'
 import qrCodeModal from './qr-code-modal'
 import qrCodeScanModal from './qr-code-scan-modal'
 import messageBar from './message-bar'
+import automaticSetup from './automatic-setup'
 
 const rootReducer = combineReducers({
   ...reducers,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   qrCodeModal,
   qrCodeScanModal,
   messageBar,
+  automaticSetup,
 })
 
 export default rootReducer

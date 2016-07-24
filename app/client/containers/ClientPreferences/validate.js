@@ -1,9 +1,9 @@
-export default function validate({ hostname='', port='', apiKey='' }) {
+export default function validate({ host='', port='', apiKey='' }) {
   const errors = {}
 
-  //Hostname
-  if(hostname.length < 1){
-    errors.hostname = 'Hostname should have at least one character.'
+  //Host
+  if(host.length < 1){
+    errors.host = 'Host should have at least one character.'
   }
 
   //Port

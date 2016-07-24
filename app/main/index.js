@@ -8,12 +8,12 @@ import { getClientConfig } from './actions/config'
 import stateHandler from './state-change'
 import { mainEvents } from './events'
 
-// app.dock.hide()
-
 global.__base = `${__dirname}/`
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')() // eslint-disable-line global-require
+}else{
+  app.dock.hide()
 }
 
 app.on('ready', () => {

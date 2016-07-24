@@ -5,7 +5,6 @@ import { Component, PropTypes, cloneElement } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { bindActionCreators } from 'redux'
-import { push } from 'react-router-redux'
 
 import { Window, Toolbar, Actionbar, Button, Content, Pane } from 'react-photonkit'
 import QRCode from 'qrcode.react'
@@ -117,6 +116,11 @@ export default class App extends Component {
         }
       })
     }
+
+    if(!this.props.connected && nextProps.connected){
+      global.st = remote.getGlobal('st')
+    }
+
   }
   handleSubmitButton(){
     if(this.refs.child.submit){
@@ -203,17 +207,17 @@ export default class App extends Component {
       }
     })
   }
-  redirect(nextProps={config: {isSuccess: false}}){
-    const { config, location } = this.props
+  redirect(nextProps=this.props){
+    const { config, location, history } = this.props
 
     //Redirect when config was saved
-    if(config.isFailure && nextProps.config.isSuccess && location.pathname == '/preferences/client'){
-      push('/')
+    if(nextProps.config.isSuccess && location.pathname == '/setup'){
+      history.push('/')
     }
 
     //Redirect if config was not found
-    if(config.isFailure && location.pathname !== '/preferences/client'){
-      push('/preferences/client')
+    if(config.isFailure && location.pathname !== '/setup'){
+      history.push('/setup')
     }
   }
   render() {
@@ -238,6 +242,7 @@ export default class App extends Component {
     } = this.props
 
 
+    const onSetupPage = pathname == '/setup'
     const onPreferencePage = partOf(pathname)('/preferences')
     const onEditPage = pathname == `/device/${id}/edit` || pathname == `/folder/${id}/edit`
     const onIgnoresPage = pathname == `/folder/${id}/ignores`
@@ -304,7 +309,7 @@ export default class App extends Component {
             visible: messageBar.show,
           }),
 
-          h('div.main-pane', (connected || onPreferencePage) ? [
+          h('div.main-pane', (connected || onSetupPage) ? [
 
             //Clone element with new ref and onSubmit props for submitting forms from parent
             cloneElement(children, {ref: 'child', onSubmit: this.handleSubmit}),

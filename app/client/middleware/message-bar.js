@@ -38,15 +38,6 @@ export default function messageBar(store){
         timeout: 5000,
       }))
 
-    }else if(action.type == 'CLIENT_CONFIG_SET_SUCCESS'){
-
-      store.dispatch(showMessageBar({
-        msg: 'The config was saved and loaded succesfully.',
-        ptStyle: 'positive',
-        static: true,
-        timeout: 5000,
-      }))
-
     }else if(action.type == 'CLIENT_CONFIG_SET_FAILURE'){
 
       store.dispatch(showMessageBar({
@@ -58,7 +49,7 @@ export default function messageBar(store){
     }else if(action.type == 'FOLDER_SCAN_SUCCESS'){
 
       store.dispatch(showMessageBar({
-        msg: 'The folder will be immediatly rescanned.',
+        msg: 'The folder was succesfully rescanned.',
         ptStyle: 'primary',
         timeout: 3000,
       }))

@@ -5,9 +5,9 @@
   $height: 2em;
   $width: $height * 2.5;
   @mixin switch-transition() {
-    transition: all 0.2s;   
+    transition: all 0.2s;
   }
-  
+
   height: $height;
   width: $width;
   border-radius: $borderRadius;
@@ -27,7 +27,7 @@
       border: 1px solid $offColor;
     }
   }
-  
+
   .text {
     text-align: center;
     color: #fff;

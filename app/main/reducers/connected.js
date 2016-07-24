@@ -1,7 +1,7 @@
-export default function connected(state = true, {type}){
+export default function connected(state = false, {type}){
   if(type == 'CONNECTION_ERROR'){
     return false
-  }else if(/.*\_SUCCESS/.test(type)){
+  }else if(type == 'MYID_GET_SUCCESS'){
     return true
   }else{
     return state

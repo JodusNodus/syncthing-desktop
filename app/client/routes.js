@@ -5,6 +5,7 @@ import App from './containers/App'
 import ServicePreferences from './containers/ServicePreferences'
 import Overview from './containers/Overview'
 import ClientPreferences from './containers/ClientPreferences'
+import Setup from './containers/Setup'
 
 import Folder from './containers/Folder'
 import FolderOverview from './containers/FolderOverview'
@@ -35,4 +36,5 @@ export default h(Route, {path: '/', component: App}, [
   h(Route, {path: 'folder-add', component: FolderAdd}),
   h(Route, {path: 'preferences/service', component: ServicePreferences}),
   h(Route, {path: 'preferences/client', component: ClientPreferences}),
+  h(Route, {path: 'setup', component: Setup}),
 ])

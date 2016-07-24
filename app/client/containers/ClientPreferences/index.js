@@ -12,7 +12,7 @@ import validate from './validate'
 import { styles } from './styles.scss'
 
 const fields = [
-  'hostname',
+  'host',
   'port',
   'apiKey',
   'https',
@@ -31,7 +31,7 @@ class ClientPreferences extends Component {
   render(){
     const {
       fields: {
-        hostname,
+        host,
         port,
         apiKey,
         https,
@@ -39,7 +39,7 @@ class ClientPreferences extends Component {
     } = this.props
 
     return h('form.padded-more', {className: styles}, [
-      h(Input, {label: 'Hostname', placeholder: 'e.g. localhost', ...hostname}),
+      h(Input, {label: 'Host', placeholder: 'e.g. localhost', ...host}),
       h(Input, {label: 'Port', placeholder: 'e.g. 8384', ...port}),
       h(Input, {label: 'API Key', placeholder: 'e.g. abc123', ...apiKey}),
       h(CheckBox, {label: 'Https', ...https}),

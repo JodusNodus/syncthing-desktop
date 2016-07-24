@@ -12,15 +12,17 @@ export function clearEventListeners() {
   if(interval) clearInterval(interval)
 
   //Clear all previous syncthing listeners
-  global.st.removeAllListeners('deviceConnected')
-  global.st.removeAllListeners('deviceDisconnected')
-  global.st.removeAllListeners('error')
-  global.st.removeAllListeners('stateChanged')
-  global.st.removeAllListeners('configSaved')
-  global.st.removeAllListeners('folderSummary')
-  global.st.removeAllListeners('folderCompletion')
-  global.st.removeAllListeners('folderRejected')
-  global.st.removeAllListeners('ping')
+  if(global.st){
+    global.st.removeAllListeners('deviceConnected')
+    global.st.removeAllListeners('deviceDisconnected')
+    global.st.removeAllListeners('error')
+    global.st.removeAllListeners('stateChanged')
+    global.st.removeAllListeners('configSaved')
+    global.st.removeAllListeners('folderSummary')
+    global.st.removeAllListeners('folderCompletion')
+    global.st.removeAllListeners('folderRejected')
+    global.st.removeAllListeners('ping')
+  }
 }
 
 export function mainEvents(store) {
@@ -70,6 +72,7 @@ export function mainEvents(store) {
 
 export function stEvents(store){
   clearEventListeners()
+  if(!global.st) return
 
   //Listen for devices connecting
   global.st.on('deviceConnected', ({ id, addr }) => {

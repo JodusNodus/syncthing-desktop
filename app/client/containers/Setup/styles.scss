@@ -1,0 +1,45 @@
+:local(.styles) {
+  flex: 1;
+  padding: 0 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .padded-more {
+    padding: 0;
+    flex: none !important;
+  }
+
+  .btn-large {
+    font-size: 1.4em;
+    padding: 8px 20px;
+  }
+
+  .title {
+    font-size: 2em;
+    text-align: center;
+    margin: 0;
+  }
+
+  .subtitle {
+    font-size: 1.5em;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #444;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 8px 5px;
+    margin: 6px 0;
+    font-size: 1em;
+  }
+
+  .fa-spinner {
+    margin: 0 auto;
+    color: #008fff;
+  }
+}
