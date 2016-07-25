@@ -7,7 +7,7 @@
   $orange: #ffa500;
   $yellow: #fed201;
 
-  font-size: 14px;
+  font-size: 13px;
 
   .toolbar-header .title {
     -webkit-app-region: drag;
@@ -36,6 +36,13 @@
   .sidebar {
     -webkit-app-region: drag;
     padding-top: 35px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: auto;
+    min-width: none;
+    max-width: none;
+    font-size: 1.1em;
 
     .toolbar-options {
       padding: 9px;
@@ -60,10 +67,10 @@
     }
   }
 
-  .window-content > .pane{
+  .container-pane{
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 3;
     overflow: hidden;
   }
 

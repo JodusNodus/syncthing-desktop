@@ -299,7 +299,7 @@ export default class App extends Component {
           }),
         ]),
 
-        h(Pane, [
+        h('div.pane.container-pane', [
 
           ...messageBar.statics.map(msg => h(MessageBar, {text: msg.msg, staticMsg: true, ...msg})),
 

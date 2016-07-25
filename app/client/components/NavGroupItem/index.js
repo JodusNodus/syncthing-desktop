@@ -11,7 +11,7 @@ const NavGroupItem = ({text, glyph, link, indicator=false, indicatorStyle='defau
 }, [
   indicator && h('span.icon.icon-record', {className: indicatorStyle}),
   glyph && h('span', { className: `icon icon-text icon-${glyph}` }),
-  text,
+  h('span.text', text),
 ])
 
 NavGroupItem.propTypes = {
