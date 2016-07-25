@@ -25,7 +25,7 @@ export default class Setup extends Component {
     this.props.getAutomaticSetup()
   }
   handleSubmit(form){
-    this.setClientConfig(form)
+    this.props.setClientConfig(form)
   }
   handleSaveButton(){
     this.refs.manual.submit()
