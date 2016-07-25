@@ -2,6 +2,7 @@ import notify from './utils/notify'
 import { getConnections, getMyID, getServiceConfig, getErrors } from './actions/system'
 import { showFolderRejected } from './actions/folder-rejected'
 import { getFolderStats } from './actions/stats'
+import { getSingleFolderStatus } from './actions/db'
 import { getDevice } from './reducers/devices'
 import { ipcMain, app, powerMonitor, BrowserWindow } from 'electron'
 
@@ -22,6 +23,7 @@ export function clearEventListeners() {
     global.st.removeAllListeners('folderCompletion')
     global.st.removeAllListeners('folderRejected')
     global.st.removeAllListeners('ping')
+    global.st.removeAllListeners('localIndexUpdated')
   }
 }
 
@@ -134,6 +136,10 @@ export function stEvents(store){
   //Listen for new folders shared with the current device
   global.st.on('folderRejected', payload => {
     store.dispatch(showFolderRejected(payload))
+  })
+
+  global.st.on('localIndexUpdated', ({folder}) => {
+    store.dispatch(getSingleFolderStatus(folder))
   })
 
 

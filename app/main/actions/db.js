@@ -1,17 +1,20 @@
+export const getSingleFolderStatus = id => dispatch =>
+global.st.db.status(id).then(payload => {
+  dispatch({
+    type: 'FOLDER_STATUS_GET_SUCCESS',
+    id,
+    payload,
+  })
+}).catch(error => {
+  dispatch({
+    type: 'FOLDER_STATUS_GET_FAILURE',
+    error,
+  })
+})
+
 export const getFolderStatus = folders => dispatch =>
 folders.forEach(({id}) => {
-  global.st.db.status(id).then(payload => {
-    dispatch({
-      type: 'FOLDER_STATUS_GET_SUCCESS',
-      id,
-      payload,
-    })
-  }).catch(error => {
-    dispatch({
-      type: 'FOLDER_STATUS_GET_FAILURE',
-      error,
-    })
-  })
+  getSingleFolderStatus(id)(dispatch)
 })
 
 export const getDeviceFolderCompletion = (devices, folder) => dispatch =>
