@@ -165,21 +165,37 @@
 
     &.btn-default {
       background: #fff;
+
+      &:active {
+        background: #ddd;
+      }
     }
 
     &.btn-primary {
       background: $blue;
       border: $blue;
+
+      &:active {
+        background: $blue * 0.8;
+      }
     }
 
     &.btn-negative {
       background: $red;
       border: $red;
+
+      &:active {
+        background: $red * 0.8;
+      }
     }
 
     &.btn-positive {
       background: $green;
       border: $green;
+
+      &:active {
+        background: $green * 0.8;
+      }
     }
 
   }
