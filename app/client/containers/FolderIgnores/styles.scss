@@ -1,15 +1,26 @@
 :local(.styles) {
-  display: flex;
   flex: 1;
+  display: flex;
   flex-direction: column;
 
-  textarea {
-    resize: none;
-    flex: 1;
-    min-height: 100px;
+  .form-group {
+    flex-grow: 1;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+
+    label {
+    }
+
+    textarea {
+      resize: none;
+      min-height: 100px;
+      flex-grow: 1;
+    }
   }
 
   .pattern-overview {
+    flex-shrink: 0;
     code {
       margin-right: 5px;
     }

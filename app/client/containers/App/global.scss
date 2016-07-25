@@ -7,6 +7,8 @@
   $orange: #ffa500;
   $yellow: #fed201;
 
+  font-size: 14px;
+
   .toolbar-header .title {
     -webkit-app-region: drag;
   }
@@ -41,6 +43,10 @@
       flex-direction: row;
       align-items: baseline;
       justify-content: flex-end;
+    }
+
+    .nav-group {
+      font-size: inherit;
     }
 
     .nav-group-title {
@@ -83,6 +89,10 @@
       margin: 0;
       font-weight: lighter;
     }
+  }
+
+  .form-control, label, table, .btn {
+    font-size: 1em;
   }
 
   .section-item {
@@ -159,7 +169,7 @@
 
 
   .btn {
-    padding: 0 13px;
+    padding: 1px 13px;
     line-height: 19px;
     text-transform: capitalize;
 

@@ -2,6 +2,7 @@ import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { reduxForm } from 'redux-form'
 import { shell } from 'electron'
+import { TextArea } from 'react-photonkit'
 
 import { getIgnores } from 'main/actions/db'
 import { getIgnoresInitialValues } from 'main/reducers/folders'
@@ -40,8 +41,7 @@ export default class FolderIgnores extends Component {
     const { fields } = this.props
 
     return h('div', {className: styles}, [
-      h('p', 'Enter ignore patterns, one per line.'),
-      h('textarea', fields.ignores),
+      h(TextArea, {label: 'Enter ignore patterns, one per line.', ...fields.ignores}),
       h('div.pattern-overview', [
         h('p', [
           'Quick overview of supported patterns ',
