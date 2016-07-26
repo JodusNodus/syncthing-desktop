@@ -6,19 +6,14 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { bindActionCreators } from 'redux'
 
-import { Window, Toolbar, Actionbar, Button, Content, Pane } from 'react-photonkit'
-import QRCode from 'qrcode.react'
-import Modal from 'client/components/Modal'
+import { Window, Toolbar, Actionbar, Button, Content } from 'react-photonkit'
 import MessageBar from 'client/components/MessageBar'
 import Disconnected from 'client/components/Disconnected'
-import QrReader from 'react-qr-reader'
 import Sidebar from 'client/components/Sidebar'
 
 import * as systemActionCreators from 'main/actions/system'
 import * as configActionCreators from 'main/actions/config'
 import * as dbActionCreators from 'main/actions/db'
-import * as qrCodeModalActionCreators from 'client/actions/qr-code-modal'
-import * as qrCodeScanModalActionCreators from 'client/actions/qr-code-scan-modal'
 import * as folderRejectedActionCreators from 'main/actions/folder-rejected'
 import { getDevices } from 'main/reducers/devices'
 import { getFolders } from 'main/reducers/folders'
@@ -32,10 +27,8 @@ const mapStateToProps = state => ({
   folders: getFolders(state),
   connected: state.connected,
   config: state.config,
-  qrCodeModal: state.qrCodeModal,
   form: state.form,
   messageBar: state.messageBar,
-  qrCodeScanModal: state.qrCodeScanModal,
   folderRejected: state.folderRejected,
 })
 
@@ -45,8 +38,6 @@ const mapStateToProps = state => ({
     ...configActionCreators,
     ...systemActionCreators,
     ...dbActionCreators,
-    ...qrCodeModalActionCreators,
-    ...qrCodeScanModalActionCreators,
     ...folderRejectedActionCreators,
   }, dispatch)
 )
@@ -61,13 +52,8 @@ export default class App extends Component {
     config: PropTypes.object.isRequired,
     setClientConfig: PropTypes.func.isRequired,
     setServiceConfig: PropTypes.func.isRequired,
-    qrCodeModal: PropTypes.object.isRequired,
-    hideQrCodeModal: PropTypes.func.isRequired,
     messageBar: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
-    qrCodeScanModal: PropTypes.object.isRequired,
-    hideQrCodeScanModal: PropTypes.func.isRequired,
-    scanQrCode: PropTypes.func.isRequired,
     folderRejected: PropTypes.object.isRequired,
     acceptFolderRejected: PropTypes.func.isRequired,
     setIgnores: PropTypes.func.isRequired,
@@ -230,12 +216,7 @@ export default class App extends Component {
       connected,
       config,
       children,
-      qrCodeModal,
-      hideQrCodeModal,
       messageBar,
-      qrCodeScanModal,
-      hideQrCodeScanModal,
-      scanQrCode,
       params: {
         id,
       },
@@ -271,33 +252,6 @@ export default class App extends Component {
     return h(Window, [
       h(Content, [
         connected && config.isSuccess && h(Sidebar, sections),
-
-        //Modal for displaying qr codes
-        h(Modal, {
-          cancelButton: false,
-          onDone: hideQrCodeModal,
-          visible: qrCodeModal.show,
-        }, [
-          h(QRCode, {size: 250, value: qrCodeModal.qrCode}),
-        ]),
-
-        //Modal for scanning qr codes
-        h(Modal, {
-          doneButton: false,
-          onCancel: hideQrCodeScanModal,
-          visible: qrCodeScanModal.show,
-        }, [
-          qrCodeScanModal.show && h(QrReader, {
-            handleScan: myID => {
-              scanQrCode(myID)
-              hideQrCodeScanModal()
-            },
-            handleError: console.error,
-            previewStyle: {
-              width: '100%',
-            },
-          }),
-        ]),
 
         h('div.pane.container-pane', [
 
