@@ -4,9 +4,11 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { clipboard } from 'electron'
 
+import Modal from 'client/components/Modal'
+import QRCode from 'qrcode.react'
 import Size from 'client/components/Size'
 
-import { showQrCodeModal } from 'client/actions/qr-code-modal'
+import { showQrCodeModal, hideQrCodeModal } from 'client/actions/qr-code-modal'
 import { showMessageBar } from 'client/actions/message-bar'
 
 import { styles } from './styles.scss'
@@ -15,15 +17,18 @@ import { styles } from './styles.scss'
   state => ({
     status: state.systemStatus,
     version: state.version,
+    qrCodeModal: state.qrCodeModal,
   }),
-  {showQrCodeModal, showMessageBar},
+  {showQrCodeModal, hideQrCodeModal, showMessageBar},
 )
 export default class Overview extends Component {
   static propTypes = {
     status: PropTypes.object.isRequired,
     version: PropTypes.object.isRequired,
+    qrCodeModal: PropTypes.object.isRequired,
     showQrCodeModal: PropTypes.func.isRequired,
     showMessageBar: PropTypes.func.isRequired,
+    hideQrCodeModal: PropTypes.func.isRequired,
   }
 
   handleCopy(myID){
@@ -34,9 +39,19 @@ export default class Overview extends Component {
     })
   }
   render(){
-    const { status, version, showQrCodeModal } = this.props
+    const { status, version, showQrCodeModal, qrCodeModal, hideQrCodeModal} = this.props
 
     return h('div.padded-more', {className: styles}, [
+
+      //Modal for displaying qr codes
+      h(Modal, {
+        cancelButton: false,
+        onDone: hideQrCodeModal,
+        visible: qrCodeModal.show,
+      }, [
+        h(QRCode, {size: 250, value: qrCodeModal.qrCode}),
+      ]),
+
       h('header.page-header', [
         h('h2', 'Overview'),
       ]),
