@@ -1,11 +1,6 @@
+@import 'colors';
+
 :global(body) {
-  $green: #48dc6c;
-  $red: #fe4a65;
-  $purple: #6a71e6;
-  $blue: #0192ff;
-  $light-blue: #2dbae7;
-  $orange: #ffa500;
-  $yellow: #fed201;
 
   font-size: 13px;
 
@@ -120,7 +115,7 @@
       color: $red;
     }
     &.warning {
-      color: $yellow;
+      color: $orange;
     }
   }
 
@@ -132,7 +127,7 @@
     color: $blue;
     transition: color 0.2s;
     &:hover {
-      color: #014480;
+      color: $blue * 0.5;
     }
   }
 
@@ -147,10 +142,10 @@
     text-transform: capitalize;
 
     &.btn-default {
-      background: #fff;
+      background: $white;
 
       &:active {
-        background: #ddd;
+        background: $lighter-grey;
       }
     }
 
@@ -185,8 +180,8 @@
 
   .progressbar-container {
     border-radius: 100px;
-    background: #f5f5f4;
-    border: 1px solid #ddd;
+    background: $off-white;
+    border: 1px solid $lighter-grey;
 
     .progressbar-progress {
       border-radius: 100px;

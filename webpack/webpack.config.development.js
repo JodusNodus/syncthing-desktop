@@ -29,7 +29,9 @@ const config = {
       },
     ],
   },
-
+  sassLoader: {
+    includePaths: [ 'app/client/style' ],
+  },
   plugins: [
     ...baseConfig.plugins,
     new webpack.HotModuleReplacementPlugin(),

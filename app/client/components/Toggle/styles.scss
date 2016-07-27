@@ -1,6 +1,8 @@
+@import 'colors';
+
 :local(.styles){
-  $onColor: #47dc6b;
-  $offColor: #fe4a65;
+  $onColor: $green;
+  $offColor: $red;
   $borderRadius: 3px;
   $height: 2em;
   $width: $height * 2.5;
@@ -30,7 +32,7 @@
 
   .text {
     text-align: center;
-    color: #fff;
+    color: $white;
     width: 50%;
     height: 100%;
     line-height: 1.9;
@@ -48,7 +50,7 @@
     z-index: 100;
     width: $width / 2;
     height: $height;
-    background-color: #fff;
+    background-color: $white;
     border-radius: $borderRadius;
   }
 }

@@ -132,7 +132,7 @@ const InSync = ({globalBytes, inSyncBytes, needBytes, handleMissingFiles}) => {
   return h('div.section-item.in-sync', [
     h('p.left', 'Local In Sync:'),
     h('div.center', [
-      h(Progress, {completed: percent}),
+      h(Progress, {completed: 30}),
       h('div.details', [
         h(Size, {value: inSyncBytes}),
         `${percent}%`,

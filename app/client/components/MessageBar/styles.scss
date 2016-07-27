@@ -1,6 +1,8 @@
+@import 'colors';
+
 :local(.styles) {
 
-  color: #fff;
+  color: $white;
   transition: all 0.4s;
   position: absolute;
   width: 100%;
@@ -22,22 +24,22 @@
 
   //Styles
   &.msg-default {
-    background: #9fa0a4;
+    background: $dark-grey;
   }
 
   &.msg-primary {
-    background: #0192ff;
+    background: $blue;
   }
 
   &.msg-positive {
-    background: #48dc6c;
+    background: $green;
   }
 
   &.msg-negative {
-    background: #fe4a65;
+    background: $red;
   }
 
   &.msg-warning {
-    background: #fed201;
+    background: $orange;
   }
 }

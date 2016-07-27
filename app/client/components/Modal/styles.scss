@@ -1,3 +1,5 @@
+@import 'colors';
+
 :local(.styles) {
   .overlay {
     display: none;
@@ -24,10 +26,10 @@
     flex-direction: column;
     align-items: center;
     width: 50%;
-    background: #fff;
-    border: 1px solid #ddd;
+    background: $white;
+    border: 1px solid $light-grey;
     padding: 15px 10px;
-    box-shadow: #888 0 0 12px;
+    box-shadow: $light-grey 0 0 15px;
 
     .content {
       margin-bottom: 15px;

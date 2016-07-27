@@ -1,3 +1,5 @@
+@import 'colors';
+
 :local(.styles){
   display: flex;
   flex-direction: column;
@@ -19,9 +21,9 @@
       font-size: 1em;
       color: inherit !important;
       transition: none !important;
-      
+
       &:hover {
-        background: #3a91fd;
+        background: $blue;
         color: #fff !important;
       }
     }

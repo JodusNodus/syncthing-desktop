@@ -18,7 +18,7 @@ import * as folderRejectedActionCreators from 'main/actions/folder-rejected'
 import { getDevices } from 'main/reducers/devices'
 import { getFolders } from 'main/reducers/folders'
 
-import './global.scss'
+import 'client/style/global.scss'
 
 const partOf = x => y => x.indexOf(y) >= 0
 
