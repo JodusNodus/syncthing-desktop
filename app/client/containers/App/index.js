@@ -214,7 +214,6 @@ export default class App extends Component {
         pathname,
       },
       connected,
-      config,
       children,
       messageBar,
       params: {
@@ -229,29 +228,9 @@ export default class App extends Component {
     const onIgnoresPage = pathname == `/folder/${id}/ignores`
     const onAddPage = pathname == '/folder-add' || pathname == '/device-add'
 
-    //An object defining all sections and items in the sidebar
-    const sections = {
-      folders: folders.map(({id, label, status}) => ({
-        glyph: 'folder',
-        text: label || id,
-        key: id,
-        state: status && status.state,
-      })),
-      devices: devices.map(({name, deviceID, connected}) => ({
-        glyph: 'monitor',
-        text: name,
-        key: deviceID,
-        connected,
-      })),
-      preferences: [
-        { text: 'Service', glyph: 'cog', key: 'service' },
-        { text: 'Client', glyph: 'cog', key: 'client' },
-      ],
-    }
-
     return h(Window, [
       h(Content, [
-        connected && config.isSuccess && h(Sidebar, sections),
+        connected && h(Sidebar, {folders, devices}),
 
         h('div.pane.container-pane', [
 

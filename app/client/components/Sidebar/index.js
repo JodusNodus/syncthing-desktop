@@ -1,10 +1,11 @@
 import { PropTypes } from 'react'
 import { Link } from 'react-router'
 import h from 'react-hyperscript'
-import { Pane, NavGroup, NavTitle } from 'react-photonkit'
+
+import { NavGroup, NavTitle } from 'react-photonkit'
 import NavGroupItem from 'client/components/NavGroupItem'
 
-// import Dropdown from '../Dropdown'
+import { styles } from './styles.scss'
 
 const getIndicatorStyle = (state) => {
   switch (state) {
@@ -23,11 +24,55 @@ const getIndicatorStyle = (state) => {
   }
 }
 
-const Sidebar = ({ folders, devices, preferences}) => {
-  return h(Pane, {ptSize: 'sm', sidebar: true}, [
-    // h('div.toolbar-options', [
-    //   h(AddItem),
-    // ]),
+const Folders = ({folders}) =>
+h('div.folders', folders.map(({key, text, glyph, state}) =>
+h(NavGroupItem, {
+  indicator: state ? true : false,
+  indicatorStyle: getIndicatorStyle(state),
+  link: `/folder/${key}`,
+  glyph: 'folder',
+  text,
+  key,
+})))
+
+const Devices = ({devices}) =>
+h('div.devices', devices.map(({key, text, connected}) =>
+h(NavGroupItem, {
+  indicator: connected,
+  indicatorStyle: 'positive',
+  link: `/device/${key}`,
+  glyph: 'monitor',
+  text,
+  key,
+})))
+
+const Preferences = ({preferences}) =>
+h('div.preferences', preferences.map(({key, text}) =>
+h(NavGroupItem, {
+  link: `/preferences/${key}`,
+  glyph: 'cog',
+  text,
+})))
+
+const Sidebar = props => {
+  const folders = props.folders.map(({id, label, status}) => ({
+    text: label || id,
+    key: id,
+    state: status && status.state,
+  }))
+
+  const devices = props.devices.map(({name, deviceID, connected}) => ({
+    text: name,
+    key: deviceID,
+    connected,
+  }))
+  
+  const preferences = [
+    { text: 'Service', key: 'service' },
+    { text: 'Client', key: 'client' },
+  ]
+
+  return h('div.pane.sidebar', {className: styles}, [
     h(NavGroup, [
       h(NavGroupItem, {glyph: 'home', text: 'Overview', link: '/overview'}),
 
@@ -35,16 +80,16 @@ const Sidebar = ({ folders, devices, preferences}) => {
         'Folders',
         h(Link, {className: 'fa fa-plus pull-right', to: '/folder-add'}),
       ]),
-      ...folders.map(({key, text, glyph, state}) => h(NavGroupItem, {indicator: state ? true : false, indicatorStyle: getIndicatorStyle(state), glyph, text, link: `/folder/${key}`})),
+      h(Folders, {folders}),
 
       h(NavTitle, [
         'Devices',
         h(Link, {className: 'fa fa-plus pull-right', to: '/device-add'}),
       ]),
-      ...devices.map(({key, text, glyph, connected}) => h(NavGroupItem, {indicator: connected, indicatorStyle: 'positive', glyph, text, connected, link: `/device/${key}`})),
+      h(Devices, {devices}),
 
       h(NavTitle, 'Preferences'),
-      ...preferences.map(({key, text, glyph}) => h(NavGroupItem, {glyph, text, link: `/preferences/${key}`})),
+      h(Preferences, {preferences}),
     ]),
   ])
 }
@@ -56,14 +101,3 @@ Sidebar.propTypes = {
 }
 
 export default Sidebar
-
-
-const options = [
-  {text: 'New Folder', link: '/folder-add'},
-  {text: 'New Device', link: '/device-add'},
-]
-
-const AddItem = () =>
-h(Dropdown, {options}, [
-  h('a.fa.fa-plus.fa-fw'),
-])
