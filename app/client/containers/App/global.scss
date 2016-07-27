@@ -33,40 +33,6 @@
     }
   }
 
-  .sidebar {
-    -webkit-app-region: drag;
-    padding-top: 35px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    overflow: auto;
-    min-width: none;
-    max-width: none;
-
-    .toolbar-options {
-      padding: 9px;
-      display: flex;
-      flex-direction: row;
-      align-items: baseline;
-      justify-content: flex-end;
-    }
-
-    .nav-group {
-      font-size: inherit;
-    }
-
-    .nav-group-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-size: 0.9em;
-
-      & > a {
-        color: inherit !important;
-      }
-    }
-  }
-
   .container-pane{
     display: flex;
     flex-direction: column;

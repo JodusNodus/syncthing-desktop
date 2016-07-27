@@ -6,7 +6,7 @@
   span {
     flex-shrink: 0;
   }
-  
+
   .text {
     flex: 1;
     overflow: hidden;
@@ -17,9 +17,8 @@
     padding-left: 0;
 
     .icon.icon-record {
-      font-size: 12px;
-      padding-left: 4px;
-      padding-right: 2px;
+      font-size: 1em;
+      margin: 0 3px;
     }
   }
 }
