@@ -6,6 +6,7 @@ import qrCodeModal from './qr-code-modal'
 import qrCodeScanModal from './qr-code-scan-modal'
 import messageBar from './message-bar'
 import automaticSetup from './automatic-setup'
+import missingModal from './missing-modal'
 
 const rootReducer = combineReducers({
   ...reducers,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   qrCodeScanModal,
   messageBar,
   automaticSetup,
+  missingModal,
 })
 
 export default rootReducer

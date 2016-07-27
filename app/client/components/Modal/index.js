@@ -4,10 +4,10 @@ import { Button } from 'react-photonkit'
 
 import { styles } from './styles.scss'
 
-const Modal = ({ children, onCancel, onDone, visible, doneButton=true, cancelButton=true }) =>
+const Modal = ({ children, onCancel, onDone, visible, doneButton=true, cancelButton=true, className }) =>
 h('div.modal-container', {className: `${styles} ${visible && 'visible'}`}, [
   h('div.overlay'),
-  h('div.modal', [
+  h('div.modal', {className}, [
     h('div.content', [
       children,
     ]),

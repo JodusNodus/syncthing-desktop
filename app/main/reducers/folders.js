@@ -3,6 +3,8 @@ import status from './folder-status'
 import completion from './folder-completion'
 import stats from './folder-stats'
 import ignores from './folder-ignores'
+import missing from './folder-missing'
+import downloadProgress from './folder-download-progress'
 
 function byId(state = [], {type, payload}) {
   switch (type){
@@ -32,6 +34,8 @@ export default combineReducers({
   completion,
   stats,
   ignores,
+  missing,
+  downloadProgress,
 })
 
 export const getFolder = ({folders, devices}, id) => {
@@ -54,6 +58,24 @@ export const getFolder = ({folders, devices}, id) => {
       completion: completion && completion[deviceID],
     })),
     stats: folders.stats[id],
+  }
+}
+
+export const getFolderWithMissing = ({folders, devices}, id) => {
+  const folder = getFolder({folders, devices}, id)
+  const downloadProgress = folders.downloadProgress[id]
+  const missing = folders.missing[id]
+
+  return {
+    ...folder,
+    missing: missing && {
+      ...missing,
+      pages: Math.ceil(missing.total / missing.perpage),
+      missing: missing.missing.map(file => ({
+        ...file,
+        progress: downloadProgress && downloadProgress[file.name],
+      })),
+    },
   }
 }
 

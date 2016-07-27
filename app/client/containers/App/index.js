@@ -93,7 +93,7 @@ export default class App extends Component {
         type: 'warning',
         buttons,
         title: 'New Folder',
-        message: `${deviceName} wants to share folder '${folderRejected.folderLabel}' ?`,
+        message: `${deviceName} wants to share folder '${folderRejected.folderLabel || folderRejected.folder}' ?`,
         detail: `Would you like to add the folder with an ID of '${folderRejected.folder}' localy?`,
       }, i => {
         if(buttons[i] == 'Accept'){

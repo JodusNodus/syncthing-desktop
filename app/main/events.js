@@ -1,4 +1,6 @@
 import notify from './utils/notify'
+import _ from 'lodash'
+
 import { getConnections, getMyID, getServiceConfig, getErrors } from './actions/system'
 import { showFolderRejected } from './actions/folder-rejected'
 import { getFolderStats } from './actions/stats'
@@ -24,6 +26,7 @@ export function clearEventListeners() {
     global.st.removeAllListeners('folderRejected')
     global.st.removeAllListeners('ping')
     global.st.removeAllListeners('localIndexUpdated')
+    global.st.removeAllListeners('downloadProgress')
   }
 }
 
@@ -114,8 +117,18 @@ export function stEvents(store){
     store.dispatch(getServiceConfig(myID))
   })
 
+
   //Listen for local status changes to folder
   global.st.on('folderSummary', ({folder, summary}) => {
+    const state = store.getState()
+    const folderState = state.folders.folders[folder]
+    const statusState = state.folders.status[folder]
+
+    if(statusState && statusState.needBytes > 0 && summary.needBytes < 1){
+      console.log('completed syncing')
+      notify(folderState.label || folder, 'has completed syncing.')
+    }
+
     store.dispatch({
       type: 'FOLDER_STATUS_GET_SUCCESS',
       id: folder,
@@ -142,7 +155,15 @@ export function stEvents(store){
     store.dispatch(getSingleFolderStatus(folder))
   })
 
-
+  global.st.on('downloadProgress', folders => {
+    _.mapValues(folders, (payload, id) => {
+      store.dispatch({
+        type: 'DOWNLOAD_PROGRESS',
+        id,
+        payload,
+      })
+    })
+  })
 
   //Check periodicaly for system status & errors
   interval = setInterval(() => {

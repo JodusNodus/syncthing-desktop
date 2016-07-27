@@ -73,3 +73,17 @@ global.st.db.setIgnores(id, ignores).then(payload => {
     error,
   })
 })
+
+export const getMissing = (id, page=1, perpage=5) => dispatch =>
+global.st.db.need(id, page, perpage).then(payload => {
+  dispatch({
+    type: 'MISSING_GET_SUCCESS',
+    payload,
+    id,
+  })
+}).catch(error => {
+  dispatch({
+    type: 'MiSSING_GET_FAILURE',
+    error,
+  })
+})

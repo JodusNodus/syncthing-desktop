@@ -42,7 +42,6 @@
     overflow: auto;
     min-width: none;
     max-width: none;
-    font-size: 1.1em;
 
     .toolbar-options {
       padding: 9px;
@@ -60,6 +59,7 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+      font-size: 0.9em;
 
       & > a {
         color: inherit !important;
@@ -98,7 +98,7 @@
     }
   }
 
-  .form-control, label, table, .btn {
+  .form-control, label, table, .btn, .sidebar {
     font-size: 1em;
   }
 
@@ -190,7 +190,7 @@
 
     &.btn-primary {
       background: $blue;
-      border: $blue;
+      border: 1px solid $blue;
 
       &:active {
         background: $blue * 0.8;
@@ -199,7 +199,7 @@
 
     &.btn-negative {
       background: $red;
-      border: $red;
+      border: 1px solid $red;
 
       &:active {
         background: $red * 0.8;
@@ -208,17 +208,13 @@
 
     &.btn-positive {
       background: $green;
-      border: $green;
+      border: 1px solid $green;
 
       &:active {
         background: $green * 0.8;
       }
     }
 
-  }
-
-  .btn-group .btn {
-    padding: 2px 8px;
   }
 
   .progressbar-container {
