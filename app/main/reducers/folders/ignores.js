@@ -1,4 +1,4 @@
-export default function(state={}, {type, payload, id}) {
+export default function ignores(state={}, {type, payload, id}) {
   if(type == 'IGNORES_GET_SUCCESS' || type == 'IGNORES_SET_SUCCESS'){
     return {
       ...state,

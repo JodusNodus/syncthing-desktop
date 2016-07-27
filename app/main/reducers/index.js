@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import devices from './devices'
-import folders from './folders'
+import devices from './devices/index'
+import folders from './folders/index'
 import connected from './connected'
 import myID from './my-id'
 import systemStatus from './system-status'

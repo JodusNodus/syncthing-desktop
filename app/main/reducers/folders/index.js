@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
-import status from './folder-status'
-import completion from './folder-completion'
-import stats from './folder-stats'
-import ignores from './folder-ignores'
-import missing from './folder-missing'
-import downloadProgress from './folder-download-progress'
+import status from './status'
+import completion from './completion'
+import stats from './stats'
+import ignores from './ignores'
+import missing from './missing'
+import downloadProgress from './download-progress'
 
 function byId(state = [], {type, payload}) {
   switch (type){

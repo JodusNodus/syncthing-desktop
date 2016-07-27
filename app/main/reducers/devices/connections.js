@@ -1,4 +1,3 @@
-
 export default function connections(state={}, {type, payload, id}) {
   switch (type) {
     case 'CONNECTIONS_GET_SUCCESS':

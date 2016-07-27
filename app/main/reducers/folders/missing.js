@@ -1,4 +1,4 @@
-export default function folderMissing(state = {}, {type, payload, id}) {
+export default function missing(state = {}, {type, payload, id}) {
   switch (type) {
     case 'MISSING_GET_SUCCESS':
     const progress = payload.progress.map(file => ({

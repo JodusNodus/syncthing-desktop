@@ -1,4 +1,4 @@
-export default function folderDownloadProgress(state = {}, {type, payload, id}) {
+export default function downloadProgress(state = {}, {type, payload, id}) {
   switch (type) {
     case 'DOWNLOAD_PROGRESS':
     return {
