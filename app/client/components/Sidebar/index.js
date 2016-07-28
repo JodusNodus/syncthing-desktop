@@ -1,34 +1,19 @@
 import { PropTypes } from 'react'
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
 import h from 'react-hyperscript'
 
 import { NavGroup, NavTitle } from 'react-photonkit'
 import NavGroupItem from 'client/components/NavGroupItem'
 
+import { getSidebarItems }  from './selectors'
 import { styles } from './styles.scss'
 
-const getIndicatorStyle = (state) => {
-  switch (state) {
-    case 'idle':
-    return 'positive'
-    case 'scanning':
-    return 'primary'
-    case 'error':
-    return 'negative'
-    case 'syncing':
-    return 'primary'
-    case 'unshared':
-    return 'warning'
-    default:
-    return 'default'
-  }
-}
-
 const Folders = ({folders}) =>
-h('div.folders', folders.map(({key, text, glyph, state}) =>
+h('div.folders', folders.map(({key, text, indicatorStyle}) =>
 h(NavGroupItem, {
-  indicator: state ? true : false,
-  indicatorStyle: getIndicatorStyle(state),
+  indicator: indicatorStyle ? true : false,
+  indicatorStyle,
   link: `/folder/${key}`,
   glyph: 'folder',
   text,
@@ -54,24 +39,7 @@ h(NavGroupItem, {
   text,
 })))
 
-const Sidebar = props => {
-  const folders = props.folders.map(({id, label, status}) => ({
-    text: label || id,
-    key: id,
-    state: status && status.state,
-  }))
-
-  const devices = props.devices.map(({name, deviceID, connected}) => ({
-    text: name,
-    key: deviceID,
-    connected,
-  }))
-  
-  const preferences = [
-    { text: 'Service', key: 'service' },
-    { text: 'Client', key: 'client' },
-  ]
-
+const Sidebar = ({folders, devices, preferences}) => {
   return h('div.pane.sidebar', {className: styles}, [
     h(NavGroup, [
       h(NavGroupItem, {glyph: 'home', text: 'Overview', link: '/overview'}),
@@ -100,4 +68,6 @@ Sidebar.propTypes = {
   preferences: PropTypes.array.isRequired,
 }
 
-export default Sidebar
+export default connect(
+  state => getSidebarItems(state),
+)(Sidebar)

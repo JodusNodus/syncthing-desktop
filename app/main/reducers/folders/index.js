@@ -58,12 +58,14 @@ const getFolderDevices = ({folders, devices}, id) => (
   }))
 )
 
-export const getFolder = createDeepEqualSelector(
-  [getFolderDetails, getFolderStatus, getFolderCompletion, getFolderStats, getFolderDevices],
-  (folder, status, completion, stats, devices) => {
+const getFoldersById = selector => state => state.folders.byId.map(id => selector(state, id))
+
+export const getFolderWithStatus = createDeepEqualSelector(
+  [getFolderDetails, getFolderStatus],
+  (folder, status) => {
 
     //Replace state with unshared if no more than 1 device was found (current device)
-    const state = devices.length <= 1 ? 'unshared' : status && status.state
+    const state = folder.devices.length <= 1 ? 'unshared' : status && status.state
 
     return {
       ...folder,
@@ -71,13 +73,25 @@ export const getFolder = createDeepEqualSelector(
         ...status,
         state,
       },
-      devices: devices.map(device => ({
-        ...device,
-        completion: completion && completion[device.deviceID],
-      })),
-      stats,
     }
   }
+)
+
+export const getFoldersWithStatus = createDeepEqualSelector(
+  [getFoldersById(getFolderWithStatus)],
+  folders => folders,
+)
+
+export const getFolder = createDeepEqualSelector(
+  [getFolderWithStatus, getFolderCompletion, getFolderStats, getFolderDevices],
+  (folder, completion, stats, devices) => ({
+    ...folder,
+    stats,
+    devices: devices.map(device => ({
+      ...device,
+      completion: completion && completion[device.deviceID],
+    })),
+  })
 )
 
 const getFolderMissing = ({folders}, id) => folders.missing[id]
@@ -101,10 +115,8 @@ export const getFolderWithMissing = createDeepEqualSelector(
   }
 )
 
-const getFoldersById = state => state.folders.byId.map(id => getFolder(state, id))
-
 export const getFolders = createDeepEqualSelector(
-  [getFoldersById],
+  [getFoldersById(getFolder)],
   folders => folders,
 )
 

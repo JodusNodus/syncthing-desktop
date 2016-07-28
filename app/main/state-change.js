@@ -6,7 +6,7 @@ import buildMenu from './menu/index'
 import isEqual from 'lodash/isEqual'
 import syncthing from 'node-syncthing'
 import { stEvents, clearEventListeners } from './events'
-import { getFolders } from './reducers/folders'
+import { getFoldersWithStatus } from './reducers/folders'
 
 export default function stateHandler({store, tray}){
   let previousState = store.getState()
@@ -49,18 +49,10 @@ export default function stateHandler({store, tray}){
     if(!isEqual(previousState.devices.byId, newState.devices.byId)){
       store.dispatch(getConnections())
       store.dispatch(getDeviceStats())
-      store.dispatch(getFolderStatus(getFolders(newState)))
+      store.dispatch(getFolderStatus(getFoldersWithStatus(newState)))
     }
 
-    const StateIsDifferent = !isEqual({
-      ...newState,
-      systemStatus: null,
-    }, {
-      ...previousState,
-      systemStatus: null,
-    })
-
-    if(StateIsDifferent){
+    if(!isEqual(getMenuState(previousState),getMenuState(newState))){
       //Build and replace old menu
       const menu = buildMenu({state: newState})
       tray.setContextMenu(menu)
@@ -68,3 +60,20 @@ export default function stateHandler({store, tray}){
     previousState = newState
   }
 }
+
+//Filter out all unimportant state for dispalying menu
+const getMenuState = ({
+  connected,
+  myID,
+  devices,
+  folders,
+  version,
+  config,
+}) => ({
+  connected,
+  myID,
+  devices,
+  folders,
+  version,
+  config,
+})

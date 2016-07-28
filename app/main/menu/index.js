@@ -3,21 +3,21 @@ import { Menu } from 'electron'
 import menuActions from './actions'
 import deviceItems from './devices'
 import folderItems from './folders'
-import { getDevices } from '../reducers/devices'
-import { getFolders } from '../reducers/folders'
+import { getDevicesWithConnections } from '../reducers/devices'
+import { getFoldersWithStatus } from '../reducers/folders'
 
 import { name, version } from '../../../package.json'
 
 export default function buildMenu({
   st,
+  state,
   state: {
     connected,
     config,
   },
-  state,
 }){
-  const devices = getDevices(state)
-  const folders = getFolders(state)
+  const devices = getDevicesWithConnections(state)
+  const folders = getFoldersWithStatus(state)
 
   let menu = null
   const actions = menuActions(st)

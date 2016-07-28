@@ -43,18 +43,30 @@ const getDeviceDetails = ({devices}, id) => devices.devices[id]
 const getDeviceConnections = ({devices}, id) => devices.connections[id]
 const getDeviceStats = ({devices}, id) => devices.stats[id]
 
-export const getDevice = createDeepEqualSelector(
-  [getDeviceDetails, getDeviceConnections, getDeviceStats],
-  (device, connections, stats) => ({
+export const getDeviceWithConnections = createDeepEqualSelector(
+  [getDeviceDetails, getDeviceConnections],
+  (device, connections) => ({
     ...device,
     ...connections,
+  })
+)
+
+export const getDevice = createDeepEqualSelector(
+  [getDeviceWithConnections, getDeviceStats],
+  (device, stats) => ({
+    ...device,
     ...stats,
   })
 )
 
-const getDevicesById = state => state.devices.byId.map(id => getDevice(state, id))
+const getDevicesById = selector => state => state.devices.byId.map(id => selector(state, id))
+
+export const getDevicesWithConnections = createDeepEqualSelector(
+  [getDevicesById(getDeviceWithConnections)],
+  devices => devices,
+)
 
 export const getDevices = createDeepEqualSelector(
-  [getDevicesById],
+  [getDevicesById(getDevice)],
   devices => devices,
 )
