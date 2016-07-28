@@ -27,8 +27,10 @@ const getIndicatorStyle = state => {
   }
 }
 
+const getRouting = state => state.routing
+
 export const getSidebarItems = createDeepEqualSelector(
-  [getDevicesWithConnections, getFoldersWithStatus],
+  [getDevicesWithConnections, getFoldersWithStatus, getRouting],
   (devices, folders) => {
     return {
       folders: folders.map(({id, label, status}) => ({
