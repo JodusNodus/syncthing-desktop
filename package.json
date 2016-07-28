@@ -91,6 +91,7 @@
     "redux-electron-store": "^0.3.10",
     "redux-form": "^5.3.1",
     "redux-thunk": "^2.0.1",
+    "reselect": "^2.5.3",
     "source-map-support": "^0.4.0"
   },
   "devDependencies": {

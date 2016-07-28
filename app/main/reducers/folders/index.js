@@ -1,4 +1,13 @@
+import { createSelectorCreator, defaultMemoize } from 'reselect'
 import { combineReducers } from 'redux'
+import { isEqual } from 'lodash'
+
+// create a "selector creator" that uses deep checking
+const createDeepEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  isEqual
+)
+
 import status from './status'
 import completion from './completion'
 import stats from './stats'
@@ -38,52 +47,72 @@ export default combineReducers({
   downloadProgress,
 })
 
-export const getFolder = ({folders, devices}, id) => {
-  const folder = folders.folders[id]
-  const completion = folders.completion[id]
+const getFolderDetails = ({folders}, id) => folders.folders[id]
+const getFolderStatus = ({folders}, id) => folders.status[id]
+const getFolderCompletion = ({folders}, id) => folders.completion[id]
+const getFolderStats = ({folders}, id) => folders.stats[id]
+const getFolderDevices = ({folders, devices}, id) => (
+  getFolderDetails({folders}, id).devices.map(({deviceID}) => ({
+    deviceID,
+    name: devices.devices[deviceID] && devices.devices[deviceID].name,
+  }))
+)
 
-  const state = folder.devices.length <= 1
-  ? 'unshared'
-  : folders.status[id] && folders.status[id].state
+export const getFolder = createDeepEqualSelector(
+  [getFolderDetails, getFolderStatus, getFolderCompletion, getFolderStats, getFolderDevices],
+  (folder, status, completion, stats, devices) => {
 
-  return {
-    ...folder,
-    status: {
-      ...folders.status[id],
-      state,
-    },
-    devices: folder.devices.map(({deviceID}) => ({
-      deviceID,
-      name: devices.devices[deviceID] && devices.devices[deviceID].name,
-      completion: completion && completion[deviceID],
-    })),
-    stats: folders.stats[id],
-  }
-}
+    //Replace state with unshared if no more than 1 device was found (current device)
+    const state = devices.length <= 1 ? 'unshared' : status && status.state
 
-export const getFolderWithMissing = ({folders, devices}, id) => {
-  const folder = getFolder({folders, devices}, id)
-  const downloadProgress = folders.downloadProgress[id]
-  const missing = folders.missing[id]
-
-  return {
-    ...folder,
-    missing: missing && {
-      ...missing,
-      pages: Math.ceil(missing.total / missing.perpage),
-      missing: missing.missing.map(file => ({
-        ...file,
-        progress: downloadProgress && downloadProgress[file.name],
+    return {
+      ...folder,
+      status: {
+        ...status,
+        state,
+      },
+      devices: devices.map(device => ({
+        ...device,
+        completion: completion && completion[device.deviceID],
       })),
-    },
+      stats,
+    }
   }
-}
+)
 
-export const getFolders = ({folders, ...state}) => folders.byId.map(id => getFolder({folders, ...state}, id))
+const getFolderMissing = ({folders}, id) => folders.missing[id]
+const getFolderDownloadProgress = ({folders}, id) => folders.downloadProgress[id]
 
-export const getIgnoresInitialValues = ({folders}, id) => {
-  const ignores = folders.ignores[id]
-  return {
+export const getFolderWithMissing = createDeepEqualSelector(
+  [getFolder, getFolderMissing, getFolderDownloadProgress],
+  (folder, missing, downloadProgress) => {
+
+    return {
+      ...folder,
+      missing: missing && {
+        ...missing,
+        pages: Math.ceil(missing.total / missing.perpage),
+        missing: missing.missing.map(file => ({
+          ...file,
+          progress: downloadProgress && downloadProgress[file.name],
+        })),
+      },
+    }
+  }
+)
+
+const getFoldersById = state => state.folders.byId.map(id => getFolder(state, id))
+
+export const getFolders = createDeepEqualSelector(
+  [getFoldersById],
+  folders => folders,
+)
+
+const getIgnores = ({folders}, id) => folders.ignores[id]
+
+export const getIgnoresInitialValues = createDeepEqualSelector(
+  [getIgnores],
+  ignores => ({
     ignores: (ignores && ignores.ignore) ? ignores.ignore.join('\n') : '',
-  }
-}
+  })
+)

@@ -1,4 +1,12 @@
+import { createSelectorCreator, defaultMemoize } from 'reselect'
 import { combineReducers } from 'redux'
+import { isEqual } from 'lodash'
+
+// create a "selector creator" that uses deep checking
+const createDeepEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  isEqual
+)
 
 import connections from './connections'
 import stats from './stats'
@@ -31,13 +39,22 @@ export default combineReducers({
   stats,
 })
 
-export const getDevice = ({devices}, id) => {
-  const device = devices.devices[id]
-  return {
-    ...device,
-    ...devices.connections[id],
-    ...devices.stats[id],
-  }
-}
+const getDeviceDetails = ({devices}, id) => devices.devices[id]
+const getDeviceConnections = ({devices}, id) => devices.connections[id]
+const getDeviceStats = ({devices}, id) => devices.stats[id]
 
-export const getDevices = ({devices}) => devices.byId.map(id => getDevice({devices}, id))
+export const getDevice = createDeepEqualSelector(
+  [getDeviceDetails, getDeviceConnections, getDeviceStats],
+  (device, connections, stats) => ({
+    ...device,
+    ...connections,
+    ...stats,
+  })
+)
+
+const getDevicesById = state => state.devices.byId.map(id => getDevice(state, id))
+
+export const getDevices = createDeepEqualSelector(
+  [getDevicesById],
+  devices => devices,
+)
