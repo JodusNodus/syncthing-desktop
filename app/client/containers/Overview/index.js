@@ -7,6 +7,7 @@ import { clipboard } from 'electron'
 import Modal from 'client/components/Modal'
 import QRCode from 'qrcode.react'
 import Size from 'client/components/Size'
+import Header from 'client/components/Header'
 
 import { showQrCodeModal, hideQrCodeModal } from 'client/actions/qr-code-modal'
 import { showMessageBar } from 'client/actions/message-bar'
@@ -52,7 +53,7 @@ export default class Overview extends Component {
         h(QRCode, {size: 250, value: qrCodeModal.qrCode}),
       ]),
 
-      h('header.page-header', [
+      h(Header, [
         h('h2', 'Overview'),
       ]),
       h('hr'),

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Modal from 'client/components/Modal'
 import QrReader from 'react-qr-reader'
 import DeviceEdit from 'client/containers/DeviceEdit'
+import Header from 'client/components/Header'
 
 import { hideQrCodeScanModal, scanQrCode } from 'client/actions/qr-code-scan-modal'
 
@@ -59,7 +60,7 @@ export default class DeviceAdd extends Component {
         }),
       ]),
 
-      h('header.page-header', [
+      h(Header, [
         h('h2', 'Add Device'),
       ]),
       h('hr'),

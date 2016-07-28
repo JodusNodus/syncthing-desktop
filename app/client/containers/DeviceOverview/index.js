@@ -2,7 +2,6 @@ import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
 import { clipboard } from 'electron'
-import { bindActionCreators } from 'redux'
 
 import SharedFolders from 'client/components/SharedFolders'
 import FromNow from 'client/components/FromNow'

@@ -1,0 +1,12 @@
+:local(.styles) {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+
+  h1, h2, h3, h4, p {
+    margin: 0;
+    font-weight: lighter;
+  }
+}

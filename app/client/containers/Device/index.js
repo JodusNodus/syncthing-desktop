@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import Toggle from 'client/components/Toggle'
 import SegmentedControl from 'client/components/SegmentedControl'
+import Header from 'client/components/Header'
 
 import { resumeDevice, pauseDevice } from 'main/actions/system'
 import { getDevice } from 'main/reducers/devices'
@@ -51,7 +52,7 @@ export default class Device extends Component {
 
     if(device) {
       return h('div.padded-more', {className: styles}, [
-        h('header.page-header', [
+        h(Header, [
           h('h2', device.name),
           h(Toggle, {state: !device.paused, onToggle: this.handleToggle.bind(this)}),
         ]),

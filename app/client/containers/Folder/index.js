@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import { getFolder } from 'main/reducers/folders'
+import Header from 'client/components/Header'
 
 import SegmentedControl from 'client/components/SegmentedControl'
 
@@ -40,7 +41,7 @@ export default class Folder extends Component {
 
     if(folder){
       return h('div.padded-more', {className: styles}, [
-        h('header.page-header', [
+        h(Header, [
           h('h2', folder.label || folder.id),
           folder.status && h(HeaderStateIcon, folder.status),
         ]),

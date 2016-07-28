@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import randomString from 'randomstring'
 
 import FolderEdit from 'client/containers/FolderEdit'
+import Header from 'client/components/Header'
 
 import { clearFolderRejected } from 'main/actions/folder-rejected'
 
@@ -77,7 +78,7 @@ export default class FolderAdd extends Component {
     }
 
     return h('div.padded-more', [
-      h('header.page-header', [
+      h(Header, [
         h('h2', 'Add Folder'),
       ]),
       h('hr'),
