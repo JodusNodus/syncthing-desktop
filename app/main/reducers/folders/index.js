@@ -51,18 +51,28 @@ const getFolderDetails = ({folders}, id) => folders.folders[id]
 const getFolderStatus = ({folders}, id) => folders.status[id]
 const getFolderCompletion = ({folders}, id) => folders.completion[id]
 const getFolderStats = ({folders}, id) => folders.stats[id]
-const getFolderDevices = ({folders, devices}, id) => (
-  getFolderDetails({folders}, id).devices.map(({deviceID}) => ({
+const getFolderDevices = ({folders, devices}, id) => {
+  const folder = getFolderDetails({folders}, id)
+
+  if(!folder){
+    return []
+  }
+
+  return folder.devices.map(({deviceID}) => ({
     deviceID,
     name: devices.devices[deviceID] && devices.devices[deviceID].name,
   }))
-)
+}
 
 const getFoldersById = selector => state => state.folders.byId.map(id => selector(state, id))
 
 export const getFolderWithStatus = createDeepEqualSelector(
   [getFolderDetails, getFolderStatus],
   (folder, status) => {
+
+    if(!folder){
+      return {}
+    }
 
     //Replace state with unshared if no more than 1 device was found (current device)
     const state = folder.devices.length <= 1 ? 'unshared' : status && status.state
