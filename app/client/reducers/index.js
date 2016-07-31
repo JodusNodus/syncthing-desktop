@@ -7,6 +7,7 @@ import qrCodeScanModal from './qr-code-scan-modal'
 import messageBar from './message-bar'
 import automaticSetup from './automatic-setup'
 import missingModal from './missing-modal'
+import bandwithRates from './bandwith-rates'
 
 const rootReducer = combineReducers({
   ...reducers,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   messageBar,
   automaticSetup,
   missingModal,
+  bandwithRates,
 })
 
 export default rootReducer

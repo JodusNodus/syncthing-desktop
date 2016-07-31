@@ -9,8 +9,11 @@ import QRCode from 'qrcode.react'
 import Size from 'client/components/Size'
 import Header from 'client/components/Header'
 
+import { getConnections } from 'main/actions/system'
 import { showQrCodeModal, hideQrCodeModal } from 'client/actions/qr-code-modal'
 import { showMessageBar } from 'client/actions/message-bar'
+
+import { getBandwithRates } from 'client/reducers/bandwith-rates'
 
 import { styles } from './styles.scss'
 
@@ -18,20 +21,38 @@ import { styles } from './styles.scss'
   state => ({
     status: state.systemStatus,
     version: state.version,
+    bandwithRates: getBandwithRates(state),
     qrCodeModal: state.qrCodeModal,
   }),
-  {showQrCodeModal, hideQrCodeModal, showMessageBar},
+  {
+    showQrCodeModal,
+    hideQrCodeModal,
+    showMessageBar,
+    getConnections,
+  },
 )
 export default class Overview extends Component {
   static propTypes = {
     status: PropTypes.object.isRequired,
     version: PropTypes.object.isRequired,
     qrCodeModal: PropTypes.object.isRequired,
+    bandwithRates: PropTypes.object.isRequired,
     showQrCodeModal: PropTypes.func.isRequired,
     showMessageBar: PropTypes.func.isRequired,
     hideQrCodeModal: PropTypes.func.isRequired,
+    //For bandwithRates
+    getConnections: PropTypes.func.isRequired,
   }
 
+  componentDidMount(){
+    const { getConnections } = this.props
+
+    //Bandwith Rate per second
+    this.interval = setInterval(getConnections, 1000)
+  }
+  componentWillUnmount(){
+    if(this.interval) clearInterval(this.interval)
+  }
   handleCopy(myID){
     clipboard.writeText(myID)
     this.props.showMessageBar({
@@ -40,7 +61,14 @@ export default class Overview extends Component {
     })
   }
   render(){
-    const { status, version, showQrCodeModal, qrCodeModal, hideQrCodeModal} = this.props
+    const {
+      status,
+      version,
+      showQrCodeModal,
+      qrCodeModal,
+      hideQrCodeModal,
+      bandwithRates,
+    } = this.props
 
     return h('div.padded-more', {className: styles}, [
 
@@ -60,6 +88,8 @@ export default class Overview extends Component {
       h(DeviceID, {onQrCode: showQrCodeModal, onCopy: this.handleCopy.bind(this) , ...status}),
       status && h(CpuUsage, status),
       status && h(RamUsage, status),
+      h(UploadRate, bandwithRates),
+      h(DownloadRate, bandwithRates),
       status && h(Uptime, status),
       version && h(Version, version),
     ])
@@ -89,9 +119,15 @@ const DeviceID = ({myID, onQrCode, onCopy}) => h('div.section-item.my-id', [
   ]),
 ])
 
-const Version = ({version}) => h('div.section-item.version', [
-  h('p.left', 'Version:'),
-  h('p.center', `Syncthing ${version}`),
+const UploadRate = ({upBytes}) => h('div.section-item.upload-rate', [
+  h('p.left', 'Upload Rate:'),
+  h('p.center', upBytes),
+  h('a.right'),
+])
+
+const DownloadRate = ({downBytes}) => h('div.section-item.download-rate', [
+  h('p.left', 'Download Rate:'),
+  h('p.center', downBytes),
   h('a.right'),
 ])
 
@@ -122,4 +158,10 @@ const Uptime = ({uptime}) => h('div.section-item.uptime', [
   h('p.left', 'Uptime:'),
   h('p.center', durationDisplay(moment.duration(uptime, 'seconds'))),
   h('p.right'),
+])
+
+const Version = ({version}) => h('div.section-item.version', [
+  h('p.left', 'Version:'),
+  h('p.center', `Syncthing ${version}`),
+  h('a.right'),
 ])
