@@ -1,3 +1,12 @@
+import { createSelectorCreator, defaultMemoize } from 'reselect'
+import { isEqual } from 'lodash'
+
+// create a "selector creator" that uses deep checking
+const createDeepEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  isEqual
+)
+
 import { formatBytes } from 'main/utils/misc'
 
 const initialState = {
@@ -21,17 +30,15 @@ export default function bandwithRates(state = initialState, {type, payload}) {
   }
 }
 
-//ADD selector with correct bytes to human readable conversion
-export const getBandwithRates = ({bandwithRates}) => {
-  const {
+export const getBandwithRates = createDeepEqualSelector(
+  [state => state.bandwithRates],
+  ({
     upBytes,
     downBytes,
     newUpBytes,
     newDownBytes,
-  } = bandwithRates
-
-  return {
+  }) => ({
     upBytes: formatBytes(newUpBytes - upBytes),
     downBytes: formatBytes(newDownBytes - downBytes),
-  }
-}
+  })
+)
