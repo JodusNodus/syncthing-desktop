@@ -22,14 +22,6 @@ export default function messageBar(store){
       //Hide message bar
       store.dispatch(hideMessageBar())
 
-    }else if(action.type == 'SERVICE_CONFIG_SET_SUCCESS'){
-
-      store.dispatch(showMessageBar({
-        msg: 'The config was saved succesfully, to take full effect Syncthing needs to restart.',
-        ptStyle: 'positive',
-        static: true,
-      }))
-
     }else if(action.type == 'SERVICE_CONFIG_SET_FAILURE'){
 
       store.dispatch(showMessageBar({

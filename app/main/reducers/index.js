@@ -12,6 +12,7 @@ import version from './version'
 import config from './config'
 import folderRejected from './folder-rejected'
 import errors from './errors'
+import configInSync from './config-in-sync'
 
 export const reducers = {
   connected,
@@ -26,6 +27,7 @@ export const reducers = {
   config,
   folderRejected,
   errors,
+  configInSync,
 }
 
 const rootReducer = combineReducers(reducers)

@@ -1,7 +1,7 @@
 import notify from './utils/notify'
 import _ from 'lodash'
 
-import { getConnections, getMyID, getServiceConfig, getErrors } from './actions/system'
+import { getConnections, getMyID, getServiceConfig, getErrors, getConfigInSync } from './actions/system'
 import { showFolderRejected } from './actions/folder-rejected'
 import { getFolderStats } from './actions/stats'
 import { getSingleFolderStatus } from './actions/db'
@@ -115,6 +115,7 @@ export function stEvents(store){
   global.st.on('configSaved', () => {
     const myID = store.getState().myID
     store.dispatch(getServiceConfig(myID))
+    store.dispatch(getConfigInSync())
   })
 
 

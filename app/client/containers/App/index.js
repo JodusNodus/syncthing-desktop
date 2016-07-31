@@ -30,6 +30,7 @@ const mapStateToProps = state => ({
   form: state.form,
   messageBar: state.messageBar,
   folderRejected: state.folderRejected,
+  configInSync: state.configInSync,
 })
 
 @connect(
@@ -50,11 +51,12 @@ export default class App extends Component {
     history: PropTypes.object.isRequired,
     connected: PropTypes.bool.isRequired,
     config: PropTypes.object.isRequired,
-    setClientConfig: PropTypes.func.isRequired,
-    setServiceConfig: PropTypes.func.isRequired,
     messageBar: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     folderRejected: PropTypes.object.isRequired,
+    configInSync: PropTypes.bool.isRequired,
+    setClientConfig: PropTypes.func.isRequired,
+    setServiceConfig: PropTypes.func.isRequired,
     acceptFolderRejected: PropTypes.func.isRequired,
     setIgnores: PropTypes.func.isRequired,
   }
@@ -219,6 +221,7 @@ export default class App extends Component {
       params: {
         id,
       },
+      configInSync,
     } = this.props
 
 
@@ -235,6 +238,13 @@ export default class App extends Component {
         h('div.pane.container-pane', [
 
           ...messageBar.statics.map(msg => h(MessageBar, {text: msg.msg, staticMsg: true, ...msg})),
+
+          h(MessageBar, {
+            text: 'The configuration has been saved but not activated. Syncthing must restart to activate the new configuration.',
+            ptStyle: 'warning',
+            visible: !configInSync,
+            staticMsg: true,
+          }),
 
           h(MessageBar, {
             text: messageBar.msg,

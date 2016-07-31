@@ -157,3 +157,16 @@ global.st.system.clearErrors().then(() => {
     error,
   })
 })
+
+export const getConfigInSync = () => dispatch =>
+global.st.system.configInSync().then(payload => {
+  dispatch({
+    type: 'CONFIG_IN_SYNC_GET_SUCCESS',
+    payload,
+  })
+}).catch(error => {
+  dispatch({
+    type: 'CONFIG_IN_SYNC_GET_ERROR',
+    error,
+  })
+})

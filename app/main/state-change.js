@@ -1,5 +1,5 @@
 import notify from './utils/notify'
-import { getServiceConfig, getConnections, getMyID, getVersion } from './actions/system'
+import { getServiceConfig, getConnections, getMyID, getVersion, getConfigInSync } from './actions/system'
 import { getFolderStatus } from './actions/db'
 import { getDeviceStats } from './actions/stats'
 import buildMenu from './menu/index'
@@ -39,6 +39,7 @@ export default function stateHandler({store, tray}){
     if(!previousState.connected && newState.connected || previousState.myID != newState.myID){
       store.dispatch(getServiceConfig(newState.myID))
       store.dispatch(getVersion())
+      store.dispatch(getConfigInSync())
       notify('Connection Established', 'Connected to Syncthing instance')
 
       //Start listening for syncthing events
