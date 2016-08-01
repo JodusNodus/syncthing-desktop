@@ -263,7 +263,7 @@ export default class App extends Component {
             visible: messageBar.show,
           }),
 
-          h('div.main-pane', (connected || onSetupPage) ? [
+          h('div.main-pane', (connected || onSetupPage || onPreferencePage) ? [
 
             //Clone element with new ref and onSubmit props for submitting forms from parent
             cloneElement(children, {ref: 'child', onSubmit: this.handleSubmit}),
