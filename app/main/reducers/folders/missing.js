@@ -1,6 +1,12 @@
 export default function missing(state = {}, {type, payload, id}) {
   switch (type) {
     case 'MISSING_GET_SUCCESS':
+
+    //Ignore if page is not the same (e.g after page change)
+    if(state[id] && (payload.page != state[id].page)){
+      return state
+    }
+
     const progress = payload.progress.map(file => ({
       ...file,
       status: 'progress',
@@ -16,7 +22,7 @@ export default function missing(state = {}, {type, payload, id}) {
     return {
       ...state,
       [id]: {
-        page: payload.page,
+        page: (state[id] && state[id].page) || 1,
         perpage: payload.perpage,
         total: payload.total,
         missing: [
@@ -24,6 +30,15 @@ export default function missing(state = {}, {type, payload, id}) {
           ...queued,
           ...rest,
         ],
+      },
+    }
+    case 'MISSING_PAGE_SET':
+    return {
+      ...state,
+      [id]: {
+        ...state[id],
+        page: payload,
+        missing: [],
       },
     }
     default:

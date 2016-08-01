@@ -10,7 +10,7 @@ import Modal from 'client/components/Modal'
 import Size from 'client/components/Size'
 
 import { getMissing } from 'main/actions/db'
-import { hideMissingModal } from 'client/actions/missing-modal'
+import { hideMissingModal, setMissingPage } from 'client/actions/missing-modal'
 
 import { styles } from './styles.scss'
 
@@ -23,6 +23,7 @@ const mapStateToProps = (state) => ({
   {
     getMissing,
     hideMissingModal,
+    setMissingPage,
   },
 )
 export default class MissingModal extends Component {
@@ -75,6 +76,7 @@ export default class MissingModal extends Component {
     const {
       missingModal,
       getMissing,
+      setMissingPage,
       folder: {
         missing,
       },
@@ -121,7 +123,10 @@ export default class MissingModal extends Component {
           return h(Button, {
             text: page,
             ptStyle: isCurrent ? 'primary' : 'default',
-            onClick: () => getMissing(folder.id, page, missing.perpage),
+            onClick: () => {
+              setMissingPage(folder.id, page)
+              getMissing(folder.id, page, missing.perpage)
+            },
           })
         }
       )),
