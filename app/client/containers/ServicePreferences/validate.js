@@ -3,8 +3,19 @@ export default function validate({
   listenAddresses=[],
   maxRecvKbps='',
   maxSendKbps='',
+  guiAddress='',
+  guiApiKey='',
 }) {
   const errors = {}
+
+  //Gui Address
+  if(guiAddress.length < 1){
+    errors.guiAddress = 'GUI Listen Address should have at least one character.'
+  }
+  //Gui Api Key
+  if(guiApiKey.length < 1){
+    errors.guiApiKey= 'API Key should have at least one character.'
+  }
 
   //Global Discovery Servers
   if(globalAnnounceServers.length < 1){

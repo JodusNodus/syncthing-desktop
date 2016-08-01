@@ -8,7 +8,10 @@ import Input from 'client/components/Input'
 import * as messageBarActionCreators from 'client/actions/message-bar'
 import { bindActionCreators } from 'redux'
 import validationErrorMessage from 'client/utils/validation-error-message'
+
 import validate from './validate.js'
+
+import { getInitialValues } from './selectors'
 
 const fields = [
   'globalAnnounceEnabled',
@@ -19,6 +22,11 @@ const fields = [
   'maxRecvKbps',
   'maxSendKbps',
   'natEnabled',
+  'guiAddress',
+  'guiUser',
+  'guiPassword',
+  'guiUseTLS',
+  'guiApiKey',
 ]
 
 class ServicePreferences extends Component {
@@ -42,6 +50,11 @@ class ServicePreferences extends Component {
         maxRecvKbps,
         maxSendKbps,
         natEnabled,
+        guiAddress,
+        guiUser,
+        guiPassword,
+        guiUseTLS,
+        guiApiKey,
       },
     } = this.props
 
@@ -49,13 +62,17 @@ class ServicePreferences extends Component {
       h(Input, {label: 'Sync Protocol Listen Addresses', ...listenAddresses}),
       h(Input, {label: 'Incoming Rate Limit (KiB/s)', type: 'number', ...maxRecvKbps}),
       h(Input, {label: 'Outgoing Rate Limit (KiB/s)', type: 'number', ...maxSendKbps}),
-
       h(CheckBox, {label: 'Enable NAT traversal', ...natEnabled}),
       h(CheckBox, {label: 'Global Discovery', ...globalAnnounceEnabled}),
       h(CheckBox, {label: 'Local Discovery', ...localAnnounceEnabled}),
       h(CheckBox, {label: 'Enable Relaying', ...relaysEnabled}),
-
       h(Input, {label: 'Global Discovery Servers', ...globalAnnounceServers}),
+
+      h(Input, {label: 'GUI Listen Addresses', ...guiAddress}),
+      h(Input, {label: 'GUI Authentication User', ...guiUser}),
+      h(Input, {label: 'GUI Authentication Password', type: 'password', ...guiPassword}),
+      h(CheckBox, {label: 'Use HTTPS for GUI', ...guiUseTLS}),
+      h(Input, {label: 'API Key', ...guiApiKey}),
     ])
   }
 }
@@ -67,7 +84,7 @@ export default reduxForm(
     validate,
   },
   state => ({ // mapStateToProps
-    initialValues: state.preferences,
+    initialValues: getInitialValues(state),
   }),
   dispatch => bindActionCreators(messageBarActionCreators, dispatch)
 )(ServicePreferences)

@@ -22,6 +22,16 @@ import 'client/style/global.scss'
 
 const partOf = x => y => x.indexOf(y) >= 0
 
+const unCapitalize = str => str.charAt(0).toLowerCase() + str.slice(1)
+
+const removeGuiPrefix = form => _.mapKeys(form, (val, key) => {
+  if(partOf(key)('gui')){
+    return unCapitalize(key.slice(3))
+  }else{
+    return key
+  }
+})
+
 const mapStateToProps = state => ({
   devices: getDevices(state),
   folders: getFolders(state),
@@ -124,6 +134,7 @@ export default class App extends Component {
       setClientConfig(form)
     }else if(pathname == '/preferences/service'){
       setServiceConfig('options', form)
+      setServiceConfig('gui', removeGuiPrefix(form))
     }else if(pathname == `/folder/${params.id}/edit`){
 
       const updatedFolders = folders.map(folder => {

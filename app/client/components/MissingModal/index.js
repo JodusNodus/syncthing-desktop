@@ -45,8 +45,12 @@ export default class MissingModal extends Component {
       if(this.missingInterval){
         clearInterval(this.missingInterval)
       }
+      // TODO: fix this interval
       this.missingInterval = setInterval(
-        () => getMissing(folder.id, folder.missing.page, folder.missing.perpage),
+        () => {
+          console.log(folder.missing.page)
+        },
+        // getMissing(folder.id, folder.missing.page, folder.missing.perpage),
         2000
       )
     }
