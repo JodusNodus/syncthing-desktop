@@ -11,7 +11,6 @@ import validationErrorMessage from 'client/utils/validation-error-message'
 import validate from './validate.js'
 
 const fields = [
-  'deviceName',
   'globalAnnounceEnabled',
   'localAnnounceEnabled',
   'relaysEnabled',
@@ -35,7 +34,6 @@ class ServicePreferences extends Component {
   render(){
     const {
       fields: {
-        deviceName,
         globalAnnounceEnabled,
         localAnnounceEnabled,
         relaysEnabled,
@@ -48,7 +46,6 @@ class ServicePreferences extends Component {
     } = this.props
 
     return h('form.padded-more', [
-      h(Input, {label: 'Device Name', ...deviceName}),
       h(Input, {label: 'Sync Protocol Listen Addresses', ...listenAddresses}),
       h(Input, {label: 'Incoming Rate Limit (KiB/s)', type: 'number', ...maxRecvKbps}),
       h(Input, {label: 'Outgoing Rate Limit (KiB/s)', type: 'number', ...maxSendKbps}),

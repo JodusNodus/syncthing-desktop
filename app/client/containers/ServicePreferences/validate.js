@@ -1,16 +1,10 @@
 export default function validate({
-  deviceName='',
   globalAnnounceServers=[],
   listenAddresses=[],
   maxRecvKbps='',
   maxSendKbps='',
 }) {
   const errors = {}
-
-  //Device Name
-  if(deviceName.length < 1){
-    errors.deviceName = 'Device Name should have at least one character.'
-  }
 
   //Global Discovery Servers
   if(globalAnnounceServers.length < 1){
