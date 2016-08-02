@@ -1,4 +1,5 @@
 import path from 'path'
+import webpack from 'webpack'
 
 export default {
   module: {
@@ -22,7 +23,7 @@ export default {
     modulesDirectories: ['node_modules', 'app'],
   },
   plugins: [
-
+    new webpack.IgnorePlugin(/vertx/),
   ],
   //Shared packages between main and renderer
   externals: [
@@ -30,7 +31,6 @@ export default {
     'auto-launch',
     'electron-json-storage',
     'redux',
-    'redux-electron-store',
     'redux-thunk',
     'reselect',
   ],
