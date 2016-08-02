@@ -24,7 +24,14 @@ export default {
   plugins: [
 
   ],
+  //Shared packages between main and renderer
   externals: [
     'lodash',
+    'auto-launch',
+    'electron-json-storage',
+    'redux',
+    'redux-electron-store',
+    'redux-thunk',
+    'reselect',
   ],
 }
