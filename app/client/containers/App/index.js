@@ -82,8 +82,11 @@ export default class App extends Component {
     this.handleDelete = this.handleDelete.bind(this)
   }
   componentDidMount(){
-    //Let main proccess know that the window is ready
-    ipcRenderer.send('ready', remote.getCurrentWindow().id)
+    //Wait for the page to render
+    window.requestAnimationFrame(() => {
+      //Let main proccess know that the window is ready to be shown
+      ipcRenderer.send('ready', remote.getCurrentWindow().id)
+    })
 
     this.redirect()
   }
