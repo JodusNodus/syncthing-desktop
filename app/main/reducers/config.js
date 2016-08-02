@@ -23,6 +23,30 @@ export default function config(state = initialState, {type, payload}) {
       isSuccess: true,
       config: payload,
     }
+    case 'AUTO_LAUNCH_GET_SUCCESS':
+    return {
+      ...state,
+      config: {
+        ...state.config,
+        autoLaunch: payload,
+      },
+    }
+    case 'AUTO_LAUNCH_ENABLE_SUCCESS':
+    return {
+      ...state,
+      config: {
+        ...state.config,
+        autoLaunch: true,
+      },
+    }
+    case 'AUTO_LAUNCH_DISABLE_SUCCESS':
+    return {
+      ...state,
+      config: {
+        ...state.config,
+        autoLaunch: false,
+      },
+    }
     default:
     return state
   }

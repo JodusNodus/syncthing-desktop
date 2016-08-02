@@ -16,6 +16,7 @@ const fields = [
   'port',
   'apiKey',
   'https',
+  'autoLaunch',
 ]
 
 class ClientPreferences extends Component {
@@ -35,6 +36,7 @@ class ClientPreferences extends Component {
         port,
         apiKey,
         https,
+        autoLaunch,
       },
     } = this.props
 
@@ -43,6 +45,7 @@ class ClientPreferences extends Component {
       h(Input, {label: 'Port', placeholder: 'e.g. 8384', ...port}),
       h(Input, {label: 'API Key', placeholder: 'e.g. abc123', ...apiKey}),
       h(CheckBox, {label: 'Https', ...https}),
+      h(CheckBox, {label: 'Launch at Startup', ...autoLaunch}),
     ])
   }
 }

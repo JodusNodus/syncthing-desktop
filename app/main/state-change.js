@@ -1,10 +1,13 @@
 import notify from './utils/notify'
+import isEqual from 'lodash/isEqual'
+import syncthing from 'node-syncthing'
+
 import { getServiceConfig, getConnections, getMyID, getVersion, getConfigInSync } from './actions/system'
 import { getFolderStatus } from './actions/db'
 import { getDeviceStats } from './actions/stats'
+import { getAutoLaunch } from './actions/auto-launch'
+
 import buildMenu from './menu/index'
-import isEqual from 'lodash/isEqual'
-import syncthing from 'node-syncthing'
 import { stEvents, clearEventListeners } from './events'
 import { getFoldersWithStatus } from './reducers/folders'
 
@@ -34,6 +37,9 @@ export default function stateHandler({store, tray}){
       if(global.st){
         store.dispatch(getMyID())
       }
+
+      //Check if app is auto launched
+      store.dispatch(getAutoLaunch())
     }
 
     if(!previousState.connected && newState.connected || previousState.myID != newState.myID){

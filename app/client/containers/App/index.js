@@ -15,6 +15,7 @@ import * as systemActionCreators from 'main/actions/system'
 import * as configActionCreators from 'main/actions/config'
 import * as dbActionCreators from 'main/actions/db'
 import * as folderRejectedActionCreators from 'main/actions/folder-rejected'
+import * as autoLaunchActionCreators from 'main/actions/auto-launch'
 import { getDevices } from 'main/reducers/devices'
 import { getFolders } from 'main/reducers/folders'
 
@@ -50,6 +51,7 @@ const mapStateToProps = state => ({
     ...systemActionCreators,
     ...dbActionCreators,
     ...folderRejectedActionCreators,
+    ...autoLaunchActionCreators,
   }, dispatch)
 )
 export default class App extends Component {
@@ -69,6 +71,7 @@ export default class App extends Component {
     setServiceConfig: PropTypes.func.isRequired,
     acceptFolderRejected: PropTypes.func.isRequired,
     setIgnores: PropTypes.func.isRequired,
+    setAutoLaunch: PropTypes.func.isRequired,
   }
 
   constructor(props){
@@ -128,10 +131,25 @@ export default class App extends Component {
     }
   }
   handleSubmit(form){
-    const { location: { pathname }, setClientConfig, setServiceConfig, folders, devices, params, setIgnores } = this.props
+    const {
+      location: {
+        pathname,
+      },
+      setClientConfig,
+      setServiceConfig,
+      folders,
+      devices,
+      params,
+      setIgnores,
+      setAutoLaunch,
+    } = this.props
 
     if(pathname == '/preferences/client'){
-      setClientConfig(form)
+      setClientConfig({
+        ...form,
+        autoLaunch: undefined,
+      })
+      setAutoLaunch(form.autoLaunch)
     }else if(pathname == '/preferences/service'){
       setServiceConfig('options', form)
       setServiceConfig('gui', removeGuiPrefix(form))
