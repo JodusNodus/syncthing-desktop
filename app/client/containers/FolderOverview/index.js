@@ -58,9 +58,7 @@ export default class FolderOverview extends Component {
 
     if(this.props.folder.id !== folder.id){
       this.newDevice(newProps)
-    }
-
-    if(this.props.folder.status.needBytes > 0 && folder.status.needBytes < 1){
+    }else if(this.props.folder.status.needBytes > 0 && folder.status.needBytes < 1){
       showMessageBar({
         msg: 'Folder has completed syncing.',
         ptStyle: 'positive',
@@ -77,19 +75,24 @@ export default class FolderOverview extends Component {
       showMessageBar,
     } = props
 
-    const sharedDevices = folder.devices
-
-    getDeviceFolderCompletion(sharedDevices, folder.id)
+    getDeviceFolderCompletion(folder.devices, folder.id)
 
     //Get stats for last scan field
     getFolderStats()
 
-    //No Shared Devices
-    if(folder.status && folder.status.state == 'unshared'){
-      showMessageBar({
-        msg: 'You have not shared this folder with any device.',
-        ptStyle: 'warning',
-      })
+    if(folder.status){
+      //No Shared Devices
+      if(folder.status.state == 'unshared'){
+        showMessageBar({
+          msg: 'You have not shared this folder with any device.',
+          ptStyle: 'warning',
+        })
+      }else if(folder.status.state == 'outofsync'){
+        showMessageBar({
+          msg: 'This folder is out of sync. Changes have been made on other devices.',
+          ptStyle: 'negative',
+        })
+      }
     }
   }
   handleScan(){
@@ -127,10 +130,10 @@ const Path = ({path, home}) => h('div.section-item', [
   }, 'Open'),
 ])
 
-const InSync = ({globalBytes, inSyncBytes, needBytes, handleMissingFiles}) => {
+const InSync = ({globalBytes, inSyncBytes, needBytes, handleMissingFiles, state}) => {
   const percent = Math.round((inSyncBytes / globalBytes) * 100)
   return h('div.section-item.in-sync', [
-    h('p.left', 'Local In Sync:'),
+    h('p.left', 'Synchronized:'),
     h('div.center', [
       h(Progress, {completed: percent}),
       h('div.details', [
@@ -139,7 +142,11 @@ const InSync = ({globalBytes, inSyncBytes, needBytes, handleMissingFiles}) => {
         h(Size, {value: globalBytes}),
       ]),
     ]),
-    needBytes > 1 ? h('a.right', {onClick: handleMissingFiles}, 'Missing Files') : h('span.right'),
+    needBytes > 1 ? h(
+      'a.right',
+      {onClick: handleMissingFiles},
+      state == 'outofsync' ? 'Out of Sync Files' : 'Missing Files'
+    ) : h('span.right'),
   ])
 }
 

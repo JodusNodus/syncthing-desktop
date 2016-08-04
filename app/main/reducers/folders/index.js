@@ -75,7 +75,14 @@ export const getFolderWithStatus = createDeepEqualSelector(
     }
 
     //Replace state with unshared if no more than 1 device was found (current device)
-    const state = folder.devices.length <= 1 ? 'unshared' : status && status.state
+    let state = status ? status.state : 'default'
+
+    if(folder.devices.length <= 1){
+      state = 'unshared'
+    }
+    if(folder.type == 'readonly' && status && (status.globalFiles != status.localFiles)){
+      state = 'outofsync'
+    }
 
     return {
       ...folder,

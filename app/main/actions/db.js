@@ -87,3 +87,16 @@ global.st.db.need(id, page, perpage).then(payload => {
     error,
   })
 })
+
+export const overrideChanges = id => dispatch =>
+global.st.db.override(id).then(() => {
+  dispatch({
+    type: 'OVERRIDE_CHANGES_SUCCESS',
+    id,
+  })
+}).catch(error => {
+  dispatch({
+    type: 'OVERRIDE_CHANGES_FAILURE',
+    error,
+  })
+})
