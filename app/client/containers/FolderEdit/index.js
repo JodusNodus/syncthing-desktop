@@ -107,9 +107,11 @@ class FolderEdit extends Component {
       isNewFolder && h(Input, {label: 'Folder ID', placeholder: 'e.g. GXWxf-3zgnU', ...id}),
       h(Input, {label: 'Label', placeholder: 'e.g. Personal Documents', ...label}),
       isNewFolder && h(Input, {
-        label: 'Path',
-        placeholder: 'Click to open dialog.',
-        onClick: this.handlePath.bind(this),
+        label: [
+          'Path',
+          h('a', {onClick: this.handlePath.bind(this)}, 'Open Select Dialog'),
+        ],
+        placeholder: 'e.g /Users/jodus/Documents',
         ...path,
       }),
       h(SharedDevices, {devices, devicesField: this.props.fields.devices}),
