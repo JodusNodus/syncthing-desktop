@@ -274,8 +274,7 @@ export default class App extends Component {
           h(MessageBar, {
             text: 'The configuration has been saved but not activated. Syncthing must restart to activate the new configuration.',
             ptStyle: 'warning',
-            visible: !configInSync,
-            staticMsg: true,
+            staticMsg: !configInSync,
           }),
 
           h(MessageBar, {
