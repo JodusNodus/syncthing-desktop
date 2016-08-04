@@ -31,46 +31,63 @@ export default class MissingModal extends Component {
     folder: PropTypes.object.isRequired,
     missingModal: PropTypes.object.isRequired,
     getMissing: PropTypes.func.isRequired,
+    setMissingPage: PropTypes.func.isRequired,
     hideMissingModal: PropTypes.func.isRequired,
   }
 
   constructor(props){
     super(props)
     this.hideMissingModal = this.hideMissingModal.bind(this)
+    this.setInterval = this.setInterval.bind(this)
   }
   componentWillUpdate(newProps){
     const { missingModal, folder, getMissing } = newProps
 
-    if(this.props.folder.missing && folder.missing && this.props.folder.missing.page != folder.missing.page){
-      if(this.missingInterval){
-        clearInterval(this.missingInterval)
+    if(this.props.folder && this.props.folder.missing && folder.missing){
+
+      //Page has changed
+      if(this.props.folder.missing.page != folder.missing.page){
+        this.setInterval(folder)
       }
-      // TODO: fix this interval
-      this.missingInterval = setInterval(
-        () => {
-          console.log(folder.missing.page)
-        },
-        // getMissing(folder.id, folder.missing.page, folder.missing.perpage),
-        2000
-      )
+
+      //No missing files anymore
+      if(this.props.folder.missing.total > 0 && folder && folder.missing && folder.missing.total < 1){
+        this.hideMissingModal()
+      }
+
     }
 
+    //MissingModal is shown
     if(!this.props.missingModal.show && missingModal.show){
       //Initial request
       getMissing(folder.id, 1, 10)
 
-    }else if(this.props.missingModal.show && !missingModal.show){
+      //Start periodicaly checking for changes
+      this.setInterval(folder)
+    }
+
+    //MissingModal is hidden
+    if(this.props.missingModal.show && !missingModal.show){
       if(this.missingInterval){
         clearInterval(this.missingInterval)
       }
-    }else if(this.props.folder && this.props.folder.missing && this.props.folder.missing.total > 0 && folder && folder.missing && folder.missing.total < 1){
-      this.hideMissingModal()
     }
+
   }
   componentWillUnmount(){
     if(this.missingInterval){
       clearInterval(this.missingInterval)
     }
+  }
+  setInterval({id, missing}){
+    if(this.missingInterval){
+      clearInterval(this.missingInterval)
+    }
+
+    this.missingInterval = setInterval(
+      () => this.props.getMissing(id, missing.page, missing.perpage),
+      2000
+    )
   }
   hideMissingModal(){
     clearInterval(this.missingInterval)
