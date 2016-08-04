@@ -8,6 +8,7 @@ import Input from 'client/components/Input'
 import * as messageBarActionCreators from 'client/actions/message-bar'
 import { bindActionCreators } from 'redux'
 import validationErrorMessage from 'client/utils/validation-error-message'
+import randomString from 'client/utils/random-string'
 
 import validate from './validate.js'
 
@@ -38,6 +39,11 @@ class ServicePreferences extends Component {
 
   componentDidUpdate(){
     validationErrorMessage(this.props)
+  }
+  handleGenerateApiKey(){
+    randomString(32).then(str => {
+      this.props.fields.guiApiKey.onChange(str.random)
+    })
   }
   render(){
     const {
@@ -72,7 +78,10 @@ class ServicePreferences extends Component {
       h(Input, {label: 'GUI Authentication User', ...guiUser}),
       h(Input, {label: 'GUI Authentication Password', type: 'password', ...guiPassword}),
       h(CheckBox, {label: 'Use HTTPS for GUI', ...guiUseTLS}),
-      h(Input, {label: 'API Key', ...guiApiKey}),
+      h(Input, {label: [
+        'API Key',
+        h('a', {onClick: this.handleGenerateApiKey.bind(this)}, 'Generate New API Key'),
+      ], ...guiApiKey}),
     ])
   }
 }
