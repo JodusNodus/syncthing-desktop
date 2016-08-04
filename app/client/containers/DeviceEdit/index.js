@@ -60,9 +60,11 @@ class DeviceEdit extends Component {
 
     return h('form', [
       isNewDevice && h(Input, {
-        label: 'Device ID',
-        placeholder: 'Click to scan QR-Code using webcam.',
-        onClick: this.handleQrCodeClick.bind(this),
+        label: [
+          'Device ID',
+          h('a', {onClick: this.handleQrCodeClick.bind(this)}, 'Scan QR-Code'),
+        ],
+        placeholder: 'e.g. P56IOI7-MZJNU2Y-IQGDREY-DM2MGTI-MGL3BXN-PQ6W5BM-TBBZ4TJ-XZWICQ2',
         ...deviceID,
       }),
       h(Input, {label: 'Name', placeholder: 'e.g. Phone', ...name}),

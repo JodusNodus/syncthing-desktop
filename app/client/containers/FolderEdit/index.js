@@ -111,7 +111,7 @@ class FolderEdit extends Component {
           'Path',
           h('a', {onClick: this.handlePath.bind(this)}, 'Open Select Dialog'),
         ],
-        placeholder: 'e.g /Users/jodus/Documents',
+        placeholder: 'e.g. /Users/jodus/Documents',
         ...path,
       }),
       h(SharedDevices, {devices, devicesField: this.props.fields.devices}),
