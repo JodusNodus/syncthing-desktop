@@ -25,7 +25,7 @@ h('div.form-group', {className: `${styles} ${touched && error && 'error'} ${clas
 ])
 
 Input.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.node,
   className: PropTypes.string,
   touched: PropTypes.bool,
   error: PropTypes.string,
