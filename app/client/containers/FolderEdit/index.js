@@ -13,6 +13,8 @@ import { getDevices } from 'main/reducers/devices'
 import { showMessageBar, hideMessageBar } from 'client/actions/message-bar'
 import validate from './validate'
 
+import randomString from 'client/utils/random-string'
+
 import { styles } from './styles.scss'
 
 const fields = [
@@ -65,6 +67,21 @@ class FolderEdit extends Component {
     devices: PropTypes.array.isRequired,
   }
 
+  componentDidMount(){
+    const id = this.props.fields.id.value
+    if(id.length < 1){
+      randomString(10).then(({random}) => {
+        const randomID = random.toLowerCase()
+
+        const formattedRandomID = [
+          randomID.slice(0, 5),
+          randomID.slice(5),
+        ].join('-')
+
+        this.props.fields.id.onChange(formattedRandomID)
+      })
+    }
+  }
   shouldComponentUpdate(newProps){
     //Don't update when devices has changed (wich happens periodicaly)
     return !_.isEqual(this.props.fields, newProps.fields)

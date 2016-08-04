@@ -1,7 +1,6 @@
 import { PropTypes, Component } from 'react'
 import h from 'react-hyperscript'
 import { connect } from 'react-redux'
-import randomString from 'randomstring'
 
 import FolderEdit from 'client/containers/FolderEdit'
 import Header from 'client/components/Header'
@@ -44,18 +43,11 @@ export default class FolderAdd extends Component {
       },
     } = this.props
 
-    const randomID = randomString.generate(10).toLowerCase()
-
-    const formattedRandomID = [
-      randomID.slice(0, 5),
-      randomID.slice(5),
-    ].join('-')
-
     const initialDevices = [
       {deviceID: myID},
     ]
     const initialValues = {
-      id: accepted ? folder : formattedRandomID,
+      id: accepted ? folder : '',
       label: accepted ? folderLabel : '',
       rescanIntervalS: 60,
       ignorePerms: false,
