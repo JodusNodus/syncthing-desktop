@@ -18,7 +18,11 @@ export default function stateHandler({store, tray}){
 
     //Check if config was loaded or changed
     const configIsNowSuccesfull = !previousState.config.isSuccess && newState.config.isSuccess
-    const configHasChanged = !isEqual(previousState.config.config, newState.config.config)
+    const configHasChanged = !isEqual(
+      //Ignore autoLaunch changes
+      {...previousState.config.config, autoLaunch: false},
+      {...newState.config.config, autoLaunch: false}
+    )
 
     if(configIsNowSuccesfull || configHasChanged){
 
