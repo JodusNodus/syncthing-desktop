@@ -4,6 +4,10 @@
 
   font-size: 13px;
 
+  * {
+    cursor: default;
+  }
+
   .toolbar-header .title {
     -webkit-app-region: drag;
   }
