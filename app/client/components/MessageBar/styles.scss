@@ -3,19 +3,20 @@
 :local(.styles) {
 
   color: $white;
-  transition: all 0.4s;
-  position: absolute;
+  transition-property: transform, height, padding;
+  transition-duration: 0.4s;
   width: 100%;
   text-align: center;
   overflow: hidden;
   padding: 0;
-  transform: translateY(-100%);
-  padding: 5px 10px;
+  height: 0;
   line-height: 1.2em;
   z-index: 1;
 
   &.visible, &.static {
+    padding: 5px 10px;
     transform: none;
+    height: auto;
   }
 
   &.static {
