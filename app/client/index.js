@@ -6,11 +6,14 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import routes from './routes'
 import configureStore from './store/configureStore'
 import { remote } from 'electron'
+import buildMenu from './utils/menu'
 
 global.st = remote.getGlobal('st')
 
 const store = configureStore()
 const history = syncHistoryWithStore(hashHistory, store)
+
+buildMenu()
 
 render(
   <Provider store={store}>
