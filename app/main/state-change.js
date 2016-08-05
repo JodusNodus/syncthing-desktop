@@ -63,7 +63,7 @@ export default function stateHandler({store, tray}){
       store.dispatch(getFolderStatus(getFoldersWithStatus(newState)))
     }
 
-    if(!isEqual(getMenuState(previousState),getMenuState(newState))){
+    if(!isEqual(getMenuState(previousState), getMenuState(newState))){
       //Build and replace old menu
       const menu = buildMenu({state: newState})
       tray.setContextMenu(menu)
@@ -75,16 +75,18 @@ export default function stateHandler({store, tray}){
 //Filter out all unimportant state for dispalying menu
 const getMenuState = ({
   connected,
-  myID,
-  devices,
-  folders,
-  version,
-  config,
+  devices: {
+    devices,
+    connections,
+  },
+  folders: {
+    folders,
+    status,
+  },
 }) => ({
   connected,
-  myID,
   devices,
   folders,
-  version,
-  config,
+  connections,
+  status,
 })
