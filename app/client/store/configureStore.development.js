@@ -19,7 +19,20 @@ const router = routerMiddleware(hashHistory)
 
 const enhancer = compose(
   applyMiddleware(thunk, router, messageBarMiddleware, logger),
-  electronEnhancer(true),
+  electronEnhancer({
+    connected: true,
+    myID: true,
+    devices: true,
+    folders: true,
+    systemStatus: true,
+    preferences: true,
+    guiPreferences: true,
+    version: true,
+    config: true,
+    folderRejected: true,
+    errors: true,
+    configInSync: true,
+  }),
   DevTools.instrument(),
   persistState(
     window.location.href.match(

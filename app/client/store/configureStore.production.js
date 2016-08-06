@@ -10,7 +10,20 @@ const router = routerMiddleware(hashHistory)
 
 const enhancer = compose(
   applyMiddleware(thunk, router, messageBarMiddleware),
-  electronEnhancer(true)
+  electronEnhancer({
+    connected: true,
+    myID: true,
+    devices: true,
+    folders: true,
+    systemStatus: true,
+    preferences: true,
+    guiPreferences: true,
+    version: true,
+    config: true,
+    folderRejected: true,
+    errors: true,
+    configInSync: true,
+  })
 )
 
 export default function configureStore(initialState) {
